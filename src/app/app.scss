@@ -14,3 +14,22 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+// 
+
+[float-right] { float: right; }
+
+ion-card {
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: 0.25rem !important;
+  box-shadow: none !important;
+
+  &-content {
+    border-top: 1px solid rgba(0,0,0,0.125);
+    padding-top: $card-ios-padding-top !important;
+  }
+}
+
+[ion-card-footer] {
+  border-top: 1px solid rgba(0,0,0,0.125);
+  padding-top: $card-ios-padding-top !important; 
+}
