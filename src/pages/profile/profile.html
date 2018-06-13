@@ -12,7 +12,7 @@
       <ion-row>
         <ion-col></ion-col>
         
-        <ion-col col-2>
+        <ion-col col-3>
           <user-avatar [user]="user" (press)="showImageOptions('avatar')"></user-avatar>
         </ion-col>
 
@@ -22,9 +22,9 @@
       <ion-row>
         <ion-col>
           <div text-center>
-            <h2>{{ user.name }}</h2>
-            <p>{{ user.tag }}</p>
-            <p>{{ user.description }}</p>
+            <h2 no-margin>{{ user.name }}</h2>
+            <p no-margin>{{ user.tag }}</p>
+            <p no-margin>{{ user.bio }}</p>
           </div>
         </ion-col>
       </ion-row>
@@ -70,7 +70,6 @@
       </ion-row>
     </ion-grid>
 
-    <!-- Interests -->
     <!-- Posts -->
 
   </ng-container>
