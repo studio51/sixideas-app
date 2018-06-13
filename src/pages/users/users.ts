@@ -58,7 +58,9 @@ export class UsersPage {
           { name: 'Design' },
           { name: 'Graphics' },
           { name: 'Technology' },
-          { name: 'Health' }
+          { name: 'Health' },
+          { name: 'EducatingTheFuture' },
+          { name: 'BookClub' }
         ],
         online: true
       },

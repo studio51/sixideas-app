@@ -18,40 +18,58 @@
 
         <ion-col></ion-col>
       </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <div text-center>
+            <h2>{{ user.name }}</h2>
+            <p>{{ user.tag }}</p>
+            <p>{{ user.description }}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-4 text-center (tap)="viewUserFollowing(user.id, user.following)">
+          <h6>Following</h6>
+          
+          <ion-card>
+            <ion-card-content>
+              {{ user.following.length }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col col-4 text-center (tap)="viewUserFollowers(user.id, user.followers)">
+          <h6>Followers</h6>
+          
+          <ion-card>
+            <ion-card-content>
+              {{ user.followers.length }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <ion-col col-4 text-center (tap)="viewUserLikes(user.id, user.likes)">
+          <h6>Likes</h6>
+          
+          <ion-card>
+            <ion-card-content>
+              {{ user.likes.length }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <ion-row [ngStyle]="{ 'background-color': user.colour }" padding>
+        <ion-col col-auto *ngFor="let interest of user.interests">
+          <button ion-button small square>
+            {{ interest.name }}
+          </button>
+        </ion-col>
+      </ion-row>
     </ion-grid>
 
-    <div text-center>
-      <h2>{{ user.name }}</h2>
-      <p>{{ user.tag }}</p>
-    </div>
-
-    <ion-list>
-      <ion-item>
-        Following
-
-        <ion-badge item-end>{{ user.following.length }}</ion-badge>
-      </ion-item>
-      
-      <ion-item>
-        Followers
-
-        <ion-badge item-end>{{ user.followers.length }}</ion-badge>
-      </ion-item>
-
-      <ion-item>
-        Likes
-
-        <ion-badge item-end>{{ user.likes.length }}</ion-badge>
-      </ion-item>
-    </ion-list>
-
-    <!-- Avatar -->
-    <!-- Name -->
-    <!-- Tag -->
-    <!-- Description -->
-    <!-- Following -->
-    <!-- Followers -->
-    <!-- Likes -->
     <!-- Interests -->
     <!-- Posts -->
 
