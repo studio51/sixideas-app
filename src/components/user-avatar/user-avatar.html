@@ -1,0 +1,4 @@
+<div class="container">
+  <span class="state state-{{ user.online ? 'online' : 'offline' }}"></span>
+  <img class="avatar" [src]="user.avatar" [ngStyle]="{ 'border-color': user.colour }" />
+</div>

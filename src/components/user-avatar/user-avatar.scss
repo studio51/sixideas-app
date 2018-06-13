@@ -1,0 +1,24 @@
+user-avatar {
+  .container {
+    position: relative;
+
+    .state {
+      width: 20px;
+      height: 20px;
+      
+      border-radius: 100%;
+
+      position: absolute;
+      top: 2.5px;
+      right: 2.5px;
+
+      &-online { background-color: green; }
+      // &-offline { background-color: red; }
+    }
+
+    img.avatar {
+      border-radius: 100%;
+      border: 3px solid transparent;
+    }
+  }
+}

@@ -1,40 +1,42 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
+import { SixIdeasApp } from './app.component';
+import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
+/******** Native Components ********/
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+/******** Providers * HTTP ********/
+
+import { FeedProvider } from '../providers/feed/feed';
+import { UserProvider } from '../providers/user/user';
+
 @NgModule({
-  declarations: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
-  ],
+  declarations: [SixIdeasApp],
+  
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(SixIdeasApp)
   ],
+  
   bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp,
-    AboutPage,
-    ContactPage,
-    HomePage,
-    TabsPage
-  ],
+  entryComponents: [SixIdeasApp],
+
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    },
+    
+    FeedProvider,
+    UserProvider
   ]
 })
-export class AppModule {}
+
+export class AppModule { }

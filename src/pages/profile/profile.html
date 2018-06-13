@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ user ? user.name : 'Profile' }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="user">
+    <img class="background-image" [src]="user.background" (press)="showImageOptions('background')" />
+
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col></ion-col>
+        
+        <ion-col col-2>
+          <user-avatar [user]="user" (press)="showImageOptions('avatar')"></user-avatar>
+        </ion-col>
+
+        <ion-col></ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div text-center>
+      <h2>{{ user.name }}</h2>
+      <p>{{ user.tag }}</p>
+    </div>
+
+    <ion-list>
+      <ion-item>
+        Following
+
+        <ion-badge item-end>{{ user.following.length }}</ion-badge>
+      </ion-item>
+      
+      <ion-item>
+        Followers
+
+        <ion-badge item-end>{{ user.followers.length }}</ion-badge>
+      </ion-item>
+
+      <ion-item>
+        Likes
+
+        <ion-badge item-end>{{ user.likes.length }}</ion-badge>
+      </ion-item>
+    </ion-list>
+
+    <!-- Avatar -->
+    <!-- Name -->
+    <!-- Tag -->
+    <!-- Description -->
+    <!-- Following -->
+    <!-- Followers -->
+    <!-- Likes -->
+    <!-- Interests -->
+    <!-- Posts -->
+
+  </ng-container>
+</ion-content>

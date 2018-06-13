@@ -1,0 +1,11 @@
+page-profile {
+  $avatar-size: 75px;
+
+  .background-image {
+    min-height: 150px;
+
+    object-fit: cover;
+  }
+
+  .user-avatar--image { margin-top: -($avatar-size / 2); }
+}

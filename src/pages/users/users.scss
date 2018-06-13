@@ -1,0 +1,11 @@
+page-users {
+  ion-card {
+    $avatar-size: 75px;
+
+    text-align: center;
+    margin-top: ($avatar-size / 2) + $card-ios-margin-top !important;
+    overflow: visible;
+
+    .user-avatar--image { margin-top: -($avatar-size / 2); }
+  }
+}
