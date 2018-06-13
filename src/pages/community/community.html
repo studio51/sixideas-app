@@ -1,18 +1,132 @@
-<!--
-  Generated template for the CommunityPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Community</ion-title>
   </ion-navbar>
-
 </ion-header>
 
+<ion-content>
 
-<ion-content padding>
+  <ion-card *ngIf="currentUser">
+    <ion-card-header>
+      <ion-grid no-padding>
+        <ion-row align-items-center>
+          <ion-col col-2>
+            <user-avatar [user]="currentUser"></user-avatar>
+          </ion-col>
 
+          <ion-col margin-left>
+            <h2 no-margin>{{ currentUser.name }}</h2>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <ion-card-content padding text-center (tap)="showNewPostForm()">
+      <h2 no-margin *ngUnless="newPostFormIsActive">What's new?</h2>
+      <ion-spinner *ngIf="newPostFormIsActive"></ion-spinner>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="let post of posts">
+    <ion-card-header>
+      <ion-grid no-padding>
+        <ion-row align-items-center>
+          <ion-col col-2>
+            <user-avatar [user]="post.author"></user-avatar>
+          </ion-col>
+
+          <ion-col margin-left>
+            <h2 no-margin>{{ post.author.name }}</h2>
+          </ion-col>
+
+          <ion-col col-auto (tap)="likePost(post.id)">
+            {{ post.likes_count ? (post.likes_count + ' likes') : '' }}
+            <ion-icon name="heart-outline" size="large"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <ion-card-content [ngStyle]="{ 'background-color': (post.background ? post.background : '') }">
+      <h1 *ngIf="post.background" text-center>{{ post.body }}</h1>
+      <p *ngUnless="post.background">{{ post.body }}</p>
+    </ion-card-content>
+
+    <ion-grid no-padding ion-card-footer>
+      <ion-row *ngFor="let comment of post.comments">
+        <ion-col col-1>
+          <user-avatar [user]="comment.author"></user-avatar>
+        </ion-col>
+
+        <ion-col>
+          <ion-card>
+            <ion-card-content>
+              <ion-note float-right (tap)="likeComment(post.id, comment.id)">
+                {{ comment.likes_count ? (comment.likes_count + ' likes') : '' }}
+                <ion-icon name="heart-outline"></ion-icon>
+              </ion-note>
+
+              {{ comment.body }}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+
+      <form [formGroup]="commentForm">
+  
+        <ion-row align-items-center>
+          <ion-col col-2>
+            <user-avatar [user]="currentUser"></user-avatar>
+          </ion-col>
+
+          <ion-col>
+            <ion-item>
+              <ion-textarea formControlName="body" placeholder="Write a comment"></ion-textarea>
+            </ion-item>
+          </ion-col>
+
+          <ion-col col-auto>
+            <button ion-button color="primary" small icon icon-only [disabled]="!commentForm.valid" (click)="addComment(post.id)">
+              <ion-icon name="paper-plane"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+
+      </form>
+
+    </ion-grid>
+  </ion-card>
+
+  <content-drawer *ngIf="postForm" [options]="drawerOptions" [ngStyle]="{ 'background-color': postForm.controls.colour.value }">
+    <form [formGroup]="postForm">
+      <ion-item #postFormTitle clear>
+        <ion-label>Title (optional)</ion-label>
+        <ion-input type="text" formControlName="title"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea formControlName="body" placeholder="What's new?"></ion-textarea>
+      </ion-item>
+
+      <ion-grid>
+        <ion-row align-items-center>
+          <ion-col>
+            <button ion-button small square *ngFor="let colour of postColours" [ngClass]="postForm.controls.colour.value === colour.hex ? 'selected' : ''" [ngStyle]="{ 'background-color': colour.hex === null ? 'transparent' : colour.hex }" (tap)="changePostFormColour(colour.hex)"></button>
+          </ion-col>
+
+          <ion-col col-auto>
+            <button ion-button color="primary" small [disabled]="!postForm.valid" (click)="addPost()">
+              Create Post
+            </button>
+          </ion-col>
+
+          <ion-col #postFormImageOptions col-auto>
+            <button ion-button color="primary" outline small icon-only (click)="showPostFormImageOptions()">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </content-drawer>
 </ion-content>
