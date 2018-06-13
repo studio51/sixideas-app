@@ -1,15 +1,16 @@
-import { NgModule, ErrorHandler, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { SixIdeasApp } from './app.component';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 
-/******** Native Components ********/
+/***** Native Components *****/
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Camera } from '@ionic-native/camera';
 
-/******** Providers * HTTP ********/
+/***** Providers * HTTP *****/
 
 import { FeedProvider } from '../providers/feed/feed';
 import { UserProvider } from '../providers/user/user';
@@ -34,6 +35,12 @@ import { UserProvider } from '../providers/user/user';
       useClass: IonicErrorHandler
     },
     
+    /***** Native Components *****/        
+
+    Camera,
+
+    /***** Providers * HTTP *****/
+
     FeedProvider,
     UserProvider
   ]
