@@ -1,0 +1,51 @@
+<ion-content>
+
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-col col-auto>
+        <img src="assets/imgs/logo.png" height="75px" />
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <h4 text-center>Please sign in</h4>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <form [formGroup]="form" *ngIf="form" (ngSubmit)="login()">
+
+    <ion-grid>
+      <ion-row justify-content-center>
+        <ion-col col-8>
+         
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input formControlName="email" placeholder="Email Address"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row justify-content-center margin-top>
+            <button ion-button color="secondary" type="submit" [attr.authState]="authState" [disabled]="!form.valid">
+              <ion-spinner *ngIf="authLoading"></ion-spinner>
+              {{ authMessage }}
+            </button>
+          </ion-row>
+        
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </form>
+</ion-content>
