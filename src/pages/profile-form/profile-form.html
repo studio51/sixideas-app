@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon color="danger" (tap)="update()">
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{ user ? user?.name : 'Profile' }}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon color="secondary" (tap)="update(form.value)">
+        <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="user && form">
+
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col></ion-col>
+        
+        <ion-col col-3>
+          <user-avatar [user]="user" (press)="showImageOptions('avatar')"></user-avatar>
+        </ion-col>
+
+        <ion-col></ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <p text-center no-margin>Lets edit your profile</p>
+        </ion-col>
+      </ion-row>
+
+      <ion-row align-items-center justify-content-center>
+        <ion-col col-auto>
+          <button ion-button small rounded *ngFor="let colour of postColours" [ngClass]="form.controls.colour.value === colour.hex ? 'selected' : ''" [ngStyle]="{ 'background-color': colour.hex === null ? 'transparent' : colour.hex }" (tap)="changeformColour(colour.hex)"></button>
+        </ion-col>
+      </ion-row>
+    </ion-grid> <!-- ion-grid -->
+
+    <form *ngIf="form" [formGroup]="form">
+
+      <ion-grid no-padding>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Email</ion-label>
+              <ion-input formControlName="email" placeholder=""></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Username</ion-label>
+              <ion-input formControlName="username" placeholder=""></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col col-6>
+            <ion-item>
+              <ion-label stacked>Forename</ion-label>
+              <ion-input formControlName="forename" placeholder=""></ion-input>
+            </ion-item>
+          </ion-col>
+
+          <ion-col col-6>
+            <ion-item>
+              <ion-label stacked>Surname</ion-label>
+              <ion-input formControlName="surname" placeholder=""></ion-input>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Bio</ion-label>
+              <ion-textarea formControlName="bio" placeholder=""></ion-textarea>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label stacked>Interests</ion-label>
+              <ion-select formControlName="interests" multiple="true">
+                <ion-option *ngFor="let interest of user.interests" [value]="interest.name">{{ interest.name }}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </form> <!-- form -->
+
+  </ng-container> <!-- ng-container @if(user) -->
+</ion-content>

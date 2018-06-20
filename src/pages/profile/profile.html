@@ -1,6 +1,12 @@
 <ion-header>
   <ion-navbar>
     <ion-title>{{ user ? user.name : 'Profile' }}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon (tap)="editProfile()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
