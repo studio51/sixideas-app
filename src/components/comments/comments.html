@@ -1,0 +1,51 @@
+<ion-grid no-padding>
+  <ion-row justify-content-center *ngIf="comments && comments.length === 0 && !form">
+    <ion-col col-auto>
+      <ion-spinner comments-loader></ion-spinner>
+    </ion-col>
+  </ion-row>
+
+  <ng-container *ngIf="comments && comments.length > 0">
+    <ion-row *ngFor="let comment of comments.slice(0, limit)" align-items-center>
+      <ion-col col-auto>
+        <user-avatar [user]="comment.user" size="small"></user-avatar>
+      </ion-col>
+
+      <ion-col margin-left_2>
+        <ion-card comment-container>
+          <ion-card-content comment-content>
+            <like class="comment" [likeable]="comment" [user]="user"></like>
+            {{ comment.body }}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ng-container>
+
+  <ion-row *ngIf="comments.length > (limit - 1) && limit != comments.length" (tap)="viewAll()">
+    <ion-col text-center>
+      <p color="blue" no-margin>View {{ comments.length - 1 }} more comment{{ comments.length > 2 ? 's' : '' }}</p>
+    </ion-col>
+  </ion-row>
+
+  <form ion-row align-items-center no-padding [formGroup]="form" *ngIf="form" comment-form>
+
+    <ion-col col-auto>
+      <user-avatar [user]="user" size="small"></user-avatar>
+    </ion-col>
+
+    <ion-col margin-left_2>
+      <ion-item>
+        <ion-input comment-form-input formControlName="body" placeholder="Write a comment"></ion-input>
+      </ion-item>
+    </ion-col>
+
+    <ion-col col-auto align-self-stretch>
+      <button comment-form-button ion-button color="primary" small outline icon icon-only [disabled]="!form.valid" (click)="submit()">
+        <ion-spinner *ngIf="processingComment" comment-form-loader></ion-spinner>
+        <i class="fal fa-paper-plane" *ngUnless="processingComment"></i>
+      </button>
+    </ion-col>
+
+  </form>
+</ion-grid>
