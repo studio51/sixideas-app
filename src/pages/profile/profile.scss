@@ -1,11 +1,34 @@
 page-profile {
-  $avatar-size: 75px;
+  .background-image { height: 150px; }
+  
+  [user-grid] { margin-top: -45px; }
 
-  .background-image {
-    min-height: 150px;
+  .name { }
+  .tag { font-size: 1.25rem; }
+  .bio { font-size: 1.5rem; }
 
-    object-fit: cover;
+  .card[user-stat-card] {
+    box-shadow: none;
+    padding: 1.5rem;
+    border-radius: 0.25rem;
+
+    p {
+      margin: 0;
+      color: #007bff;
+      font-weight: bold;
+    }
   }
 
-  ion-grid { margin-top: -($avatar-size / 2); }
+  [user-interests] {
+    box-shadow: 0px 7px 60px -15px rgba(0, 0, 0, 0.75);
+
+    &.colour {
+      &--blue { background-color: rgba(#2067C3, 1); }
+      &--green { background-color: rgba(#009989, 1); }
+      &--yellow { background-color: rgba(#FCCD10, 1); }
+      &--orange { background-color: rgba(#F85931, 1); }
+      &--red { background-color: rgba(#CE1836, 1); }
+      &--grey { background-color: rgba(#6F6F6F, 1); }
+    }
+  }
 }

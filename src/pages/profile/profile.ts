@@ -1,7 +1,13 @@
 import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 
 import { User } from '../../models/user';
+import { UserProvider } from '../../providers/user';
+
+import { Post } from '../../models/post';
+import { PostProvider } from '../../providers/post';
 
 @IonicPage()
 @Component({
@@ -11,52 +17,54 @@ import { User } from '../../models/user';
 
 export class ProfilePage {
   user: User;
+  posts: Post[] = [];
 
+  commentForm: FormGroup;
   constructor(
     public modalCtrl: ModalController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public userProvider: UserProvider,
+    public postProvider: PostProvider
   
   ) {
 
-    const currentUser = {
-      id: 2,
-      name: "Vlad Radulescu",
-      background: "https://res.cloudinary.com/dwvwdhzvg/image/upload/c_fill,h_270,w_1440/nciqyiykd7fya5c9ul0d",
-      avatar: "https://randomuser.me/api/portraits/lego/6.jpg",
-      colour: "#195097",
-      tag: "@pacMakaveli",
-      bio: "",
-      following: [],
-      followers: [{ id: 1 }, { id: 3 }],
-      likes: [],
-      interests: [
-        { name: 'Design' },
-        { name: 'Graphics' },
-        { name: 'Technology' },
-        { name: 'Health' },
-        { name: 'EducatingTheFuture' },
-        { name: 'BookClub' }
-      ],
-      online: true
-    }
-
-    this.user = navParams.get('user') || currentUser
+    // this.commentForm = new FormGroup({
+    //   body: new FormControl('', Validators.required)
+    // })
   }
 
-  ionViewDidLoad() { }
+  ionViewDidLoad() {
+    this.getUser()
+  }
 
-  editProfile() {
-    const profileFormModal = this.modalCtrl.create('ProfileFormPage');
-          profileFormModal.present();
+  getUser() {
+    this.userProvider.get(this.navParams.get('id') || '5b374f7f96e80db323df2942').subscribe((user: User) => {
+      this.user = user;
 
-    profileFormModal.onDidDismiss((userChanges: User) => {
-      if (userChanges) {
-        this.user = Object.assign(this.user, userChanges)
-      }
+      this.postProvider.load(user.uuid).subscribe((posts: Post[]) => {
+        this.posts = posts
+      })
     })
   }
 
-  private name() {
-    [this.user.surname, this.user.firstname].join(' ')
-  }
+  // editProfile() {
+  //   const profileFormModal = this.modalCtrl.create('ProfileFormPage');
+  //         profileFormModal.present();
+
+  //   profileFormModal.onDidDismiss((userChanges: User) => {
+  //     if (userChanges) {
+  //       this.user = Object.assign(this.user, userChanges)
+  //     }
+  //   })
+  // }
+  
+  // addComment(postID: number) {    
+  //   const comment: any = {};
+  //         comment.body = this.commentForm.value.body;
+  //         comment.author = this.currentUser;
+
+  //   const post = this.posts.find((post: any) => post.id === postID);
+  //         post.comments.push(comment)
+
+  // }
 }
