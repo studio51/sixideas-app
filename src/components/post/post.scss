@@ -1,0 +1,36 @@
+post {
+  [post-container].card-ios {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem  !important;
+  }
+
+  [post-content].card-content {
+    padding: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+    &.info { background-color: rgba(#17a2b8, 1); }
+    &.success { background-color: rgba(#28a745, 1); }
+    &.warning { background-color: rgba(#ffc107, 1); }
+    &.danger { background-color: rgba(#DE3545, 1); }
+
+    &:not(.default) {
+      h1 {
+        color: #fff;
+      }
+    }
+  }
+
+  h2 {
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .ion-card-footer {
+    padding: 16px;
+
+    comments .row ~ .row { margin-top: 16px; }
+    comments .row + form.row { margin-top: 14px; }
+  }
+}

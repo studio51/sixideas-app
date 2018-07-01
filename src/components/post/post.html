@@ -1,0 +1,28 @@
+<ion-card post-container>
+  <ion-card-header>
+    <ion-grid no-padding>
+      <ion-row align-items-center>
+        <ion-col col-auto>
+          <user-avatar [user]="user" size="small"></user-avatar>
+        </ion-col>
+
+        <ion-col margin-left_2 margin-right_2>
+          <h2 no-margin>{{ user.name }}</h2>
+        </ion-col>
+        
+        <ion-col col-auto>
+          <like class="post" [likeable]="post" [user]="user" size="large"></like>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-header>
+
+  <ion-card-content post-content [ngClass]="post.type">
+    <h1 *ngUnless="post.type === 'default'" text-center>{{ post.body }}</h1>
+    <p *ngIf="post.type === 'default'">{{ post.body }}</p>
+  </ion-card-content>
+
+  <div class="ion-card-footer">
+    <comments [post]="post" [user]="user"></comments>
+  </div>
+</ion-card>
