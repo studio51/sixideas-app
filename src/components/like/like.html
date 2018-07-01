@@ -1,0 +1,9 @@
+<ion-note float-right (tap)="decide()">
+  <p *ngIf="counter > 0">
+    <span countUp [endVal]="counter">{{ counter }}</span>
+    {{ counter === 1 ? ' like' : ' likes' }}
+  </p>
+
+  <i *ngUnless="waitingServerConfirmation" class="{{ liked ? 'fas' : 'far' }} fa-heart"></i>
+  <ion-spinner *ngIf="waitingServerConfirmation"></ion-spinner>
+</ion-note>

@@ -1,0 +1,20 @@
+like {
+  .note {
+    display: flex;
+    align-items: center;
+
+    p {
+      margin-right: .5rem;
+      margin-bottom: 0;
+      font-size: small;
+    }
+  }
+
+  [class*="fa-"] { color: #FF1493; }
+  .spinner { height: 10px; }
+
+  &[size="large"] {
+    [class*="fa-"] { font-size: 2rem; }
+    .spinner { height: 15px; }
+  }
+}
