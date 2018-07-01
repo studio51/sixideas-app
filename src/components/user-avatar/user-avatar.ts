@@ -10,7 +10,5 @@ import { User } from '../../models/user';
 export class UserAvatarComponent {
   @Input() user: User;
 
-  constructor() {
-    console.log('user', this.user)
-  }
+  constructor() { }
 }

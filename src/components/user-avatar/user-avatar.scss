@@ -1,13 +1,49 @@
 user-avatar {
   .container {
+    &.colour {
+      &--blue {
+        border-color: rgba(#2067C3, 1);
+        background-color: rgba(#2067C3, 1);
+      }
+  
+      &--green {
+        border-color: rgba(#009989, 1);
+        background-color: rgba(#009989, 1);
+      }
+  
+      &--yellow {
+        border-color: rgba(#FCCD10, 1);
+        background-color: rgba(#FCCD10, 1);
+      }
+  
+      &--orange {
+        border-color: rgba(#F85931, 1);
+        background-color: rgba(#F85931, 1);
+      }
+  
+      &--red {
+        border-color: rgba(#CE1836, 1);
+        background-color: rgba(#CE1836, 1);
+      }
+  
+      &--grey {
+        border-color: rgba(#6F6F6F, 1);
+        background-color: rgba(#6F6F6F, 1);
+      }
+    }
+
+    align-items: center;
+    border-radius: 100%;
+    display: flex;
+    height: 90px;
+    justify-content: center;
     position: relative;
+    width: 90px;
 
     .state {
       width: 15%;
       height: 15%;
-      
       border-radius: 100%;
-
       position: absolute;
       top: 2.5px;
       right: 2.5px;
@@ -19,6 +55,23 @@ user-avatar {
     img.avatar {
       border-radius: 100%;
       border: 3px solid transparent;
+      max-width: auto; /* Overwrite Ionic's defaults */
+    }
+
+    p.initials {
+      color: #fff;
+      font-size: 30px;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+  }
+
+  &[size="small"] {
+    .container {
+      height: 35px;
+      width: 35px;
+
+      img.avatar { border-width: 2px; }
+      p.initials { font-size: 10px; }
     }
   }
 }

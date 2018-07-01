@@ -1,4 +1,6 @@
-<div class="container">
+<div class="container" ngClass="colour--{{ user.colour ? user.colour : 'grey' }}">
   <span class="state state-{{ user.online ? 'online' : 'offline' }}"></span>
-  <img class="avatar" [src]="user.avatar" [ngStyle]="{ 'border-color': user.colour }" />
+
+  <img *ngIf="user.avatar_url" class="avatar" [src]="user.avatar_url" />
+  <p *ngUnless="user.avatar_url" class="initials">{{ user.initials }}</p>
 </div>
