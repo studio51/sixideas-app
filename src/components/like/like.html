@@ -1,6 +1,7 @@
 <ion-note float-right (tap)="decide()">
   <p *ngIf="counter > 0">
-    <span countUp [endVal]="counter">{{ counter }}</span>
+    <!-- <span countUp [endVal]="counter">{{ counter }}</span> -->
+    <span>{{ counter }}</span>
     {{ counter === 1 ? ' like' : ' likes' }}
   </p>
 

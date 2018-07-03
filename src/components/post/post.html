@@ -19,7 +19,7 @@
 
   <ion-card-content post-content [ngClass]="post.type">
     <h1 *ngUnless="post.type === 'default'" text-center>{{ post.body }}</h1>
-    <p *ngIf="post.type === 'default'">{{ post.body }}</p>
+    <p *ngIf="post.type === 'default'">{{ post.body }}</p> 
   </ion-card-content>
 
   <div class="ion-card-footer">
