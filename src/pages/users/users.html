@@ -8,8 +8,9 @@
 
 <ion-content>
 
-  <!-- <ng-container *ngIf="users.length > 0"> -->
-    <ion-card *ngFor="let user of users" (tap)="viewUserProfile(user)">
+  <ion-card *ngFor="let user of users" (tap)="viewUserProfile(user)">
+    <ion-card-header>
+
       <ion-grid no-padding>
         <ion-row>
           <ion-col align-self-start>
@@ -21,21 +22,22 @@
           </ion-col>
 
           <ion-col align-self-end>
-            <button ion-button item-right small>
+            <!-- <button ion-button item-right small>
               <ion-icon [name]="userIsFollowingYou(user.followers) ? 'check' : 'plus'"></ion-icon>
               {{ userIsFollowingYou(user.followers) ? 'Follow' : 'Following' }}
-            </button>
+            </button> -->
           </ion-col>
         </ion-row>
       </ion-grid>
-      
-      <ion-card-content>
-        <h1>{{ user.name }}</h1>
-        <span>{{ user.tag }}</span>
 
-        <p text-left>{{ user.bio }}</p>
-      </ion-card-content>
-    </ion-card>
-  <!-- </ng-container> -->
+    </ion-card-header>
+
+    <ion-card-content>
+      <h1>{{ user.name }}</h1>
+      <span>@{{ user.username }}</span>
+
+      <p class="user-bio" text-left>{{ user.bio }}</p>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
