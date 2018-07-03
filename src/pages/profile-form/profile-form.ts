@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import { forkJoin } from 'rxjs/observable/forkJoin';
+
+import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+
 import { User } from '../../models/user';
+import { UserProvider } from '../../providers/user';
 
 @IonicPage()
 @Component({
@@ -12,67 +15,45 @@ import { User } from '../../models/user';
 })
 
 export class ProfileFormPage {
+  user: User;
   form: FormGroup;
 
-  user: User;
-  currentUser: User;
-
-  postColours: Array<{
-    name: string,
-    hex: string 
-  }>;
+  colours: Array<any> = [];
+  interests: Array<any> = [];
 
   constructor(
     public viewCtrl: ViewController,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public userProvider: UserProvider
   
-  ) {
-
-    this.postColours = [
-      { name: 'Default', hex: '#ffffff' },
-      { name: 'Blue',    hex: '#007bff' },
-      { name: 'Green',   hex: '#28a745' },
-      { name: 'Yellow',  hex: '#ffc107' },
-      { name: 'Red',     hex: '#dc3545' }
-    ]
-
-    this.currentUser = {
-      id: 2,
-      email: 'pacMakaveli90@gmail.com',
-      name: "Vlad Radulescu",
-      username: "pacMakaveli",
-      surname: "Vlad",
-      forename: "Radulescu",
-      background: "https://res.cloudinary.com/dwvwdhzvg/image/upload/c_fill,h_270,w_1440/nciqyiykd7fya5c9ul0d",
-      avatar: "https://randomuser.me/api/portraits/lego/6.jpg",
-      colour: "#195097",
-      tag: "@pacMakaveli",
-      bio: "",
-      following: [],
-      followers: [{ id: 1 }, { id: 3 }],
-      likes: [],
-      interests: [
-        { name: 'Design' },
-        { name: 'Graphics' },
-        { name: 'Technology' },
-        { name: 'Health' },
-        { name: 'EducatingTheFuture' },
-        { name: 'BookClub' }
-      ],
-      online: true
-    }
-
-    this.user = new User(navParams.get('user') || this.currentUser);
-  }
-
-  initialize() { }
+  ) { }
 
   ionViewDidLoad() { 
-    this.generateForm()
+    this.getUserAndMeta()
+  }
+
+  private getUserAndMeta() {
+    forkJoin([
+      this.userProvider.get(this.navParams.get('id') || '5b374f7f96e80db323df2942'),
+      this.userProvider.colours(),
+      this.userProvider.interests()
+    
+    ]).subscribe((response: Array<any>) => {
+      this.user = response[0];
+      this.colours = response[1];
+      this.interests = response[2];
+
+      this.generateForm();
+    })
   }
 
   private generateForm() {
     this.form = new FormGroup({
+      profile_banner: new FormControl(this.user.avatar_url),
+      avatar: new FormControl(this.user.avatar_url),
+
+      colour: new FormControl(this.user.colour),
+
       email:    new FormControl(this.user.email, Validators.required),
       username: new FormControl({
         value: this.user.username,
@@ -80,19 +61,43 @@ export class ProfileFormPage {
 
       }, Validators.required),
 
-      colour: new FormControl(this.user.colour),
-
       forename:  new FormControl(this.user.forename, Validators.required),
       surname:   new FormControl(this.user.surname, Validators.required),
       bio:       new FormControl(this.user.bio),
       interests: new FormControl(this.user.interests),
 
       password:              new FormControl(this.user.password),
-      password_confirmation: new FormControl(this.user.code)
+      password_confirmation: new FormControl(this.user.password_confirmation)
     })
   }
 
-  update(formValues?: {}) {
-    this.viewCtrl.dismiss(formValues)
+  changeformColour(colour: string) {
+    this.user.colour = colour;
+    this.form.controls.colour.setValue(colour);
   }
+
+  submit(update: boolean = true) {
+    if (update) {
+      this.userProvider.update(this.user.uuid, this.form.value).subscribe((user: User) => {
+        this.dismissView(user)
+      })
+    } else {
+      this.dismissView()
+    }
+  }
+
+  private dismissView(data?: { }) {
+    this.viewCtrl.dismiss(data)
+  }
+
+  // private validatePassword(AC: AbstractControl) {
+  //   const password = this.form.controls.getValue('password');
+  //   const password_confirmation = this.form.controls.getValue('password_confirmation');
+  
+  //   if (password != password_confirmation) {
+  //     AC.get('password_confirmation').setErrors( { validatePassword: true } )
+  //   } else {
+  //     return null
+  //   }
+  // }
 }

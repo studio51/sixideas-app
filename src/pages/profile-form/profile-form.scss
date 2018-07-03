@@ -1,3 +1,89 @@
 page-profile-form {
+  .background-image { height: 200px; }
 
+  ion-card.card {
+    margin-top: -100px;
+    box-shadow: none !important;
+    border: none !important;
+    background-color: transparent !important;
+    
+    .card-header {
+      padding: 0 !important;
+      margin-bottom: -135px;
+      z-index: 100;
+      position: relative;
+    }
+
+    [ion-card-content] {
+      position: relative;
+      padding: 1.25rem !important;
+      padding-top: calc(0.25rem + 135px) !important;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: 0.25rem  !important;
+      text-align: center;
+    }
+  }
+
+  .user-colour {
+    display: flex;
+    width: 25px;
+    height: 25px;
+    border-radius: 100%;
+    margin-left: 4px;
+    margin-right: 4px;
+
+    &.-blue { background-color: rgba(#2067C3, 1); }
+    &.-green { background-color: rgba(#009989, 1); }
+    &.-yellow { background-color: rgba(#FCCD10, 1); }
+    &.-orange { background-color: rgba(#F85931, 1); }
+    &.-red { background-color: rgba(#CE1836, 1); }
+    &.-grey { background-color: rgba(#6F6F6F, 1); }
+
+    &.selected {
+      background-color: #fff;
+      
+      &.-blue { box-shadow: 0 0 4px 2px rgba(#2067C3, .25); }
+      &.-green { box-shadow: 0 0 4px 2px rgba(#009989, .25); }
+      &.-yellow { box-shadow: 0 0 4px 2px rgba(#FCCD10, .25); }
+      &.-orange { box-shadow: 0 0 4px 2px rgba(#F85931, .25); }
+      &.-red { box-shadow: 0 0 4px 2px rgba(#CE1836, .25); }
+      &.-grey { box-shadow: 0 0 4px 2px rgba(#6F6F6F, .25); }
+    }
+  }
+
+  .separator {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex: 1;
+    width: 85%;
+    align-self: center;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  .item-ios {
+    padding-left: 0;
+
+    .item-inner { padding-right: 0 !important; }
+  }
+
+  .label-ios {
+    margin: 13px 0 !important;
+    padding: 0;
+  }
+
+  .text-input-ios {
+    border: 1px solid #dee2e6;
+    margin: 0 !important;
+    width: 100% !important;
+    padding: .8rem 1rem;
+    border-radius: 0.25rem;
+    color: #6c757d;
+  }
 }
