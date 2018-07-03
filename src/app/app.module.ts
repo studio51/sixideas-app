@@ -1,48 +1,62 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+import { HttpModule } from '@angular/http'; // Deprecated
+// TODO: Replace the HTTPModule with the new HTTPClientModule
+import { HttpClientModule } from '@angular/common/http';
+
 import { SixIdeasApp } from './app.component';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { IonicStorageModule } from '@ionic/storage';
+
+import { SixIdeasHTTPModule } from '../services/http.module';
 
 /***** Native Components *****/
 
+import { Push } from '@ionic-native/push';
+import { Device } from '@ionic-native/device';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 
 /***** Providers * HTTP *****/
 
-import { FeedProvider } from '../providers/feed/feed';
-import { UserProvider } from '../providers/user/user';
+import { NotificationProvider } from '../providers/notification';
+import { UserProvider } from '../providers/user';
+import { FeedProvider } from '../providers/feed';
+import { PostProvider } from '../providers/post';
+import { CommentProvider } from '../providers/comment';
+import { LikeProvider } from '../providers/like';
 
 @NgModule({
   declarations: [SixIdeasApp],
   
   imports: [
     BrowserModule,
-    IonicModule.forRoot(SixIdeasApp)
+    HttpModule, HttpClientModule, SixIdeasHTTPModule,
+    IonicModule.forRoot(SixIdeasApp, {
+      mode: 'ios',
+      iconMode: 'ios'
+    }),
+    IonicStorageModule.forRoot()
   ],
   
   bootstrap: [IonicApp],
   entryComponents: [SixIdeasApp],
 
   providers: [
-    StatusBar,
-    SplashScreen,
-
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler
     },
     
     /***** Native Components *****/        
-
-    Camera,
+    
+    Push, Device, StatusBar, SplashScreen, Camera,
 
     /***** Providers * HTTP *****/
-
-    FeedProvider,
-    UserProvider
+    
+    NotificationProvider, UserProvider, FeedProvider, PostProvider, CommentProvider, LikeProvider
   ]
 })
 

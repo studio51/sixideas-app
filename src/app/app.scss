@@ -42,10 +42,15 @@
 
 // [text-center] { text-align: center; }
 
-[margin-left_2] { margin-left: 8px }
-[margin-right_2] { margin-right: 8px }
-[margin-top_2] { margin-top: 8px }
-[margin-bottom_2] { margin-bottom: 8px }
+[margin-left_2]    { margin-left: 8px !important; }
+[margin-right_2]   { margin-right: 8px !important; }
+[margin-top_2]     { margin-top: 8px !important; }
+[margin-bottom_2]  { margin-bottom: 8px !important; }
+
+[padding-left_2]   { padding-left: 8px !important; }
+[padding-right_2]  { padding-right: 8px !important; }
+[padding-top_2]    { padding-top: 8px !important; }
+[padding-bottom_2] { padding-bottom: 8px !important; }
 
 .scroll-content {
   background-color: #fbfbfb;
@@ -59,3 +64,4 @@
 }
 
 [color="blue"] { color: #2067C3 !important; }
+[color="red"] { color: #CE1836 !important; }

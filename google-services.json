@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "990914187678",
+    "firebase_url": "https://studio51-sixideas.firebaseio.com",
+    "project_id": "studio51-sixideas",
+    "storage_bucket": "studio51-sixideas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:990914187678:android:59d078e60ed9de13",
+        "android_client_info": {
+          "package_name": "com.studio51.sixideas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "990914187678-s4u5fjmqm87sctqjql9nsc78cbojno3e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDF2AEIcSeTtdv37kDJkafwbDh7aWJzczM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
