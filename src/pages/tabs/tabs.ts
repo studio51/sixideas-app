@@ -7,7 +7,6 @@ import { IonicPage } from 'ionic-angular';
 })
 
 export class TabsPage {
-
   community = 'CommunityPage';
   users     = 'UsersPage';
   profile   = 'ProfilePage';

@@ -6,8 +6,10 @@ export class PostProvider {
   constructor(public http: SixIdeasHTTPService) { }
 
   load(userID?: string, options: any = {}) {
-    let params = {
-      user_id: userID
+    const params = [];
+    
+    if (userID) {
+      params['user_id'] = userID
     }
 
     return this.http.get('posts', { params: Object.assign(params, options) })
