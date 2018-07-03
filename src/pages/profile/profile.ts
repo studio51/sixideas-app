@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 
@@ -19,19 +18,13 @@ export class ProfilePage {
   user: User;
   posts: Post[] = [];
 
-  commentForm: FormGroup;
   constructor(
     public modalCtrl: ModalController,
     public navParams: NavParams,
     public userProvider: UserProvider,
     public postProvider: PostProvider
   
-  ) {
-
-    // this.commentForm = new FormGroup({
-    //   body: new FormControl('', Validators.required)
-    // })
-  }
+  ) { }
 
   ionViewDidLoad() {
     this.getUser()
@@ -47,16 +40,19 @@ export class ProfilePage {
     })
   }
 
-  // editProfile() {
-  //   const profileFormModal = this.modalCtrl.create('ProfileFormPage');
-  //         profileFormModal.present();
-
-  //   profileFormModal.onDidDismiss((userChanges: User) => {
-  //     if (userChanges) {
-  //       this.user = Object.assign(this.user, userChanges)
-  //     }
-  //   })
-  // }
+  editProfile() {
+    const profileFormModal = this.modalCtrl.create('ProfileFormPage', {
+      user: this.user,
+      id: this.user.uuid
+    });
+  
+    profileFormModal.present();
+    profileFormModal.onDidDismiss((userChanges: User) => {
+      if (userChanges) {
+        this.user = Object.assign(this.user, userChanges)
+      }
+    })
+  }
   
   // addComment(postID: number) {    
   //   const comment: any = {};
