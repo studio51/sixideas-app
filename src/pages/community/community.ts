@@ -49,7 +49,7 @@ export class CommunityPage {
     if (feed && feed != 'community') { params['feed'] = feed }
 
     this.postProvider.load('', params).subscribe((posts: Post[]) => {
-      this.posts = posts
+      this.posts = posts;
       this.showLoadingIndicator = false;
     })
   }

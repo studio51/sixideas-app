@@ -24,6 +24,7 @@ import { NotificationService } from '../services/notification';
 
 /*** Providers * HTTP ***/
 
+import { MetaProvider } from '../providers/meta';
 import { UserProvider } from '../providers/user';
 import { FeedProvider } from '../providers/feed';
 import { PostProvider } from '../providers/post';
@@ -62,7 +63,8 @@ import { LikeProvider } from '../providers/like';
 
     /*** Providers * HTTP ****/
     
-    UserProvider, FeedProvider, PostProvider, CommentProvider, LikeProvider
+    MetaProvider, UserProvider, FeedProvider, PostProvider, CommentProvider,
+    LikeProvider
   ]
 })
 

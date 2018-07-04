@@ -7,6 +7,7 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 
 import { User } from '../../models/user';
 import { UserProvider } from '../../providers/user';
+import { MetaProvider } from '../../providers/meta';
 
 @IonicPage()
 @Component({
@@ -24,7 +25,8 @@ export class ProfileFormPage {
   constructor(
     public viewCtrl: ViewController,
     public navParams: NavParams,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public metaProvider: MetaProvider
   
   ) { }
 
@@ -34,9 +36,9 @@ export class ProfileFormPage {
 
   private getUserAndMeta() {
     forkJoin([
-      this.userProvider.get(this.navParams.get('id') || '5b374f7f96e80db323df2942'),
-      this.userProvider.colours(),
-      this.userProvider.interests()
+      this.userProvider.get(this.navParams.get('id')),
+      this.metaProvider.colours(),
+      this.metaProvider.interests()
     
     ]).subscribe((response: Array<any>) => {
       this.user = response[0];
