@@ -46,8 +46,12 @@ export class UserProvider {
     return this.http.get('users')
   }
 
-  public get(id: string) {
-    return this.http.get(`users/${ id }`)
+  public get(id?: string) {
+    if (id) {
+      return this.http.get(`users/${ id }`)
+    } else {
+      return this.http.get(`sessions/user`)
+    }
   }
 
   public update(id: string, data: User | { }) {
