@@ -15,7 +15,7 @@ export class PostProvider {
     return this.http.get('posts', { params: Object.assign(params, options) })
   }
 
-  get(id: string) {
-    return this.http.get(`posts/${ id }`)
+  get(id: string, options: any = {}) {
+    return this.http.get(`posts/${ id }`, { params: options })
   }
 }
