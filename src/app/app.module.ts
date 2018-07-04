@@ -9,9 +9,7 @@ import { SixIdeasApp } from './app.component';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { IonicStorageModule } from '@ionic/storage';
 
-import { SixIdeasHTTPModule } from '../services/http.module';
-
-/***** Native Components *****/
+/*** Native Components ***/
 
 import { Push } from '@ionic-native/push';
 import { Device } from '@ionic-native/device';
@@ -19,9 +17,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 
-/***** Providers * HTTP *****/
+/*** Services ************/
 
-import { NotificationProvider } from '../providers/notification';
+import { SixIdeasHTTPModule } from '../services/http.module';
+import { NotificationService } from '../services/notification';
+
+/*** Providers * HTTP ***/
+
 import { UserProvider } from '../providers/user';
 import { FeedProvider } from '../providers/feed';
 import { PostProvider } from '../providers/post';
@@ -50,13 +52,17 @@ import { LikeProvider } from '../providers/like';
       useClass: IonicErrorHandler
     },
     
-    /***** Native Components *****/        
+    /*** Native Components ***/        
     
     Push, Device, StatusBar, SplashScreen, Camera,
 
-    /***** Providers * HTTP *****/
+    /*** Services ************/
+
+    NotificationService,
+
+    /*** Providers * HTTP ****/
     
-    NotificationProvider, UserProvider, FeedProvider, PostProvider, CommentProvider, LikeProvider
+    UserProvider, FeedProvider, PostProvider, CommentProvider, LikeProvider
   ]
 })
 

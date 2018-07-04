@@ -69,9 +69,6 @@ export class CommunityPage {
 
   private getPosts() {
     this.postProvider.load('', { include_author: true }).subscribe((posts: Post[]) => {
-      console.log('community', posts[0])
-      console.log('community', posts[1])
-      
       this.posts = posts
     })
   }
