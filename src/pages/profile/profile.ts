@@ -31,10 +31,10 @@ export class ProfilePage {
   }
 
   getUser() {
-    this.userProvider.get(this.navParams.get('id') || '5b374f7f96e80db323df2942').subscribe((user: User) => {
+    this.userProvider.get(this.navParams.get('id')).subscribe((user: User) => {
       this.user = user;
 
-      this.postProvider.load(user.uuid).subscribe((posts: Post[]) => {
+      this.postProvider.load(user.id).subscribe((posts: Post[]) => {
         this.posts = posts
       })
     })
@@ -43,7 +43,7 @@ export class ProfilePage {
   editProfile() {
     const profileFormModal = this.modalCtrl.create('ProfileFormPage', {
       user: this.user,
-      id: this.user.uuid
+      id: this.user.id
     });
   
     profileFormModal.present();
@@ -53,14 +53,4 @@ export class ProfilePage {
       }
     })
   }
-  
-  // addComment(postID: number) {    
-  //   const comment: any = {};
-  //         comment.body = this.commentForm.value.body;
-  //         comment.author = this.currentUser;
-
-  //   const post = this.posts.find((post: any) => post.id === postID);
-  //         post.comments.push(comment)
-
-  // }
 }
