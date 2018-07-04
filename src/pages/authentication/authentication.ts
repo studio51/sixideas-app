@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { Storage } from '@ionic/storage';
+
+import { UserProvider } from '../../providers/user';
 
 @IonicPage()
 @Component({
@@ -12,14 +16,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class AuthenticationPage {
   form: FormGroup;
 
-  authLoading: boolean = false;
-  authState: number = 0;
-
-  authMessage: string = 'Login';
+  authentication: any = null;
 
   constructor(
     public navCtrl: NavController,
-    public navParams: NavParams
+    public storage: Storage,
+    public userProvider: UserProvider
   
   ) { }
 
@@ -29,12 +31,28 @@ export class AuthenticationPage {
 
   private generateForm() {
     this.form = new FormGroup({
-      email:    new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+      user: new FormGroup({
+        email: new FormControl('', Validators.required),
+        password: new FormControl('', Validators.required)
+      })
     })
   }
 
-  login() {
-    this.navCtrl.push('TabsPage')
+  submit() {
+    this.login(this.form.value).subscribe((response: any) => {
+      if (response.success) {
+        this.authentication = null;
+
+        this.storage.set('token', response.user._id.$oid).then(() => {
+          this.navCtrl.setRoot('TabsPage')
+        })
+      } else {
+        this.authentication = response
+      }
+    })
+  }
+
+  private login(user: any) {
+    return this.userProvider.authenticate(user)
   }
 }

@@ -1,51 +1,49 @@
 <ion-content>
-
-  <ion-grid>
+  <ion-grid no-padding>
     <ion-row justify-content-center>
-      <ion-col col-auto>
+      <ion-col col-6>
         <img src="assets/imgs/logo.png" height="75px" />
       </ion-col>
     </ion-row>
 
-    <ion-row>
+    <ion-row no-padding>
       <ion-col>
         <h4 text-center>Please sign in</h4>
       </ion-col>
     </ion-row>
+
+    <ion-row justify-content-center margin-top>
+      <ion-col col-10>
+        <form margin-top *ngIf="form" [formGroup]="form">
+          <ng-container formGroupName="user">
+            <ion-card>
+              <ion-card-content>
+                <ion-input type="text" placeholder="Email Address" value="admin@madwire.co.ukss" formControlName="email"></ion-input>
+              </ion-card-content>
+            </ion-card>
+
+            <ion-card>
+              <ion-card-content>
+                <ion-input type="password" placeholder="Password" value="123456aA" formControlName="password"></ion-input>
+              </ion-card-content>
+            </ion-card>
+          </ng-container>
+        </form>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="authentication && !authentication.success" margin-top_2>
+      <ion-col>
+        <p size-medium text-center color="red">{{ authentication.message }}</p>
+      </ion-col>
+    </ion-row>
+
+    <ion-row justify-content-center margin-top>
+      <ion-col col-auto>
+        <button *ngIf="form" ion-button round outline [color]="authentication ? 'danger' : ''" [disabled]="!form.valid" (tap)="submit()">
+          Authenticate
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-grid>
-
-  <form [formGroup]="form" *ngIf="form" (ngSubmit)="login()">
-
-    <ion-grid>
-      <ion-row justify-content-center>
-        <ion-col col-8>
-         
-          <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-input formControlName="email" placeholder="Email Address"></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <ion-item>
-                <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-
-          <ion-row justify-content-center margin-top>
-            <button ion-button color="secondary" type="submit" [attr.authState]="authState" [disabled]="!form.valid">
-              <ion-spinner *ngIf="authLoading"></ion-spinner>
-              {{ authMessage }}
-            </button>
-          </ion-row>
-        
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-  </form>
-</ion-content>
+<ion-content>

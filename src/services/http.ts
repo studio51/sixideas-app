@@ -1,14 +1,17 @@
 import *  as SixIdeasConfig from '../app/app.config';
 
 import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
-// import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage';
 
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+// TODO
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+// import 'rxjs/add/observable/from';
+// import 'rxjs/add/observable/flatMap';
 
 type ResponseInterceptor = (response: any) => any;
 type RequestInterceptor = (request: any) => any;
@@ -34,8 +37,8 @@ export class SixIdeasHTTPService {
   private errorInterceptors: Array<ErrorInterceptor> = [];
 
   constructor(
-    protected http: Http
-    // public storage: Storage
+    protected http: Http,
+    public storage: Storage
 
   ) {
   
@@ -97,59 +100,59 @@ export class SixIdeasHTTPService {
   }
 
   get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-    // return Observable.from(this.storage.get('token')).flatMap((token) => {
-      // this.setHeader('token', token)
+    return Observable.from(this.storage.get('token')).flatMap((token) => {
+      this.setHeader('token', token)
       
-      return this.http.get(this.generateUrl(url), this.generateOptions(options))
-        .map(this.responseHandler, this)
-        .catch(this.errorHandler.bind(this))
-    // })
+        return this.http.get(this.generateUrl(url), this.generateOptions(options))
+          .map(this.responseHandler, this)
+          .catch(this.errorHandler.bind(this))
+    })
   }
 
   post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    // return Observable.from(this.storage.get('token')).flatMap((token) => {
-      // this.setHeader('token', token)
+    return Observable.from(this.storage.get('token')).flatMap((token) => {
+      this.setHeader('token', token)
 
-      return this.http.post(this.generateUrl(url), newData, this.generateOptions(options))
-        .map(this.responseHandler, this)
-        .catch(this.errorHandler.bind(this))
-      // })
+        return this.http.post(this.generateUrl(url), newData, this.generateOptions(options))
+          .map(this.responseHandler, this)
+          .catch(this.errorHandler.bind(this))
+      })
   }
 
   put<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    // return Observable.from(this.storage.get('token')).flatMap((token) => {
-      // this.setHeader('token', token)
+    return Observable.from(this.storage.get('token')).flatMap((token) => {
+      this.setHeader('token', token)
      
-      return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
-        .map(this.responseHandler, this)
-        .catch(this.errorHandler.bind(this))
-      // })
+        return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
+          .map(this.responseHandler, this)
+          .catch(this.errorHandler.bind(this))
+      })
   }
 
   patch<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    // return Observable.from(this.storage.get('token')).flatMap((token) => {
-      // this.setHeader('token', token)
-      
-      return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
-        .map(this.responseHandler, this)
-        .catch(this.errorHandler.bind(this))
-      // })
+    return Observable.from(this.storage.get('token')).flatMap((token) => {
+      this.setHeader('token', token)
+        
+        return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
+          .map(this.responseHandler, this)
+          .catch(this.errorHandler.bind(this))
+      })
   }
 
   delete<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-    // return Observable.from(this.storage.get('token')).flatMap((token) => {
-      // this.setHeader('token', token)
-      
-      return this.http.delete(this.generateUrl(url), this.generateOptions(options))
-        .map(this.responseHandler, this)
-        .catch(this.errorHandler.bind(this))
-      // })
+    return Observable.from(this.storage.get('token')).flatMap((token) => {
+      this.setHeader('token', token)
+        
+        return this.http.delete(this.generateUrl(url), this.generateOptions(options))
+          .map(this.responseHandler, this)
+          .catch(this.errorHandler.bind(this))
+      })
   }
 
   protected prepareData(data: any): string {
