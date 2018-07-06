@@ -9,6 +9,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar';
 import { PostComponent } from './post/post';
 import { CommentsComponent } from './comments/comments';
 import { LikeComponent } from './like/like';
+import { MentionComponent } from './mention/mention';
 
 @NgModule({
 	declarations: [
@@ -16,8 +17,11 @@ import { LikeComponent } from './like/like';
     UserAvatarComponent,
     PostComponent,
     CommentsComponent,
-    LikeComponent
+    LikeComponent,
+    MentionComponent
   ],
+  
+  entryComponents: [MentionComponent],
 	
   imports: [
     // 
@@ -34,7 +38,8 @@ import { LikeComponent } from './like/like';
     ContentDrawerComponent,
     PostComponent,
     CommentsComponent,
-    LikeComponent
+    LikeComponent,
+    MentionComponent
   ]
 })
 

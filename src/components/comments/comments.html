@@ -14,7 +14,7 @@
       <ion-col margin-left_2>
         <ion-card comment-container>
           <ion-card-content comment-content>
-            <like class="comment" [likeable]="comment" [user]="user"></like>
+            <like class="comment" [likeable]="comment" [user]="author"></like>
             <mention [body]="comment.body"></mention>
           </ion-card-content>
         </ion-card>
@@ -29,7 +29,6 @@
   </ion-row>
 
   <form ion-row align-items-center no-padding [formGroup]="form" *ngIf="form" comment-form>
-
     <ion-col col-auto>
       <user-avatar [user]="user" size="small"></user-avatar>
     </ion-col>

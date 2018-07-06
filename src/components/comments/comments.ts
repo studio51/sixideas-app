@@ -17,6 +17,7 @@ import { User } from '../../models/user';
 
 export class CommentsComponent implements OnInit {
   @Input() post: Post;
+  @Input() author: User;
   @Input() user: User;
   @Input() limit: number = 1;
 

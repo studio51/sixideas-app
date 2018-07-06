@@ -10,6 +10,7 @@ import { User } from '../../models/user';
 
 export class PostComponent {
   @Input() post: Post;
+  @Input() author: User;
   @Input() user: User;
 
   constructor() { }
