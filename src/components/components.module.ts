@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DirectivesModule } from '../directives/directives.module';
+import { InlineEditorModule } from '@qontu/ngx-inline-editor';
 
-import { ContentDrawerComponent } from './content-drawer/content-drawer';
 import { UserAvatarComponent } from './user-avatar/user-avatar';
 import { PostComponent } from './post/post';
 import { CommentsComponent } from './comments/comments';
@@ -13,7 +13,6 @@ import { MentionComponent } from './mention/mention';
 
 @NgModule({
 	declarations: [
-    ContentDrawerComponent,
     UserAvatarComponent,
     PostComponent,
     CommentsComponent,
@@ -30,12 +29,12 @@ import { MentionComponent } from './mention/mention';
     IonicModule,
     
     CommonModule,
-    DirectivesModule
+    DirectivesModule,
+    InlineEditorModule
   ],
 	
   exports: [
     UserAvatarComponent,
-    ContentDrawerComponent,
     PostComponent,
     CommentsComponent,
     LikeComponent,
