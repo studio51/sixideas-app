@@ -11,6 +11,10 @@
         </ion-col>
         
         <ion-col col-auto>
+          <ng-container *ngIf="user._id.$oid === author._id.$oid">
+            <button ion-button clear small (tap)="editPost()">Edit</button>
+          </ng-container>
+
           <like class="post" [likeable]="post" [user]="author" size="large"></like>
         </ion-col>
       </ion-row>
@@ -18,7 +22,7 @@
   </ion-card-header>
 
   <ion-card-content post-content [ngClass]="post.type">
-    <mention *ngIf="post.title" [body]="post.title" class="post-title"></mention>
+    <mention *ngIf="post.title && post.type === 'default'" [body]="post.title" class="post-title"></mention>
     <mention [body]="post.body" [class]="post.type"></mention>
   </ion-card-content>
 

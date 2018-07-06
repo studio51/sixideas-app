@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon color="danger" (tap)="dismissView()">
+        <i class="fal fa-times-circle" color="red"></i>
+      </button>
+    </ion-buttons>
+
+    <ion-title>Post</ion-title>
+
+    <ion-buttons *ngIf="form" end>
+      <i *ngUnless="form.valid" class="fal fa-exclamation" color="red" margin-right_2></i>
+
+      <button *ngIf="form.valid" ion-button icon color="secondary" (tap)="submit()">
+        <i class="fal fa-check-circle" color="green"></i>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-grid no-padding>
+        <ion-row justify-content-center>
+          <ion-col col-auto>
+            <user-avatar *ngIf="user" [user]="user"></user-avatar>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <form ion-card-content *ngIf="form" [formGroup]="form" ngClass="-{{ form.controls.type.value }}">
+          
+      <ion-grid no-padding margin-top margin-bottom_2>
+        <ion-row align-items-center>
+          <ion-col>
+            <ion-grid no-padding>
+              <ion-row col-auto class="post-form--types">
+                <ion-col col-auto *ngFor="let type of postTypes" margin-right_2>
+                  <span class="post-colour" ngClass="-{{ type }} {{ form.controls.type.value === type ? 'selected' : '' }}" (tap)="changeFormType(type)"></span>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col>
+
+          <ion-col col-auto *ngIf="form.controls.type.value === 'default'">
+            <button ion-button color="primary" outline small icon-only (click)="showImageOptions()">
+              <ion-icon name="camera"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-item *ngIf="form.controls.type.value === 'default'">
+        <ion-input type="text" formControlName="title" placeholder="Title (optional)"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-textarea formControlName="body" placeholder="What's new?"></ion-textarea>
+      </ion-item>
+    </form>
+  </ion-card>
+
+  <ion-grid no-padding margin-top>
+    <ion-row justify-content-center>
+      <ion-col col-auto>
+        <button ion-button medium [disabled]="form && !form.valid" (tap)="submit()" ngClass="-colour-{{ user?.colour }}">
+          Create Post
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
