@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { Events } from 'ionic-angular';
+
 import { ModalController } from 'ionic-angular';
 
 @Component({
@@ -11,6 +13,7 @@ export class MentionComponent {
   @Input() class: string;
 
   constructor(
+    public events: Events,
     public modalCtrl: ModalController
 
   ) { }
@@ -29,19 +32,19 @@ export class MentionComponent {
     if (node.nodeName != 'ABBR') return
     
     const type: string = node.getAttribute('type')
-    let page: string = null;
     const options: any = {}
 
     if (type === 'mention') {
-      page = 'ProfilePage';
       options['username'] = node.getAttribute('value');
-    } else if (type === 'tag') {
-      page = 'CommunityPage';
-      options['tag'] = node.getAttribute('value');
-    }
 
-    const modal: any = this.modalCtrl.create(page, options);
-          modal.present();
+      const modal: any = this.modalCtrl.create('ProfilePage', options);
+            modal.present();
+
+    } else if (type === 'tag') {
+      options['tag'] = node.getAttribute('value');
+
+      this.events.publish('posts:changed', options)
+    }
   }
 
   private createElementss(key: string, value: string, type: string) {

@@ -27,7 +27,7 @@
 
 <ion-content [ngSwitch]="feed">
   <ion-grid no-padding *ngSwitchCase="'community'">
-    <ion-row justify-content-center>
+    <ion-row *ngUnless="tag" justify-content-center>
       <ion-col col-auto>
         <button ion-button round medium outline (tap)="newPost()" ngClass="-colour-{{ user?.colour }}">
           What's new?
@@ -36,7 +36,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-spinner *ngIf="showLoadingIndicator"></ion-spinner>
+  <ion-spinner *ngIf="showLoadingIndicator || postsChanged"></ion-spinner>
 
-  <post *ngFor="let post of posts" [post]="post" [user]="post?.user"></post>
+  <post *ngFor="let post of posts" [post]="post" [author]="post?.user" [user]="user"></post>
 </ion-content>

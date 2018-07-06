@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { SixIdeasHTTPService } from '../services/http';
 
+import { Post } from '../models/post';
+
 @Injectable()
 export class PostProvider {
   constructor(public http: SixIdeasHTTPService) { }
 
-  load(userID?: string, options: any = {}) {
+  public load(userID?: string, options: any = {}) {
     const params = [];
     
     if (userID) {
@@ -15,7 +17,15 @@ export class PostProvider {
     return this.http.get('posts', { params: Object.assign(params, options) })
   }
 
-  get(id: string, options: any = {}) {
+  public get(id: string, options: any = {}) {
     return this.http.get(`posts/${ id }`, { params: options })
+  }
+
+  public create(post: Post) {
+    return this.http.post('posts', post)
+  }
+
+  public update(id: string, data: Post | { }) {
+    return this.http.patch(`posts/${ id }`, data)
   }
 }
