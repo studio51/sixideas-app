@@ -2,14 +2,22 @@
   <ion-card-header>
     <ion-grid no-padding>
       <ion-row align-items-center>
-        <ion-col col-auto>
-          <user-avatar [user]="author" size="small"></user-avatar>
+        <ion-col margin-right_2 (tap)="viewProfile(author._id.$oid)">
+
+          <ion-grid no-padding>
+            <ion-row align-items-center>
+              <ion-col col-auto>
+                <user-avatar [user]="author" size="small"></user-avatar>
+              </ion-col>
+      
+              <ion-col margin-left_2>
+                <h2 no-margin>{{ author.name }}</h2>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
         </ion-col>
 
-        <ion-col margin-left_2 margin-right_2>
-          <h2 no-margin>{{ author.name }}</h2>
-        </ion-col>
-        
         <ion-col col-auto>
           <ng-container *ngIf="user._id.$oid === author._id.$oid">
             <button ion-button clear small (tap)="editPost()">Edit</button>

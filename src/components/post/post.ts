@@ -19,6 +19,14 @@ export class PostComponent {
   
   ) { }
 
+  public viewProfile(userID: string) {
+    const modal = this.modalCtrl.create('ProfilePage', {
+      id: userID
+    });
+
+    modal.present();
+  }
+
   public editPost() {
     const modal: any = this.modalCtrl.create('PostFormPage', {
       id: this.post._id.$oid,

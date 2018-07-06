@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ModalController } from 'ionic-angular';
 
 import * as Tribute from "tributejs";
 
@@ -27,6 +28,7 @@ export class CommentsComponent implements OnInit {
   processingComment: boolean = false;
 
   constructor(
+    public modalCtrl: ModalController,
     public commentProvider: CommentProvider,
     public metaProvider: MetaProvider
     
@@ -100,6 +102,14 @@ export class CommentsComponent implements OnInit {
     })
   }
 
+  public viewProfile(userID: string) {
+    const modal = this.modalCtrl.create('ProfilePage', {
+      id: userID
+    });
+
+    modal.present();
+  }
+
   public submit() {
     this.processingComment = true;
 
@@ -111,6 +121,7 @@ export class CommentsComponent implements OnInit {
       }
 
       this.comments.push(response.comment);
+      this.form.reset();
     })
   }
 

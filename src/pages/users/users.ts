@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 
 import { User } from '../../models/user';
 import { UserProvider } from '../../providers/user';
@@ -15,9 +15,8 @@ export class UsersPage {
   currentUser: User;
 
   constructor(
-    public navCtrl: NavController,
+    public modalCtrl: ModalController,
     public navParams: NavParams,
-    public storage: Storage,
     public userProvider: UserProvider
 
   ) { }
@@ -32,11 +31,13 @@ export class UsersPage {
     })
   }
 
-  viewUserProfile(user: User) {
-    this.navCtrl.push('ProfilePage', {
+  viewProfile(user: User) {
+    const modal = this.modalCtrl.create('ProfilePage', {
       user: user,
       id: user._id.$oid
-    })
+    });
+
+    modal.present();
   }
 
   userIsFollowingYou(followers: Array<any>) {

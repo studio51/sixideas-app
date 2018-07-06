@@ -7,7 +7,7 @@
 
   <ng-container *ngIf="comments && comments.length > 0">
     <ion-row *ngFor="let comment of comments.slice(0, limit)" align-items-center>
-      <ion-col col-auto>
+      <ion-col col-auto (tap)="viewProfile(comment.user._id.$oid)">
         <user-avatar [user]="comment.user" size="small"></user-avatar>
       </ion-col>
 
@@ -15,7 +15,7 @@
         <ion-card comment-container>
           <ion-card-content comment-content>
             <like class="comment" [likeable]="comment" [user]="author"></like>
-            <mention [body]="comment.body"></mention>
+            <mention [body]="comment.body" editable=true></mention>
           </ion-card-content>
         </ion-card>
       </ion-col>
