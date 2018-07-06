@@ -3,6 +3,11 @@ post {
     box-shadow: none;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem  !important;
+
+    .card-header {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
   }
 
   [post-content].card-content {
@@ -16,9 +21,7 @@ post {
     &.danger { background-color: rgba(#DE3545, 1); }
 
     &:not(.default) {
-      h1 {
-        color: #fff;
-      }
+      h1 { color: #fff; }
     }
   }
 

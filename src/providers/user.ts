@@ -46,28 +46,15 @@ export class UserProvider {
     return this.http.get('users')
   }
 
-  public get(id?: string) {
-    if (id) {
-      return this.http.get(`users/${ id }`)
+  public get(id?: string, params?: Object) {
+    if (id || params) {
+      return this.http.get(`users/${ id ? id : '' }`, params)
     } else {
-      return this.http.get(`sessions/user`)
+      return this.http.get('sessions/user').map((response: any) => response.success ? response.user : response)
     }
   }
 
   public update(id: string, data: User | { }) {
     return this.http.patch(`users/${ id }`, data)
-  }
-  
-  // 
-  // TODO: Maybe move this out into its own Provider as they're not
-  // really related to a User
-  // 
-  
-  public colours() {
-    return this.http.get(`users/colours`)
-  }
-
-  public interests() {
-    return this.http.get(`users/interests`)
   }
 }

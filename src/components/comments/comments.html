@@ -15,7 +15,7 @@
         <ion-card comment-container>
           <ion-card-content comment-content>
             <like class="comment" [likeable]="comment" [user]="user"></like>
-            {{ comment.body }}
+            <mention [body]="comment.body"></mention>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -36,7 +36,7 @@
 
     <ion-col margin-left_2>
       <ion-item>
-        <ion-input comment-form-input formControlName="body" placeholder="Write a comment"></ion-input>
+        <ion-input class="mentionable" comment-form-input formControlName="body" placeholder="Write a comment"></ion-input>
       </ion-item>
     </ion-col>
 

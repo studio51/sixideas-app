@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
+import * as Tribute from "tributejs";
+
 import { CommentProvider } from '../../providers/comment';
+import { MetaProvider } from '../../providers/meta';
 
 import { Post } from '../../models/post';
 import { Comment } from '../../models/comment';
@@ -23,18 +26,65 @@ export class CommentsComponent implements OnInit {
   processingComment: boolean = false;
 
   constructor(
-    public commentProvider: CommentProvider
+    public commentProvider: CommentProvider,
+    public metaProvider: MetaProvider
     
-  ) { }
+  ) {
+
+
+    // domNode.addEventListener('tribute-replaced', _onChange.bind(this));
+  }
+
+  private getMentions(text: string, tags) {
+    this.metaProvider.mentions(text)
+  }
+
+  private getTags(text: string, tags) {
+    this.metaProvider.tags(text)
+  }
 
   ngOnInit() {
     this.getComments()
+
   }
 
   private getComments() {
-    this.commentProvider.load(this.post.uuid).subscribe((comments: Comment[]) => {
+    this.commentProvider.load(this.post._id.$oid).subscribe((comments: Comment[]) => {
       this.comments = comments
 
+      // const mentions = {
+      //   trigger: "@",
+      //   noMatchTemplate: null,
+      //   values: (text, cb) => {
+      //     this.getMentions(text, tags => cb(tags));
+      //   },
+      //   lookup: function (user) {
+      //     // return  "@" + user.username + " - "+ user.name;
+      //     return  "@" + user;
+      //   },
+      //   selectTemplate: function (item) {
+      //     return '<span class="badge badge-secondary" contenteditable="false">@' + item.original.username + '</span>&nbsp;';
+      //   },
+      //   fillAttr: 'value'
+      // };
+  
+      // // const hashtags = {
+      // //   trigger: "#",
+      // //   noMatchTemplate: null,
+      // //   values: (text, cb) => {
+      // //     this.getTags(text, tags => cb(tags));
+      // //   },
+      // //   selectTemplate: function (item) {
+      // //     return '<span contenteditable="false">' + item.original.display_text + '</span>&nbsp;';
+      // //   },
+      // //   lookup: 'display_text_without_hashtag',
+      // //   fillAttr: 'display_text_without_hashtag'
+      // // };
+      // const tribute = new Tribute({
+      //   collection: [mentions]
+      // })
+      // tribute.replaceTextSuffix = "";
+      // tribute.attach(document.querySelectorAll('.mentionable'));
       this.generateForm()
     })
   }
@@ -52,7 +102,7 @@ export class CommentsComponent implements OnInit {
   public submit() {
     this.processingComment = true;
 
-    this.commentProvider.create(this.post.uuid, this.form.value).subscribe((response: any) => {
+    this.commentProvider.create(this.post._id.$oid, this.form.value).subscribe((response: any) => {
       this.processingComment = false;
   
       if (this.limit === this.comments.length) {

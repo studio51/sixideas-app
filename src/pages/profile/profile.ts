@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { User } from '../../models/user';
 import { UserProvider } from '../../providers/user';
@@ -19,6 +19,7 @@ export class ProfilePage {
   posts: Post[] = [];
 
   constructor(
+    public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
     public userProvider: UserProvider,
@@ -30,20 +31,28 @@ export class ProfilePage {
     this.getUser()
   }
 
-  getUser() {
-    this.userProvider.get(this.navParams.get('id')).subscribe((user: User) => {
+  private getUser() {
+    const options: Object = {}
+
+    if (this.navParams.get('username')) {
+      options['params'] = {
+        username: this.navParams.get('username')
+      }
+    }
+
+    this.userProvider.get(this.navParams.get('id'), options).subscribe((user: User) => {
       this.user = user;
 
       this.postProvider.load(user.id).subscribe((posts: Post[]) => {
         this.posts = posts
-      })
+      });
     })
   }
 
-  editProfile() {
+  public editProfile() {
     const profileFormModal = this.modalCtrl.create('ProfileFormPage', {
       user: this.user,
-      id: this.user.id
+      id: this.user._id.$oid
     });
   
     profileFormModal.present();
@@ -52,5 +61,9 @@ export class ProfilePage {
         this.user = Object.assign(this.user, userChanges)
       }
     })
+  }
+
+  public dismissView() {
+    this.viewCtrl.dismiss()
   }
 }
