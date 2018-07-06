@@ -43,7 +43,7 @@
       </ion-row>
 
       <ion-row margin-top margin-bottom>
-        <ion-col col-4 text-center (tap)="viewUserFollowing(user.uuid, user.following_ids)">
+        <ion-col col-4 text-center (tap)="viewUserFollowing(user._id.$oid, user.following_ids)">
           <h6>Following</h6>
           
           <ion-card user-stat-card>
@@ -53,7 +53,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col col-4 text-center (tap)="viewUserFollowers(user.uuid, user.follower_ids)">
+        <ion-col col-4 text-center (tap)="viewUserFollowers(user._id.$oid, user.follower_ids)">
           <h6>Followers</h6>
           
           <ion-card user-stat-card>
@@ -63,7 +63,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col col-4 text-center (tap)="viewUserLikes(user.uuid, user.likes)">
+        <ion-col col-4 text-center (tap)="viewUserLikes(user._id.$oid, user.likes)">
           <h6>Likes</h6>
           
           <ion-card user-stat-card>
@@ -87,6 +87,6 @@
 
     <h3 text-center no-margin>Recent Posts</h3>
 
-    <post *ngFor="let post of posts" [post]="post" [user]="user"></post>
+    <post *ngFor="let post of posts" [post]="post" [author]="user" [user]="user"></post>
   </ng-container>
 </ion-content>

@@ -17,6 +17,7 @@ export class UsersPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public storage: Storage,
     public userProvider: UserProvider
 
   ) { }
@@ -34,7 +35,7 @@ export class UsersPage {
   viewUserProfile(user: User) {
     this.navCtrl.push('ProfilePage', {
       user: user,
-      id: user.uuid
+      id: user._id.$oid
     })
   }
 

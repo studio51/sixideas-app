@@ -47,7 +47,7 @@ export class LikeComponent implements OnInit {
   }
 
   get liked(): boolean {
-    return (this.likeable.likes || []).filter((like: any) => like.user_id.$oid === this.user.uuid).length === 1
+    return (this.likeable.likes || []).filter((like: any) => like.user_id.$oid === this.user._id.$oid).length === 1
   }
 
   private like() {
@@ -73,7 +73,7 @@ export class LikeComponent implements OnInit {
   private setParameters() {
     this.params['like'] = { };
     this.params['like']['likeable_type'] = this.class
-    this.params['like']['likeable_id'] = this.likeable.uuid
+    this.params['like']['likeable_id'] = this.likeable._id.$oid
   }
 
   private handleServerResponse(response: any) {

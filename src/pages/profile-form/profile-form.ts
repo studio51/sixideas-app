@@ -78,17 +78,13 @@ export class ProfileFormPage {
     this.form.controls.colour.setValue(colour);
   }
 
-  submit(update: boolean = true) {
-    if (update) {
-      this.userProvider.update(this.user.uuid, this.form.value).subscribe((user: User) => {
-        this.dismissView(user)
-      })
-    } else {
-      this.dismissView()
-    }
+  submit() {
+    this.userProvider.update(this.user.uuid, this.form.value).subscribe((user: User) => {
+      this.dismissView(user)
+    })
   }
 
-  private dismissView(data?: { }) {
+  public dismissView(data?: { }) {
     this.viewCtrl.dismiss(data)
   }
 

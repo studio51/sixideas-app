@@ -43,7 +43,7 @@ export class ProfilePage {
     this.userProvider.get(this.navParams.get('id'), options).subscribe((user: User) => {
       this.user = user;
 
-      this.postProvider.load(user.id).subscribe((posts: Post[]) => {
+      this.postProvider.load(user._id.$oid).subscribe((posts: Post[]) => {
         this.posts = posts
       });
     })
