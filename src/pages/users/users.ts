@@ -46,6 +46,30 @@ export class UsersPage {
     modal.present();
   }
 
+  public follow(user: User) {
+    let subscriber: any;
+
+    console.log('am I following?', this.imFollowing(user))
+
+    if (this.imFollowing(user)) {
+      subscriber = this.userProvider.unfollow(user._id.$oid)
+    } else {
+      subscriber = this.userProvider.follow(user._id.$oid)
+    }
+
+    subscriber.subscribe((response: any) => {
+      if (response.status === 'ok') {
+        this.user = response.user
+      } else {
+        console.log('error')
+      }
+    })
+  }
+
+  public itsaMeMario(user: User) {
+    return this.user._id.$oid === user._id.$oid
+  }
+
   public isFollowing(user: User) {
     return this.user.follower_ids.map(k => k.$oid).includes(user._id.$oid)
   }

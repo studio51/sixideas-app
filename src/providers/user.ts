@@ -53,4 +53,12 @@ export class UserProvider {
   public update(id: string, data: User | { }) {
     return this.http.patch(`users/${ id }`, data)
   }
+
+  public follow(id: string) {
+    return this.http.get(`users/${ id }/follow`)
+  }
+
+  public unfollow(id: string) {
+    return this.http.get(`users/${ id }/unfollow`)
+  }
 }

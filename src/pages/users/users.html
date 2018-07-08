@@ -6,22 +6,22 @@
 
 <ion-content>
 
-  <ion-card *ngFor="let user of users" (tap)="viewProfile(user)">
+  <ion-card *ngFor="let user of users">
     <ion-card-header>
 
       <ion-grid no-padding>
-        <ion-row align-items-end>
-          <ion-col>
+        <ion-row align-items-end justify-content-center>
+          <ion-col *ngUnless="itsaMeMario(user)">
             <p size-small no-margin margin-left margin-bottom>{{ isFollowing(user) ? 'is following you' : '' }}</p>
           </ion-col>
 
-          <ion-col col-auto>
+          <ion-col col-auto (tap)="viewProfile(user)">
             <user-avatar [user]="user"></user-avatar>
           </ion-col>
 
-          <ion-col justify-content-end>
-            <button ion-button small margin-right_2>
-              <i class="fal fa-{{ imFollowing(user) ? 'check' : 'plus' }}-circle" margin-right_3></i>
+          <ion-col justify-content-end *ngUnless="itsaMeMario(user)">
+            <button ion-button small margin-right (tap)="follow(user)">
+              <i class="fal fa-{{ imFollowing(user) ? 'check' : 'plus' }}-circle" margin-right_2></i>
               {{ imFollowing(user) ? 'Following' : 'Follow' }}
             </button>
           </ion-col>
@@ -30,7 +30,7 @@
 
     </ion-card-header>
 
-    <ion-card-content>
+    <ion-card-content (tap)="viewProfile(user)">
       <h1>{{ user.name }}</h1>
       <span>@{{ user.username }}</span>
       <p class="user-bio" text-left>{{ user.bio }}</p>
