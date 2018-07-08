@@ -3,9 +3,11 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
-import { IonicPage, ViewController, NavParams } from 'ionic-angular';
+import { IonicPage, ViewController } from 'ionic-angular';
 
 import { User } from '../../models/user';
+
+import { SessionProvider } from '../../providers/session';
 import { UserProvider } from '../../providers/user';
 import { MetaProvider } from '../../providers/meta';
 
@@ -24,7 +26,7 @@ export class ProfileFormPage {
 
   constructor(
     public viewCtrl: ViewController,
-    public navParams: NavParams,
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider,
     public metaProvider: MetaProvider
   
@@ -36,7 +38,7 @@ export class ProfileFormPage {
 
   private getUserAndMeta() {
     forkJoin([
-      this.userProvider.get(this.navParams.get('id')),
+      this.sessionProvider.user(),
       this.metaProvider.colours(),
       this.metaProvider.interests()
     
@@ -79,8 +81,12 @@ export class ProfileFormPage {
   }
 
   submit() {
-    this.userProvider.update(this.user.uuid, this.form.value).subscribe((user: User) => {
-      this.dismissView(user)
+    this.userProvider.update(this.user._id.$oid, this.form.value).subscribe((response: any) => {
+      if (response.status === 'ok') {
+        this.dismissView(response.user)
+      } else {
+        console.log('error')
+      }
     })
   }
 

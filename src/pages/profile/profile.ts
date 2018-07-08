@@ -32,9 +32,7 @@ export class ProfilePage {
   
   ) { }
 
-  ionViewDidLoad() {
-    this.getUser()
-  }
+  ionViewDidEnter() { this.getUser() }
 
   private getUser() {
     let subscriber: Observable<User>;
@@ -62,10 +60,7 @@ export class ProfilePage {
   }
 
   public editProfile() {
-    const profileFormModal = this.modalCtrl.create('ProfileFormPage', {
-      user: this.user,
-      id: this.user._id.$oid
-    });
+    const profileFormModal = this.modalCtrl.create('ProfileFormPage');
   
     profileFormModal.present();
     profileFormModal.onDidDismiss((userChanges: User) => {
