@@ -21,7 +21,12 @@ post {
     &.danger { background-color: rgba(#DE3545, 1); }
 
     &:not(.default) {
-      h1 { color: #fff; }
+      text-align: center;
+
+      mention * {
+        color: #fff;
+        font-size: 1.2em;
+      }
     }
   }
 

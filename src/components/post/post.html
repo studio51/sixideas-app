@@ -19,11 +19,15 @@
         </ion-col>
 
         <ion-col col-auto>
-          <ng-container *ngIf="user._id.$oid === author._id.$oid">
-            <button ion-button clear small (tap)="editPost()">Edit</button>
-          </ng-container>
-
-          <like class="post" [likeable]="post" [user]="author" size="large"></like>
+          <ion-grid no-padding>
+            <ion-row align-items-center>
+              <ng-container *ngIf="user._id.$oid === author._id.$oid">
+                <button ion-button clear small (tap)="editPost()">Edit</button>
+              </ng-container>
+    
+              <like class="post" [likeable]="post" [user]="author" size="large"></like>
+            </ion-row>
+          </ion-grid>
         </ion-col>
       </ion-row>
     </ion-grid>
