@@ -28,4 +28,8 @@ export class PostProvider {
   public update(id: string, data: Post | { }) {
     return this.http.patch(`posts/${ id }`, data)
   }
+
+  public check(timestamp: Date) {
+    return this.http.get('posts/count.json', { params: { date: timestamp }})
+  }
 }

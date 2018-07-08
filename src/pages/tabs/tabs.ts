@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { IonicPage, Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -7,9 +7,15 @@ import { IonicPage } from 'ionic-angular';
 })
 
 export class TabsPage {
-  community = 'CommunityPage';
+  community = 'CommunityPage'; // PostFormPage
   users     = 'UsersPage';
   profile   = 'ProfilePage';
 
-  constructor() { }
+  newPostsCounter: number = 0;
+
+  constructor(events: Events) {
+    events.subscribe('post:changed', (counter: number) => {
+      this.newPostsCounter = counter
+    })
+  }
 }

@@ -4,7 +4,7 @@ import { IonicPage, Events, NavParams, ModalController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
 
-import { UserProvider } from '../../providers/user';
+import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
 
 @IonicPage()
@@ -17,17 +17,19 @@ export class CommunityPage {
   user: User;
   posts: Post[] = [];
 
+  refresher: any;
   showLoadingIndicator: boolean = true;
-  postsChanged: boolean = false;
 
   feed: string = 'community';
   tag: string = null;
 
+  newPostsCounter: number = 0;
+
   constructor(
-    private events: Events,
+    public events: Events,
     public navParams: NavParams,
     public modalCtrl: ModalController,
-    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider,
     public postProvider: PostProvider
   
   ) {
@@ -36,18 +38,32 @@ export class CommunityPage {
       this.tag = this.navParams.get('tag')
     }
 
-    events.subscribe('posts:changed', (data: any) => {
+    events.subscribe('post:changed', (counter: number) => {
+      this.newPostsCounter = counter
+    })
+
+    events.subscribe('post:tagged', (data: any) => {
       this.tag = data['tag'];
-      this.postsChanged = true;
+      this.showLoadingIndicator = true;
       this.getPosts();
     });
   }
 
   ionViewDidEnter() {
-    this.userProvider.get().subscribe((user: User) => {
+    this.sessionProvider.user().subscribe((user: User) => {
       this.user = user;
       this.getPosts();
     })
+  }
+
+  public refresh(refresher?: any) {
+    if (refresher) {
+      this.refresher = refresher
+    } else {
+      this.showLoadingIndicator = true
+    }
+
+    this.getPosts();
   }
 
   public feedChanged(event: any) {
@@ -65,7 +81,12 @@ export class CommunityPage {
     this.postProvider.load('', params).subscribe((posts: Post[]) => {
       this.posts = posts;
       this.showLoadingIndicator = false;
-      this.postsChanged = false;
+
+      if (this.refresher) {
+        this.refresher.complete()
+      }
+
+      this.resetTimer();
     })
   }
 
@@ -78,5 +99,10 @@ export class CommunityPage {
         this.posts.push(post)
       }
     })
+  }
+
+  private resetTimer() {
+    this.events.publish('app:timer', new Date())
+    this.events.publish('post:changed', 0)
   }
 }

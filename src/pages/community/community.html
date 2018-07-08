@@ -1,42 +1,81 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Community</ion-title>
+    <ion-title>
+      <ng-container [ngSwitch]="feed">
+        <ng-container *ngSwitchCase="'community'">News Feed</ng-container>
+        <ng-container *ngSwitchCase="'trending'">Trending</ng-container>
+        <ng-container *ngSwitchCase="'likes'">Likes</ng-container>
+      </ng-container>
+    </ion-title>
   </ion-navbar>
 
-  <ion-segment [(ngModel)]="feed" (ionChange)="feedChanged($event)" color="primary" ngClass="-colour-{{ user?.colour }}">
-    <ion-segment-button value="community">
-      <!-- <ion-icon name="paper"></ion-icon> -->
-      News Feed
-    </ion-segment-button>
+  <ion-toolbar>
+    <ion-grid no-padding>
+      <ion-row align-items-center>
+        <ion-col col-2>
+          <button ion-button small block outline ngClass="-colour-{{ user?.colour }}">
+            #
+          </button>
+        </ion-col>
+        
+        <ion-col col-5>
+          <ion-searchbar (ionInput)="onInput($event)"></ion-searchbar>
+        </ion-col>
 
-    <ion-segment-button value="trending">
-      <!-- <ion-icon name="list"></ion-icon> -->
-      Trending
-    </ion-segment-button>
-
-    <ion-segment-button value="likes">
-      <!-- <ion-icon name="heart"></ion-icon> -->
-      Likes
-    </ion-segment-button>
-
-    <ion-segment-button value="hashtag">
-      <ion-icon name="grid"></ion-icon>
-    </ion-segment-button>
-  </ion-segment>
+        <ion-col col-5>
+          <ion-segment [(ngModel)]="feed" (ionChange)="feedChanged($event)" color="primary" ngClass="-colour-{{ user?.colour }}">
+            <ion-segment-button value="community">
+              <i class="fal fa-newspaper"></i>
+            </ion-segment-button>
+        
+            <ion-segment-button value="trending">
+              <i class="fal fa-list"></i>
+            </ion-segment-button>
+        
+            <ion-segment-button value="likes">
+              <i class="fal fa-heart"></i>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content [ngSwitch]="feed">
-  <ion-grid no-padding *ngSwitchCase="'community'">
-    <ion-row *ngUnless="tag" justify-content-center>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingText="Pull to load new Posts" refreshingText="Loading new Posts.."></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-grid no-padding margin-top>
+    <ng-container *ngSwitchCase="'community'">
+      <ion-row *ngUnless="tag" justify-content-center>
+        <ion-col col-auto>
+          <button ion-button round medium outline (tap)="newPost()" ngClass="-colour-{{ user?.colour }}">
+            What's new?
+          </button>
+        </ion-col>
+      </ion-row>
+    </ng-container>
+
+    <ion-row justify-content-center *ngIf="showLoadingIndicator || postsChanged">
       <ion-col col-auto>
-        <button ion-button round medium outline (tap)="newPost()" ngClass="-colour-{{ user?.colour }}">
-          What's new?
-        </button>
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="tag" margin-left>
+      <ion-col>
+        <h3 no-margin>#{{ tag }}</h3>
       </ion-col>
     </ion-row>
   </ion-grid>
 
-  <ion-spinner *ngIf="showLoadingIndicator || postsChanged"></ion-spinner>
+  <ion-card alert color="blue" *ngIf="newPostsCounter > 0" (tap)="refresh()">
+    <ion-card-content>
+      <p no-margin text-center>There {{ newPostsCounter > 1 ? 'is' : 'are' }} <strong>{{ newPostsCounter }}</strong> new post{{ newPostsCounter > 1 ? 's' : '' }}</p>
+    </ion-card-content>
+  </ion-card>
 
   <post *ngFor="let post of posts" [post]="post" [author]="post?.user" [user]="user"></post>
 </ion-content>

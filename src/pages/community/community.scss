@@ -7,6 +7,18 @@ page-community {
   $red: #CE1836;
   $grey: #6F6F6F;
 
+  .card-ios {
+    &[alert] {
+      border: none;
+      box-shadow: none;
+      p { color: $blue; }
+    }
+
+    &[color="blue"] {
+      background-color: rgba(#d1ecf1, .5);
+    }
+  }
+
   .segment-ios-primary {
     .segment-button.segment-activated { color: #fff !important; }
 
@@ -105,8 +117,11 @@ page-community {
     }
   }
 
-  .segment-ios {
+  .toolbar-ios {
     padding: 13px;
+    padding-top: 0;
     background-color: #fbfbfb;
   }
+
+  .searchbar-ios { min-height: auto; }
 }
