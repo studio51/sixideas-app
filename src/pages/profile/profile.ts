@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IonicPage, ViewController, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, App, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session';
 
@@ -22,6 +22,7 @@ export class ProfilePage {
   posts: Post[] = [];
 
   constructor(
+    public app: App,
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -72,6 +73,18 @@ export class ProfilePage {
         this.user = Object.assign(this.user, userChanges)
       }
     })
+  }
+
+  public viewFollowing(userID: string) {
+    this.app.getRootNav().getActiveChildNav().select(1);
+  }
+
+  public viewFollowers(userID: string) {
+    this.app.getRootNav().getActiveChildNav().select(1);
+  }
+
+  public viewLikes(userID: string) {
+    this.app.getRootNav().getActiveChildNav().select(0);
   }
 
   public dismissView() {

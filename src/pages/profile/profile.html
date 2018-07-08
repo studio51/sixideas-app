@@ -43,7 +43,7 @@
       </ion-row>
 
       <ion-row margin-top margin-bottom>
-        <ion-col col-4 text-center (tap)="viewUserFollowing(user._id.$oid, user.following_ids)">
+        <ion-col col-4 text-center (tap)="viewFollowing(user._id.$oid, user.following_ids)">
           <h6>Following</h6>
           
           <ion-card user-stat-card>
@@ -53,7 +53,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col col-4 text-center (tap)="viewUserFollowers(user._id.$oid, user.follower_ids)">
+        <ion-col col-4 text-center (tap)="viewFollowers(user._id.$oid, user.follower_ids)">
           <h6>Followers</h6>
           
           <ion-card user-stat-card>
@@ -63,7 +63,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col col-4 text-center (tap)="viewUserLikes(user._id.$oid, user.likes)">
+        <ion-col col-4 text-center (tap)="viewLikes(user._id.$oid)">
           <h6>Likes</h6>
           
           <ion-card user-stat-card>
