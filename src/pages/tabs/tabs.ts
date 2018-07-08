@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, Events } from 'ionic-angular';
+import { IonicPage, Events, MenuController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -13,9 +13,18 @@ export class TabsPage {
 
   newPostsCounter: number = 0;
 
-  constructor(events: Events) {
+  constructor(
+    events: Events,
+    public menuCtrl: MenuController
+
+  ) {
+
     events.subscribe('post:changed', (counter: number) => {
       this.newPostsCounter = counter
     })
+  }
+
+  public openSideMenu() {
+    this.menuCtrl.open()
   }
 }

@@ -1,5 +1,101 @@
 // http://ionicframework.com/docs/theming/
 
+app-page {
+	ion-menu {
+		.menu-inner,
+		ion-content { background-color: transparent !important; }
+
+		.fixed-content,
+		.scroll-content { margin-bottom: 0 !important; }
+
+		background: linear-gradient(to bottom right, green, darkteal);
+
+		&.show-menu {
+			.menu-inner {
+				transform: none;
+				transition: all 130ms ease-in;
+			}
+		}
+
+		.menu-inner {
+			padding: 13px 0;
+			position: relative;
+			width: 247px;
+
+			> ion-content { position: inherit; }
+		}
+
+		button:not(.button) {
+			display: flex;
+			flex: 1;
+			padding: (13px / 2) 13px;
+			font-size: 1.1em;
+			font-weight: 500;
+			color: #fff;
+			align-items: center;
+			background-color: transparent;
+			width: 100%;
+			color: rgba(255, 255, 255, .7);
+
+			&:hover {
+				color: #fff;
+				border-left: 4px solid yellow;
+				background-color: rgba(255, 255, 255, .2);
+			}
+
+			ion-icon { margin-right: 13px / 2; }
+		}
+
+		ion-list {
+			display: flex;
+			flex-direction: column;
+			margin: (13px / 2) 0 !important;
+
+			ion-item-divider {
+				padding: 0 !important;
+				opacity: .5;
+				background-color: transparent !important;
+
+				.item-inner {
+					background-color: transparent !important;
+					padding: (13px / 2) 13px !important;
+					color: #fff;
+				}
+
+				ion-label {
+					margin: 0 !important;
+				}
+			}
+		}
+
+		.app-menu {
+			&--user {
+				ion-avatar {
+					font-size: 3em;
+					color: #fff;
+				}
+
+				padding: 0 13px;
+
+				h2, p, i { margin: 0; }
+				h2 { color: #fff; }
+				p, i { color: rgba(255, 255, 255, .5); }
+			}
+		}
+	}
+
+	ion-nav {
+		transform: none !important;
+		transition: transform 150ms ease-out !important;
+
+		&.menu-content-open {
+			transform: translate3d(200px, 0, 0) scale(.75) !important;
+			transition: transform 200ms ease-in !important;
+			box-shadow: -10px 0 35px 10px rgba(black, .3) !important;
+			will-change: transform;
+		}
+	}
+}
 
 // App Global Sass
 // --------------------------------------------------
@@ -14,33 +110,6 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-// 
-
-// [float-right] { float: right; }
-
-// ion-card {
-//   border: 1px solid rgba(0,0,0,0.125);
-//   border-radius: 0.25rem !important;
-//   box-shadow: none !important;
-
-//   &-content {
-//     border-top: 1px solid rgba(0,0,0,0.125);
-//     padding-top: $card-ios-padding-top !important;
-//   }
-// }
-
-// [ion-card-footer] {
-//   border-top: 1px solid rgba(0,0,0,0.125);
-//   padding-top: $card-ios-padding-top !important; 
-// }
-
-// button[ion-button] {
-//   &[rounded] {
-//     border-radius: 100%;
-//   }
-// }
-
-// [text-center] { text-align: center; }
 
 [margin-left_2]    { margin-left: 8px !important; }
 [margin-right_2]   { margin-right: 8px !important; }
