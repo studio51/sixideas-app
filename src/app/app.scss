@@ -134,3 +134,10 @@ app-page {
 
 [color="blue"] { color: #2067C3 !important; }
 [color="red"] { color: #CE1836 !important; }
+
+p[size-small] { font-size: .6em; }
+
+ion-col[justify-content-end] {
+	display: flex;
+	justify-content: flex-end;
+}

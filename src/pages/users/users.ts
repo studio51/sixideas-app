@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, ModalController } from 'ionic-angular';
 
 import { User } from '../../models/user';
+
+import { SessionProvider } from '../../providers/session';
 import { UserProvider } from '../../providers/user';
 
 @IonicPage()
@@ -11,42 +13,44 @@ import { UserProvider } from '../../providers/user';
 })
 
 export class UsersPage {
+  private user: User;
+
   users: User[] = [];
-  currentUser: User;
 
   constructor(
     public modalCtrl: ModalController,
-    public navParams: NavParams,
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider
 
   ) { }
 
-  ionViewDidLoad() {
+  ionViewDidEnter() {
     this.getUsers()
   }
 
-  getUsers() {
-    this.userProvider.load().subscribe((users: User[]) => {
-      this.users = users
+  private getUsers() {
+    this.sessionProvider.user().subscribe((user: User) => {
+      this.user = user;
+      
+      this.userProvider.load().subscribe((users: User[]) => {
+        this.users = users
+      });
     })
   }
 
-  viewProfile(user: User) {
+  public viewProfile(user: User) {
     const modal = this.modalCtrl.create('ProfilePage', {
-      user: user,
       id: user._id.$oid
     });
 
     modal.present();
   }
 
-  userIsFollowingYou(followers: Array<any>) {
-    //  const mappedFollowers: any = followers.map((follower: any) => follower.id);
-    // return mappedFollowers.includes(this.currentUser.id)
+  public isFollowing(user: User) {
+    return this.user.follower_ids.map(k => k.$oid).includes(user._id.$oid)
   }
 
-  userIsFollowingMe(followers: Array<any>) {
-    //  const mappedFollowers: any = followers.map((follower: any) => follower.id);
-    // return mappedFollowers.includes(this.currentUser.id)
+  public imFollowing(user: User) {
+    return this.user.following_ids.map(k => k.$oid).includes(user._id.$oid)
   }
 }
