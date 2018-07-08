@@ -73,7 +73,7 @@
 
   <ion-card alert color="blue" *ngIf="newPostsCounter > 0" (tap)="refresh()">
     <ion-card-content>
-      <p no-margin text-center>There {{ newPostsCounter > 1 ? 'is' : 'are' }} <strong>{{ newPostsCounter }}</strong> new post{{ newPostsCounter > 1 ? 's' : '' }}</p>
+      <p no-margin text-center>There {{ newPostsCounter > 1 ? 'are' : 'is' }} <strong>{{ newPostsCounter }}</strong> new post{{ newPostsCounter > 1 ? 's' : '' }}</p>
     </ion-card-content>
   </ion-card>
 
