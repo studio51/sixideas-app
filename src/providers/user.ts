@@ -34,8 +34,6 @@ export class UserProvider {
       if (this.platform.is('cordova')) {
         device['device']['token'] = token.registrationId;
         device['device']['type'] = token.registrationType;
-
-        console.log(JSON.stringify(Object.assign(credentials, device)));
       }
 
       return this.http.post('sessions/authenticate', Object.assign(credentials, device))

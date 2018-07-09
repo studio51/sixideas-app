@@ -29,7 +29,7 @@ export class SessionProvider {
         uuid: this.device.uuid
       }
     }
-
+    
     return this.notificationService.register().flatMap((token: any) => {
       if (this.platform.is('cordova')) {
         device['device']['token'] = token.registrationId;
