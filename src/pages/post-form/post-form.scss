@@ -26,11 +26,16 @@ page-post-form {
       border-radius: 0.25rem  !important;
       text-align: center;
 
-      &.-default { background-color: rgba(#fff, 1); }
-      &.-info { background-color: rgba(#007bff, 1); }
-      &.-success { background-color: rgba(#28a745, 1); }
-      &.-warning { background-color: rgba(#ffc107, 1); }
-      &.-danger { background-color: rgba(#dc3545, 1); }
+      &.-default,
+      &.-default .text-input-ios { background-color: rgba(#fff, 1); }
+      &.-info,
+      &.-info .text-input-ios { background-color: rgba(#007bff, 1); }
+      &.-success,
+      &.-success .text-input-ios { background-color: rgba(#28a745, 1); }
+      &.-warning,
+      &.-warning .text-input-ios { background-color: rgba(#ffc107, 1); }
+      &.-danger,
+      &.-danger .text-input-ios { background-color: rgba(#dc3545, 1); }
 
       &:not(.-default) {
         transform: transition(all .3 ease-in);
@@ -38,16 +43,18 @@ page-post-form {
         .post-form--types { justify-content: center; }
         .text-input-ios {
           border: none;
+          border-radius: 0;
           text-align: center;
-          background-color: transparent !important;
           color: #fff;
           font-weight: bold;
           font-size: 1.2em;
+
+          &::-webkit-input-placeholder { color: #fff; }
         }
       }
     }
   }
-
+  
   .post-colour {
     display: flex;
     width: 27px;

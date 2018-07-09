@@ -8,7 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
 
-import { UserProvider } from '../../providers/user';
+import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
 
 @IonicPage()
@@ -35,7 +35,7 @@ export class PostFormPage {
     public viewCtrl: ViewController,
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
-    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider,
     public postProvider: PostProvider
   
   ) {
@@ -47,7 +47,7 @@ export class PostFormPage {
   }
 
   ionViewDidLoad() {
-    this.userProvider.get().subscribe((user: User) => {
+    this.sessionProvider.user().subscribe((user: User) => {
       this.user = user;
       (this.postID ? this.edit() : this.generateForm());
     })
@@ -57,7 +57,7 @@ export class PostFormPage {
 
   private edit() {
     this.postProvider.get(this.postID).subscribe((response: any) => {
-      Object.assign(this.post, response);// = new Post(response);
+      Object.assign(this.post, response);
       this.generateForm();
     })
   }
@@ -120,7 +120,6 @@ export class PostFormPage {
     this.camera.getPicture(options).then((image) => {
       this.form.controls.cover.setValue(image);
     }, (error) => {
-      console.info('');
       console.error(error);
 
       if (error !== 'no image selected' || error !== 'No camera available') {
@@ -139,7 +138,11 @@ export class PostFormPage {
     }
 
     subscriber.subscribe((response: any) => {
-      this.dismissView(response.post)
+      if (response.status === 'ok') {
+        this.dismissView(response.post)
+      } else {
+        console.log('error')
+      }
     })
   }
 

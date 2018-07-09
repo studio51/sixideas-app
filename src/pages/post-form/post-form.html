@@ -57,12 +57,12 @@
       </ion-item>
 
       <ion-item>
-        <ion-textarea formControlName="body" placeholder="What's new?"></ion-textarea>
+        <ion-textarea rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
       </ion-item>
     </form>
   </ion-card>
 
-  <ion-grid no-padding margin-top>
+  <!-- <ion-grid no-padding margin-top>
     <ion-row justify-content-center>
       <ion-col col-auto>
         <button ion-button medium [disabled]="form && !form.valid" (tap)="submit()" ngClass="-colour-{{ user?.colour }}">
@@ -70,5 +70,5 @@
         </button>
       </ion-col>
     </ion-row>
-  </ion-grid>
+  </ion-grid> -->
 </ion-content>

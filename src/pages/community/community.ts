@@ -112,7 +112,7 @@ export class CommunityPage {
     postFormModal.present();
     postFormModal.onDidDismiss((post: Post) => {
       if (post) {
-        this.posts.push(post)
+        this.posts.unshift(post)
       }
     })
   }
