@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 
 import { UserProvider } from '../../providers/user';
+import { SessionProvider } from '../../providers/session';
 
 @IonicPage()
 @Component({
@@ -21,7 +22,8 @@ export class AuthenticationPage {
   constructor(
     public navCtrl: NavController,
     public storage: Storage,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider
   
   ) { }
 
@@ -44,8 +46,10 @@ export class AuthenticationPage {
         this.authentication = null;
 
         this.storage.set('token', response.user._id.$oid).then(() => {
-          this.navCtrl.setRoot('TabsPage')
-        })
+          this.sessionProvider.appear().subscribe(() => {
+            this.navCtrl.setRoot('TabsPage')
+          })
+        });
       } else {
         this.authentication = response
       }
