@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { IonicPage, App, ViewController, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, Events, Nav, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session';
 
@@ -22,7 +22,8 @@ export class ProfilePage {
   posts: Post[] = [];
 
   constructor(
-    public app: App,
+    public events: Events,
+    public nav: Nav,
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -71,15 +72,24 @@ export class ProfilePage {
   }
 
   public viewFollowing(userID: string) {
-    this.app.getRootNav().getActiveChildNav().select(1);
+    this.events.publish('tab:changed', { userID: userID, want: 'following' })
+    this.nav.setRoot('TabsPage', { tab: '2' })
   }
 
   public viewFollowers(userID: string) {
-    this.app.getRootNav().getActiveChildNav().select(1);
+    this.events.publish('tab:changed', { userID: userID, want: 'followers' })
+    this.nav.setRoot('TabsPage', { tab: '2' })
   }
 
   public viewLikes(userID: string) {
-    this.app.getRootNav().getActiveChildNav().select(0);
+    this.events.publish('tab:changed', { userID: userID, want: 'likes' })
+    this.nav.setRoot('TabsPage', { tab: '1' })
+  }
+
+  public viewPosts(tag: string) {
+    this.nav.setRoot('TabsPage', { tab: '1' }).then(() => {
+      this.events.publish('post:tagged', { tag: tag, want: 'tagged' })
+    })
   }
 
   public dismissView() {

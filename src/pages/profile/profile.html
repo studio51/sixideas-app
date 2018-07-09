@@ -74,7 +74,7 @@
 
       <ion-row user-interests ngClass="colour--{{ user.colour }}" padding margin-top margin-bottom>
         <ion-col col-auto *ngFor="let interest of user.interests">
-          <button *ngUnless="interest === ''" ion-button small square color="light">
+          <button *ngUnless="interest === ''" ion-button small square color="light" (tap)="viewPosts(interest)">
             {{ interest }}
           </button>
         </ion-col>

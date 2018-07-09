@@ -21,7 +21,13 @@ export class CommunityPage {
   showLoadingIndicator: boolean = true;
 
   feed: string = 'community';
+
   tag: string = null;
+  tags: any[] = [];
+  tagSelectionOptions: any = {
+    title: 'Tags',
+    subTitle: 'Select a Tag to show the posts for'
+  }
 
   newPostsCounter: number = 0;
 
@@ -34,26 +40,36 @@ export class CommunityPage {
   
   ) {
 
-    if (this.navParams.get('tag')) {
-      this.tag = this.navParams.get('tag')
+    if (navParams.get('tag')) {
+      this.tag = navParams.get('tag')
     }
 
-    events.subscribe('post:changed', (counter: number) => {
-      this.newPostsCounter = counter
-    })
-
-    events.subscribe('post:tagged', (data: any) => {
-      this.tag = data['tag'];
-      this.showLoadingIndicator = true;
-      this.getPosts();
-    });
+    this.subscribeToTabChangedEvents();
+    this.subscribeToPostChangedEvents();
+    this.subscribeToPostTaggedEvents();
   }
 
   ionViewDidEnter() {
     this.sessionProvider.user().subscribe((user: User) => {
       this.user = user;
+      this.tags = user.interests;
+
       this.getPosts();
     })
+  }
+
+  public searchTaggedPosts(event: any) {
+    this.getTaggedPosts(event.target.value)
+  }
+
+  private getTaggedPosts(tag: string) {
+    if (this.feed != 'community') {
+      this.feed = 'community'
+    }
+    
+    this.tag = tag;
+    this.showLoadingIndicator = true;
+    this.getPosts();
   }
 
   public refresh(refresher?: any) {
@@ -100,6 +116,33 @@ export class CommunityPage {
       }
     })
   }
+
+  public clearSearch(event: any) {
+    this.tag = null
+  }
+
+  private subscribeToTabChangedEvents() {
+    this.events.subscribe('tab:changed', (data: any) => {
+      if (data) {
+        if (data.want === 'tagged') {
+          this.tag = data['tag']
+        }
+      }
+    })
+  }
+
+  private subscribeToPostChangedEvents() {
+    this.events.subscribe('post:changed', (counter: number) => {
+      this.newPostsCounter = counter
+    })
+  }
+  
+  private subscribeToPostTaggedEvents() {
+    this.events.subscribe('post:tagged', (data: any) => {
+      this.getTaggedPosts(data['tag']);
+    })
+  }
+
 
   private resetTimer() {
     this.events.publish('app:timer', new Date())

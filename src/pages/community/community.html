@@ -13,13 +13,17 @@
     <ion-grid no-padding>
       <ion-row align-items-center>
         <ion-col col-2>
-          <button ion-button small block outline ngClass="-colour-{{ user?.colour }}">
-            #
-          </button>
+          <ion-label>
+            <button ion-button small block outline ngClass="-colour-{{ user?.colour }}">#</button>
+          </ion-label>
+          
+          <ion-select (ionChange)="getTaggedPosts($event)" [selectOptions]="tagSelectionOptions">
+            <ion-option *ngFor="let tag of tags" [value]="tag">{{ tag }}</ion-option>
+          </ion-select>
         </ion-col>
         
         <ion-col col-5>
-          <ion-searchbar (ionInput)="onInput($event)"></ion-searchbar>
+          <ion-searchbar [(ngModel)]="tag" (ionInput)="searchTaggedPosts($event)" (ionCancel)="clearSearch($event)"></ion-searchbar>
         </ion-col>
 
         <ion-col col-5>

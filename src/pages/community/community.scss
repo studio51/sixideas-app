@@ -1,5 +1,14 @@
 page-community {
 
+  .select-ios {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .label-ios { margin: 0; }
+
   $blue:#2067C3;
   $green: #009989;
   $yellow: #FCCD10;
@@ -117,10 +126,17 @@ page-community {
     }
   }
 
-  .toolbar-ios {
-    padding: 13px;
-    padding-top: 0;
-    background-color: #fbfbfb;
+  .toolbar {
+    &-ios {
+      padding: 13px;
+      padding-top: 0;
+      background-color: #fbfbfb;
+    }
+
+    &-content {
+      .button-ios { padding: 13px; }
+      .segment-button { height: 29px; }
+    }
   }
 
   .searchbar-ios { min-height: auto; }
