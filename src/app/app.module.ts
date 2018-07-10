@@ -2,7 +2,9 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { HttpModule } from '@angular/http'; // Deprecated
+
 // TODO: Replace the HTTPModule with the new HTTPClientModule
+// 
 import { HttpClientModule } from '@angular/common/http';
 
 import { SixIdeasApp } from './app.component';
@@ -16,6 +18,7 @@ import { Device } from '@ionic-native/device';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
+import { FileTransfer } from '@ionic-native/file-transfer';
 
 /*** Services ************/
 
@@ -24,12 +27,14 @@ import { NotificationService } from '../services/notification';
 
 /*** Providers * HTTP ***/
 
+import { SessionProvider } from '../providers/session';
 import { MetaProvider } from '../providers/meta';
 import { UserProvider } from '../providers/user';
 import { FeedProvider } from '../providers/feed';
 import { PostProvider } from '../providers/post';
 import { CommentProvider } from '../providers/comment';
 import { LikeProvider } from '../providers/like';
+import { ImageProvider } from '../providers/image';
 
 @NgModule({
   declarations: [SixIdeasApp],
@@ -55,7 +60,7 @@ import { LikeProvider } from '../providers/like';
     
     /*** Native Components ***/        
     
-    Push, Device, StatusBar, SplashScreen, Camera,
+    Push, Device, StatusBar, SplashScreen, Camera, FileTransfer,
 
     /*** Services ************/
 
@@ -63,8 +68,8 @@ import { LikeProvider } from '../providers/like';
 
     /*** Providers * HTTP ****/
     
-    MetaProvider, UserProvider, FeedProvider, PostProvider, CommentProvider,
-    LikeProvider
+    SessionProvider, MetaProvider, UserProvider, FeedProvider, PostProvider,
+    CommentProvider, LikeProvider, ImageProvider
   ]
 })
 

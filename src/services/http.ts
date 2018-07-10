@@ -100,7 +100,7 @@ export class SixIdeasHTTPService {
   }
 
   get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-    return Observable.from(this.storage.get('token')).flatMap((token) => {
+    return this.token().flatMap((token) => {
       this.setHeader('token', token)
       
         return this.http.get(this.generateUrl(url), this.generateOptions(options))
@@ -112,7 +112,7 @@ export class SixIdeasHTTPService {
   post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    return Observable.from(this.storage.get('token')).flatMap((token) => {
+    return this.token().flatMap((token) => {
       this.setHeader('token', token)
 
         return this.http.post(this.generateUrl(url), newData, this.generateOptions(options))
@@ -124,7 +124,7 @@ export class SixIdeasHTTPService {
   put<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    return Observable.from(this.storage.get('token')).flatMap((token) => {
+    return this.token().flatMap((token) => {
       this.setHeader('token', token)
      
         return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
@@ -136,7 +136,7 @@ export class SixIdeasHTTPService {
   patch<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
     const newData = this.prepareData(data);
     
-    return Observable.from(this.storage.get('token')).flatMap((token) => {
+    return this.token().flatMap((token) => {
       this.setHeader('token', token)
         
         return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
@@ -146,7 +146,7 @@ export class SixIdeasHTTPService {
   }
 
   delete<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-    return Observable.from(this.storage.get('token')).flatMap((token) => {
+    return this.token().flatMap((token) => {
       this.setHeader('token', token)
         
         return this.http.delete(this.generateUrl(url), this.generateOptions(options))
@@ -191,6 +191,10 @@ export class SixIdeasHTTPService {
     return options
   }
   
+  token() {
+    return Observable.from(this.storage.get('token'))
+  }
+
   get endpoint(): string {
     return this._endpoint
   }

@@ -1,6 +1,10 @@
 page-profile-form {
-  .background-image { height: 200px; }
-
+  .background-image {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+  }
+  
   ion-card.card {
     margin-top: -100px;
     box-shadow: none !important;
