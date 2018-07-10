@@ -26,6 +26,16 @@ page-post-form {
       border-radius: 0.25rem  !important;
       text-align: center;
 
+      img {
+        margin-top: -48px;
+        margin-left: -16px;
+        margin-right: -16px;
+        max-width: inherit;
+        width: calc(100% + 32px);
+        max-height: 150px;
+        object-fit: cover;
+      }
+
       &.-default,
       &.-default .text-input-ios { background-color: rgba(#fff, 1); }
       &.-info,

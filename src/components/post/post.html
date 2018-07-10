@@ -34,7 +34,12 @@
   </ion-card-header>
 
   <ion-card-content post-content [ngClass]="post.type">
-    <mention *ngIf="post.title && post.type === 'default'" [body]="post.title" class="post-title"></mention>
+    <ng-container *ngIf="post.type === 'default'">
+      <img *ngIf="post.image_url" [src]="post.image_url" />
+
+      <mention *ngIf="post.title" [body]="post.title" class="post-title"></mention>
+    </ng-container>
+
     <mention [body]="post.body" [class]="post.type"></mention>
   </ion-card-content>
 

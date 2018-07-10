@@ -1,5 +1,11 @@
-import { Component, ViewChild, ElementRef, Renderer } from '@angular/core';
-import { IonicPage, ViewController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component, Renderer } from '@angular/core';
+
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { of } from 'rxjs/observable/of';
+import { from } from 'rxjs/observable/from';
+
+import { IonicPage, ViewController, NavParams, ActionSheetController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -10,6 +16,7 @@ import { Post } from '../../models/post';
 
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
+import { ImageProvider } from '../../providers/image';
 
 @IonicPage()
 @Component({
@@ -18,9 +25,6 @@ import { PostProvider } from '../../providers/post';
 })
 
 export class PostFormPage {
-  @ViewChild('postImageOptions') postImageOptions: ElementRef;
-  @ViewChild('postTitle') postTitle: ElementRef;
-
   postID: string;
 
   user: User;
@@ -28,6 +32,7 @@ export class PostFormPage {
   form: FormGroup;
 
   postTypes: Array<any> = [];
+  imageChange: Object = {};
 
   constructor(
     public renderer: Renderer,
@@ -36,7 +41,8 @@ export class PostFormPage {
     public navParams: NavParams,
     public actionSheetCtrl: ActionSheetController,
     public sessionProvider: SessionProvider,
-    public postProvider: PostProvider
+    public postProvider: PostProvider,
+    public imageProvider: ImageProvider
   
   ) {
 
@@ -53,8 +59,6 @@ export class PostFormPage {
     })
   }
 
-  private new() { }
-
   private edit() {
     this.postProvider.get(this.postID).subscribe((response: any) => {
       Object.assign(this.post, response);
@@ -67,10 +71,8 @@ export class PostFormPage {
       title: new FormControl(this.post.title),
       body:  new FormControl(this.post.body, Validators.required),
       type:  new FormControl((this.post.type || this.postTypes[0])),
-
-      image: new FormGroup({
-        file: new FormControl()
-      })
+      
+      image_id: new FormControl(this.post.image_id)
     })
   }
 
@@ -88,7 +90,7 @@ export class PostFormPage {
     
     buttons.push({
       text: 'Library',
-      handler: () => { this.captureImage('Library') }
+      handler: () => { this.captureImage('LIBRARY') }
     })
 
     buttons.push({
@@ -97,7 +99,7 @@ export class PostFormPage {
     });
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Asset Actions',
+      title: 'Choose Image Source',
       buttons: buttons
     });
 
@@ -117,8 +119,10 @@ export class PostFormPage {
                mediaType: this.camera.MediaType.PICTURE
     }
 
-    this.camera.getPicture(options).then((image) => {
-      this.form.controls.cover.setValue(image);
+    this.camera.getPicture(options).then((image: any) => {
+      this.imageChange['image'] = image;
+      this.post.image_url = normalizeURL(image);
+      this.form.controls.image_id.setValue(this.imageChange['image_id'])
     }, (error) => {
       console.error(error);
 
@@ -129,20 +133,46 @@ export class PostFormPage {
   }
 
   public submit() {
+    let batch: any[] = [];
     let subscriber: any;
 
-    if (this.postID) {
-      subscriber = this.postProvider.update(this.postID, this.form.value)
+    if (Object.keys(this.imageChange).length > 0) {
+      batch.push(this.processUpload())
     } else {
-      subscriber = this.postProvider.create(this.form.value)
+      batch.push(of(false))
     }
 
-    subscriber.subscribe((response: any) => {
-      if (response.status === 'ok') {
-        this.dismissView(response.post)
+    forkJoin(batch).subscribe((response: Array<any>) => {
+      const postChanges: any = Object.assign(this.form.value, response[0]);
+
+      if (this.postID) {
+        subscriber = this.postProvider.update(this.postID, postChanges)
       } else {
-        console.log('error')
+        subscriber = this.postProvider.create(postChanges)
       }
+
+      subscriber.subscribe((response: any) => {
+        console.log(response)
+        if (response.status === 'ok') {
+          this.dismissView(response.post)
+        } else {
+          console.log('error')
+        }
+      })
+    })
+  }
+
+  private processUpload() {
+    return Observable.create((observer) => {
+    
+      from(this.imageProvider.upload(this.imageChange['image'])).map((response) => JSON.parse(response.response)).subscribe((response: any) => {
+        if (response.success) {
+          observer.next({ image_id: response.image._id.$oid });
+          observer.complete();
+        } else {
+          console.log(response)
+        }
+      })
     })
   }
 

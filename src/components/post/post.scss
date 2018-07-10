@@ -28,6 +28,12 @@ post {
         font-size: 1.2em;
       }
     }
+
+    img {
+      margin: -16px -16px 16px;
+      max-width: inherit;
+      width: calc(100% + 32px);
+    }
   }
 
   h2 {

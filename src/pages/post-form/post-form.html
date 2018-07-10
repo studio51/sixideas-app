@@ -31,7 +31,9 @@
     </ion-card-header>
 
     <form ion-card-content *ngIf="form" [formGroup]="form" ngClass="-{{ form.controls.type.value }}">
-          
+
+      <img *ngIf="post.image_url && form.controls.type.value === 'default'" [src]="post.image_url" />
+
       <ion-grid no-padding margin-top margin-bottom_2>
         <ion-row align-items-center>
           <ion-col>
@@ -54,10 +56,12 @@
 
       <ion-item *ngIf="form.controls.type.value === 'default'">
         <ion-input type="text" formControlName="title" placeholder="Title (optional)"></ion-input>
+        {{ form.controls.title.value }}
       </ion-item>
 
       <ion-item>
         <ion-textarea rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
+        {{ form.controls.body.value }}
       </ion-item>
     </form>
   </ion-card>
