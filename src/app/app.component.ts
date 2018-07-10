@@ -7,8 +7,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 
-import { NotificationService } from '../services/notification';
-
 import { SessionProvider } from '../providers/session';
 import { PostProvider } from '../providers/post';
 
@@ -34,49 +32,55 @@ export class SixIdeasApp {
     public storage: Storage,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    notificationService: NotificationService,
     public sessionProvider: SessionProvider,
     public postProvider: PostProvider
-  
+
   ) {
 
     platform.ready().then((source: string) => {
       if (source === 'cordova') {
         statusBar.styleDefault();
         splashScreen.hide();
-        notificationService.notify();
       }
 
+      this.events.subscribe('app:timer', (timestamp: Date) => {
+        this.currentTimestamp = (timestamp ? timestamp : new Date());
+      });
+
       this.checkSession().subscribe();
-      this.subscribeToNewPosts();
-    })
-
-    platform.pause.subscribe((res) => {
-      console.log('pause', res)
-    })
-
-    platform.resume.subscribe((res) => {
-      console.log('back', res)
     })
   }
 
   private checkSession() {
     return Observable.create((observer) => {
       this.storage.get('token').then((token: string) => {
-        this.sessionProvider.appear().subscribe(() => {
-          this.events.subscribe('app:timer', (timestamp: Date) => {
-            this.currentTimestamp = (timestamp ? timestamp : new Date());
-          });
-
-          this.rootPage = (token ? 'TabsPage' : 'AuthenticationPage');
+        if (token) {
+          this.sessionProvider.appear().subscribe(() => {
+            this.rootPage = 'TabsPage';
+            this.subscribeToNewPosts();
+            
+            observer.complete();
+          })
+        } else {
+          this.rootPage = 'AuthenticationPage';
           observer.complete();
-        })
+        }
       })
     })
   }
 
+  public logout() {
+    this.sessionProvider.logout().subscribe((response: any) => {
+      if (response) {
+        this.storage.remove('token').then(() => {
+          this.rootPage = 'AuthenticationPage'
+        })
+      }
+    })
+  }
+
   private subscribeToNewPosts() {
-    Observable.interval(2500).subscribe(() => {
+    Observable.interval(5000).subscribe(() => {
       this.postProvider.check(this.currentTimestamp).subscribe((response: any) => {
         this.events.publish('post:changed', response.count)
       })
