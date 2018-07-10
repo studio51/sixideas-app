@@ -23,7 +23,7 @@
         </ion-col>
         
         <ion-col col-5>
-          <ion-searchbar [(ngModel)]="tag" (ionInput)="searchTaggedPosts($event)" (ionCancel)="clearSearch($event)"></ion-searchbar>
+          <ion-searchbar [(ngModel)]="tag" (ionFocus)="showTags()" (ionCancel)="setTag(null)"></ion-searchbar>
         </ion-col>
 
         <ion-col col-5>

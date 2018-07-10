@@ -41,7 +41,7 @@ export class CommunityPage {
   ) {
 
     if (navParams.get('tag')) {
-      this.tag = navParams.get('tag')
+      this.setTag(navParams.get('tag'))
     }
 
     this.subscribeToTabChangedEvents();
@@ -58,8 +58,17 @@ export class CommunityPage {
     })
   }
 
-  public searchTaggedPosts(event: any) {
-    this.getTaggedPosts(event.target.value)
+  public showTags() {
+    const tagsModal = this.modalCtrl.create('TagsPage', {
+      tag: this.tag
+    });
+  
+    tagsModal.present();
+    tagsModal.onDidDismiss((tag: string) => {
+      if (tag) {
+        this.getTaggedPosts(tag)
+      }
+    })
   }
 
   private getTaggedPosts(tag: string) {
@@ -67,7 +76,7 @@ export class CommunityPage {
       this.feed = 'community'
     }
     
-    this.tag = tag;
+    this.setTag(tag);
     this.showLoadingIndicator = true;
     this.getPosts();
   }
@@ -84,6 +93,8 @@ export class CommunityPage {
 
   public feedChanged(event: any) {
     this.showLoadingIndicator = true;
+    
+    this.setTag(null);
     this.getPosts(event.value)
   }
 
@@ -117,15 +128,16 @@ export class CommunityPage {
     })
   }
 
-  public clearSearch(event: any) {
-    this.tag = null
-  }
-
   private subscribeToTabChangedEvents() {
     this.events.subscribe('tab:changed', (data: any) => {
       if (data) {
-        if (data.want === 'tagged') {
-          this.tag = data['tag']
+        switch(data.want) {
+          case 'tagged':
+            this.tag = data['tag'];
+            break;
+          case 'likes':
+            this.feed = 'likes';
+            break;
         }
       }
     })
@@ -143,6 +155,7 @@ export class CommunityPage {
     })
   }
 
+  private setTag(tag: string) { this.tag = tag }
 
   private resetTimer() {
     this.events.publish('app:timer', new Date())
