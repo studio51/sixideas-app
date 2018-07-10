@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { normalizeURL } from 'ionic-angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
@@ -8,7 +7,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 
-import { IonicPage, ViewController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, ViewController, ActionSheetController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -84,7 +83,7 @@ export class ProfileFormPage {
     });
 
     let actionSheet = this.actionSheetCtrl.create({
-      title: 'Asset Actions',
+      title: 'Choose Image Source',
       buttons: buttons
     });
 
@@ -132,11 +131,11 @@ export class ProfileFormPage {
       if (caller === 'avatar') {
         this.imageChanges['avatar'] = image;
         this.user.avatar_url = normalizeURL(image);
-        this.form.controls.avatar_id = this.imageChanges['avatar_id'];
+        this.form.controls.avatar_id.setValue(this.imageChanges['avatar_id']);
       } else {
         this.imageChanges['profile_banner'] = image;
         this.user.profile_banner_url = normalizeURL(image);
-        this.form.controls.profile_banner_id = this.imageChanges['profile_banner_id'];
+        this.form.controls.profile_banner_id.setValue(this.imageChanges['profile_banner_id']);
       }
     }, (error) => {
       console.error(error);
