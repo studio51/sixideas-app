@@ -1,7 +1,7 @@
 <ion-menu [content]="content">
   <ion-content>
     <ion-list no-lines>
-      <button menuClose *ngFor="let page of appPages" (click)="openPage(page.component)">
+      <button menuClose *ngFor="let page of appPages" (tap)="openPage(page.component)">
         <ion-icon [name]="page.icon"></ion-icon>
         {{ page.title }}
       </button>
@@ -9,7 +9,7 @@
   </ion-content>
 
   <ion-footer>
-    <button menuClose (click)="clearSession()">
+    <button menuClose (tap)="logout()">
       <ion-icon name="log-out"></ion-icon>
       Sign out
     </button>
@@ -17,4 +17,3 @@
 </ion-menu>
 
 <ion-nav #content [root]="rootPage" main swipeBackEnabled="false"></ion-nav>
-<!-- <ion-nav [root]="rootPage"></ion-nav> -->

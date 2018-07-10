@@ -31,6 +31,7 @@ import { SessionProvider } from '../providers/session';
 import { MetaProvider } from '../providers/meta';
 import { UserProvider } from '../providers/user';
 import { FeedProvider } from '../providers/feed';
+import { TagProvider } from '../providers/tag';
 import { PostProvider } from '../providers/post';
 import { CommentProvider } from '../providers/comment';
 import { LikeProvider } from '../providers/like';
@@ -68,8 +69,8 @@ import { ImageProvider } from '../providers/image';
 
     /*** Providers * HTTP ****/
     
-    SessionProvider, MetaProvider, UserProvider, FeedProvider, PostProvider,
-    CommentProvider, LikeProvider, ImageProvider
+    SessionProvider, MetaProvider, UserProvider, FeedProvider, TagProvider,
+    PostProvider, CommentProvider, LikeProvider, ImageProvider
   ]
 })
 
