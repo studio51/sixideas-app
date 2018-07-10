@@ -36,7 +36,7 @@ export class NotificationService {
     }
   }
 
-  public notify() {
+  public notify(): Observable<any> {
     this.init();
 
     if (this.platform.is('cordova')) {

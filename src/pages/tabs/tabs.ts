@@ -7,7 +7,7 @@ import { IonicPage, Events, MenuController } from 'ionic-angular';
 })
 
 export class TabsPage {
-  community = 'CommunityPage'; // PostFormPage
+  community = 'CommunityPage';
   users     = 'UsersPage';
   profile   = 'ProfilePage';
 

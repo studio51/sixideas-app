@@ -43,7 +43,7 @@ export class MentionComponent {
     } else if (type === 'tag') {
       options['tag'] = node.getAttribute('value');
 
-      this.events.publish('posts:changed', options)
+      this.events.publish('post:tagged', options)
     }
   }
 

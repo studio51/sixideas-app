@@ -33,7 +33,9 @@ export class ProfilePage {
   
   ) { }
 
-  ionViewDidEnter() { this.getUser() }
+  ionViewDidEnter() {
+    this.getUser()
+  }
 
   private getUser() {
     let subscriber: Observable<User>;
@@ -82,8 +84,9 @@ export class ProfilePage {
   }
 
   public viewLikes(userID: string) {
-    this.events.publish('tab:changed', { userID: userID, want: 'likes' })
-    this.nav.setRoot('TabsPage', { tab: '1' })
+    this.nav.setRoot('TabsPage', { tab: '1' }).then(() => {
+      this.events.publish('tab:changed', { userID: userID, want: 'likes' })
+    })
   }
 
   public viewPosts(tag: string) {

@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DirectivesModule } from '../directives/directives.module';
-import { InlineEditorModule } from '@qontu/ngx-inline-editor';
 
 import { UserAvatarComponent } from './user-avatar/user-avatar';
 import { PostComponent } from './post/post';
@@ -29,8 +28,7 @@ import { MentionComponent } from './mention/mention';
     IonicModule,
     
     CommonModule,
-    DirectivesModule,
-    InlineEditorModule
+    DirectivesModule
   ],
 	
   exports: [
