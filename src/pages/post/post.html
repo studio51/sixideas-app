@@ -4,6 +4,6 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <post [post]="post" [author]="post?.user"></post>
+<ion-content>
+  <post *ngIf="post" [post]="post" [author]="post.user" [user]="user"></post>
 </ion-content>

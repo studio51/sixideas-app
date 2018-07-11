@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+import { User } from '../../models/user';
 import { Post } from '../../models/post';
+
+import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
 
 @IonicPage({
-  defaultHistory: ['CommunityPage'],
-  name: 'post',
   segment: 'post/:id'
 })
 
@@ -16,12 +17,12 @@ import { PostProvider } from '../../providers/post';
 })
 
 export class PostPage {
+  user: User;
   post: Post;
-  commentID: string;
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
+    public sessionProvider: SessionProvider,
     public postProvider: PostProvider
   
   ) { }
@@ -31,8 +32,12 @@ export class PostPage {
   }
 
   private getPost() {
-    this.postProvider.get(this.navParams.get('id'), { include_author: true }).subscribe((post: Post) => {
-      this.post = post
+    this.sessionProvider.user().subscribe((user: User) => {
+      this.user = user;
+
+      this.postProvider.get(this.navParams.get('id'), { include_author: true }).subscribe((post: Post) => {
+        this.post = post
+      });
     })
   }
 }
