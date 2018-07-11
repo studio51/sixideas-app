@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
 
-import { IonicPage, Events, Nav, ViewController, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, Events, App, Tabs, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session';
 
@@ -21,9 +21,13 @@ export class ProfilePage {
   user: User;
   posts: Post[] = [];
 
+  currentUser: boolean = false;
+
+  tabs: any;
+
   constructor(
     public events: Events,
-    public nav: Nav,
+    public app: App,
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
     public navParams: NavParams,
@@ -31,7 +35,10 @@ export class ProfilePage {
     public userProvider: UserProvider,
     public postProvider: PostProvider
   
-  ) { }
+  ) {
+    
+    this.tabs = this.app.getNavByIdOrName('sixIdeasMainNav') as Tabs;
+  }
 
   ionViewDidEnter() {
     this.getUser()
@@ -48,8 +55,10 @@ export class ProfilePage {
     }
 
     if (this.navParams.get('id') || this.navParams.get('username')) {
+      this.currentUser = false;
       subscriber = this.userProvider.get(this.navParams.get('id'), params)
     } else {
+      this.currentUser = true;
       subscriber = this.sessionProvider.user()
     }
 
@@ -74,25 +83,39 @@ export class ProfilePage {
   }
 
   public viewFollowing(userID: string) {
-    this.events.publish('tab:changed', { userID: userID, want: 'following' })
-    this.nav.setRoot('TabsPage', { tab: '2' })
+    this.events.publish('tab:changed', {
+      userID: userID,
+      want: 'following'
+    });
+
+    this.tabs.select(2);
   }
 
   public viewFollowers(userID: string) {
-    this.events.publish('tab:changed', { userID: userID, want: 'followers' })
-    this.nav.setRoot('TabsPage', { tab: '2' })
+    this.events.publish('tab:changed', {
+      userID: userID,
+      want: 'followers'
+    });
+
+    this.tabs.select(2);
   }
 
   public viewLikes(userID: string) {
-    this.nav.setRoot('TabsPage', { tab: '1' }).then(() => {
-      this.events.publish('tab:changed', { userID: userID, want: 'likes' })
-    })
+    this.events.publish('tab:changed', {
+      userID: userID,
+      want: 'likes'
+    });
+
+    this.tabs.select(1);
   }
 
   public viewPosts(tag: string) {
-    this.nav.setRoot('TabsPage', { tab: '1' }).then(() => {
-      this.events.publish('post:tagged', { tag: tag, want: 'tagged' })
-    })
+    this.events.publish('post:tagged', {
+      tag: tag,
+      want: 'tagged'
+    });
+
+    this.tabs.select(1);
   }
 
   public dismissView() {

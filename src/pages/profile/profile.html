@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-buttons start>
+    <ion-buttons start *ngUnless="currentUser">
       <button ion-button icon color="danger" (tap)="dismissView()">
         <i class="fal fa-times-circle" color="red"></i>
       </button>
@@ -8,7 +8,7 @@
 
     <ion-title>{{ user ? user.name : 'Profile' }}</ion-title>
 
-    <ion-buttons end>
+    <ion-buttons end *ngIf="currentUser">
       <button ion-button icon (tap)="editProfile()">
         <ion-icon name="create"></ion-icon>
       </button>
