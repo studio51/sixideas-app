@@ -130,6 +130,8 @@ export class CommunityPage {
 
   private subscribeToTabChangedEvents() {
     this.events.subscribe('tab:changed', (data: any) => {
+      this.events.unsubscribe('tab:changed');
+
       if (data) {
         switch(data.want) {
           case 'tagged':
@@ -145,12 +147,14 @@ export class CommunityPage {
 
   private subscribeToPostChangedEvents() {
     this.events.subscribe('post:changed', (counter: number) => {
-      this.newPostsCounter = counter
+      this.events.unsubscribe('post:changed');
+      this.newPostsCounter = counter;
     })
   }
   
   private subscribeToPostTaggedEvents() {
     this.events.subscribe('post:tagged', (data: any) => {
+      this.events.unsubscribe('post:tagged');
       this.getTaggedPosts(data['tag']);
     })
   }
@@ -158,7 +162,7 @@ export class CommunityPage {
   private setTag(tag: string) { this.tag = tag }
 
   private resetTimer() {
-    this.events.publish('app:timer', new Date())
-    this.events.publish('post:changed', 0)
+    this.events.publish('app:timer', new Date());
+    this.events.publish('post:changed', 0);
   }
 }
