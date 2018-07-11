@@ -47,18 +47,21 @@ ion-col[justify-content-end] {
 
 // ---
 
-
 .app-root {
 	
 	ion-menu {
-		background: linear-gradient(to bottom right, green, darkteal) !important;
-		background-color: red;
+		background-color: #222;
 		
 		.menu-inner,
 		ion-content { background-color: transparent !important; }
 
 		.fixed-content,
-		.scroll-content { margin-bottom: 0 !important; }
+		.scroll-content {
+			margin-bottom: 0 !important;
+			background-color: transparent !important;
+		}
+
+		.scroll-content { padding: 96px 0 !important; }
 
 		&.show-menu {
 			.menu-inner {
@@ -78,8 +81,8 @@ ion-col[justify-content-end] {
 		button:not(.button) {
 			display: flex;
 			flex: 1;
-			padding: (13px / 2) 13px;
-			font-size: 1.1em;
+			padding: 7px 13px;
+			font-size: 2em;
 			font-weight: 500;
 			color: #fff;
 			align-items: center;
@@ -99,7 +102,6 @@ ion-col[justify-content-end] {
 		ion-list {
 			display: flex;
 			flex-direction: column;
-			margin: (13px / 2) 0 !important;
 
 			ion-item-divider {
 				padding: 0 !important;

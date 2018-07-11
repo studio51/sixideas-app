@@ -6,14 +6,12 @@
         {{ page.title }}
       </button>
     </ion-list>
-  </ion-content>
 
-  <ion-footer>
     <button menuClose (tap)="logout()">
       <ion-icon name="log-out"></ion-icon>
       Sign out
     </button>
-  </ion-footer>
+  </ion-content>
 </ion-menu>
 
 <ion-nav #content [root]="rootPage" main swipeBackEnabled="false"></ion-nav>
