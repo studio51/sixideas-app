@@ -49,8 +49,6 @@ export class UsersPage {
   public follow(user: User) {
     let subscriber: any;
 
-    console.log('am I following?', this.imFollowing(user))
-
     if (this.imFollowing(user)) {
       subscriber = this.userProvider.unfollow(user._id.$oid)
     } else {

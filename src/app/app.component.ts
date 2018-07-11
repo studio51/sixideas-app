@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 
-import { Nav, Platform, Events } from 'ionic-angular';
+import { Nav, Platform, Events, ToastController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { StatusBar } from '@ionic-native/status-bar';
@@ -9,6 +9,8 @@ import { Storage } from '@ionic/storage';
 
 import { SessionProvider } from '../providers/session';
 import { PostProvider } from '../providers/post';
+
+import { NotificationService } from '../services/notification';
 
 @Component({
   templateUrl: 'app.html'
@@ -29,11 +31,14 @@ export class SixIdeasApp {
   constructor(
     public platform: Platform,
     public events: Events,
+    public toastCtrl: ToastController,
+    public modalCtrl: ModalController,
     public storage: Storage,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     public sessionProvider: SessionProvider,
-    public postProvider: PostProvider
+    public postProvider: PostProvider,
+    public notificationService: NotificationService
 
   ) {
 
@@ -41,6 +46,28 @@ export class SixIdeasApp {
       if (source === 'cordova') {
         statusBar.styleDefault();
         splashScreen.hide();
+        
+        notificationService.notify().subscribe((notification: any) => {
+          const toast = this.toastCtrl.create({
+            message: notification.message,
+            duration: 3000,
+            showCloseButton: true,
+            closeButtonText: 'View',
+            position: 'top'
+          });
+    
+          toast.onDidDismiss((data: any, role: string) => {
+            if (role == 'close') {
+              const modal: any = this.modalCtrl.create('PostPage', {
+                id: notification.additionalData.post_id
+              });
+    
+              modal.present();
+            }
+          });
+    
+          toast.present();
+        })
       }
 
       this.events.subscribe('app:timer', (timestamp: Date) => {
