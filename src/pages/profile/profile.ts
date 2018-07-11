@@ -101,6 +101,10 @@ export class ProfilePage {
   }
 
   public viewLikes(userID: string) {
+    if (this.viewCtrl.component.name === 'ModalCmp') {
+      this.dismissView()
+    }
+
     this.events.publish('tab:changed', {
       userID: userID,
       want: 'likes'
