@@ -5,7 +5,7 @@ import { HttpModule } from '@angular/http'; // Deprecated
 
 // TODO: Replace the HTTPModule with the new HTTPClientModule
 // 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { SixIdeasApp } from './app.component';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -36,6 +36,8 @@ import { PostProvider } from '../providers/post';
 import { CommentProvider } from '../providers/comment';
 import { LikeProvider } from '../providers/like';
 import { ImageProvider } from '../providers/image';
+
+import { HTTPInterceptor } from '../services/http.interceptor';
 
 @NgModule({
   declarations: [SixIdeasApp],
@@ -70,7 +72,9 @@ import { ImageProvider } from '../providers/image';
     /*** Providers * HTTP ****/
     
     SessionProvider, MetaProvider, UserProvider, FeedProvider, TagProvider,
-    PostProvider, CommentProvider, LikeProvider, ImageProvider
+    PostProvider, CommentProvider, LikeProvider, ImageProvider,
+
+    { provide: HTTP_INTERCEPTORS, useClass: HTTPInterceptor, multi: true }
   ]
 })
 

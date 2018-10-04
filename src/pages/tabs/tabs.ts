@@ -8,8 +8,8 @@ import { IonicPage, Events, MenuController } from 'ionic-angular';
 
 export class TabsPage {
   community = 'CommunityPage';
-  users     = 'UsersPage';
-  profile   = 'ProfilePage';
+  // users     = 'UsersPage';
+  // profile   = 'ProfilePage';
 
   newPostsCounter: number = 0;
 

@@ -20,13 +20,14 @@ export class MentionComponent {
 
   public parseBody() {
     const body = this.body
-      .replace(/\B\@([a-zA-Z0-9_-]+)/g, (originalValue, match): any => this.createElementss(originalValue, match, 'mention'))
-      .replace(/\B\S*#(\[[^\]]+\]|\S+)/g, (originalValue, match): any => this.createElementss(originalValue, match, 'tag'));
+      .replace(/\B\@([a-zA-Z0-9_-]+)/g, (originalValue, match): any => this.createElement(originalValue, match, 'mention'))
+      .replace(/\B\S*#(\[[^\]]+\]|\S+)/g, (originalValue, match): any => this.createElement(originalValue, match, 'tag'));
 
     return body
   }
 
-  public viewProfile(event: any) {
+  // Based on the event, which can 
+  public viewMention(event: any) {
     const node: any = event.srcEvent.path[0];
 
     if (node.nodeName != 'ABBR') return
@@ -47,7 +48,7 @@ export class MentionComponent {
     }
   }
 
-  private createElementss(key: string, value: string, type: string) {
+  private createElement(key: string, value: string, type: string) {
     const div: any  = document.createElement('div'),
           abbr: any = document.createElement('abbr');
 

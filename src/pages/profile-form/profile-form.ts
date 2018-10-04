@@ -151,7 +151,7 @@ export class ProfileFormPage {
     this.form.controls.colour.setValue(colour);
   }
 
-  submit() {
+  async submit() {
     let batch: any[] = [];
 
     if (Object.keys(this.imageChanges).length > 0) {
@@ -160,17 +160,14 @@ export class ProfileFormPage {
       batch.push(of(false))
     }
 
-    forkJoin(batch).subscribe((response: Array<any>) => {
-      const userChanges: any = Object.assign(this.form.value, response[0]);
-
-      this.userProvider.update(this.user._id.$oid, userChanges).subscribe((response: any) => {
-        if (response.status === 'ok') {
-          this.dismissView(response.user)
-        } else {
-          console.log('error')
-        }
-      })
-    })
+    const rr = await forkJoin(batch)
+    const userChanges: any = Object.assign(this.form.value, rr[0]);
+    const response: any = this.userProvider.update(this.user._id.$oid, userChanges)
+    if (response.status === 'ok') {
+      this.dismissView(response.user)
+    } else {
+      console.log('error')
+    }
   }
 
   private processUploads() {

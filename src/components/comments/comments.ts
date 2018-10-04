@@ -36,11 +36,9 @@ export class CommentsComponent implements OnInit {
     this.getComments()
   }
 
-  private getComments() {
-    this.commentProvider.load(this.post._id.$oid).subscribe((comments: Comment[]) => {
-      this.comments = comments;
-      this.generateForm();
-    })
+  private async getComments() {
+    this.comments = await this.commentProvider.load(this.post._id.$oid)
+    this.generateForm();
   }
 
   public generateForm(comment?: Comment) {
@@ -61,19 +59,18 @@ export class CommentsComponent implements OnInit {
     modal.present();
   }
 
-  public submit() {
+  public async submit() {
     this.processingComment = true;
 
-    this.commentProvider.create(this.post._id.$oid, this.form.value).subscribe((response: any) => {
-      this.processingComment = false;
-  
-      if (this.limit === this.comments.length) {
-        this.increment(1)
-      }
+    const response = await this.commentProvider.create(this.post._id.$oid, this.form.value);
+    this.processingComment = false;
 
-      this.comments.push(response.comment);
-      this.form.reset();
-    })
+    if (this.limit === this.comments.length) {
+      this.increment(1)
+    }
+
+    this.comments.push(response.comment);
+    this.form.reset();
   }
 
   public viewAll() {

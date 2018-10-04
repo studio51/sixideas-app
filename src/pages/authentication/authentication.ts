@@ -40,20 +40,18 @@ export class AuthenticationPage {
     })
   }
 
-  submit() {
-    this.login(this.form.value).subscribe((response: any) => {
-      if (response.success) {
-        this.authentication = null;
+  async submit() {
+    const response: any = await this.login(this.form.value)
 
-        this.storage.set('token', response.user._id.$oid).then(() => {
-          this.sessionProvider.appear().subscribe(() => {
-            this.navCtrl.setRoot('TabsPage')
-          })
-        });
-      } else {
-        this.authentication = response
-      }
-    })
+    if (response.success) {
+      this.authentication = null;
+
+      await this.storage.set('token', response.user._id.$oid)
+      await this.sessionProvider.appear()
+      this.navCtrl.setRoot('TabsPage')
+    } else {
+      this.authentication = response
+    }
   }
 
   private login(user: any) {

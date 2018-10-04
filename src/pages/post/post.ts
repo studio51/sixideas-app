@@ -31,13 +31,8 @@ export class PostPage {
     this.getPost()
   }
 
-  private getPost() {
-    this.sessionProvider.user().subscribe((user: User) => {
-      this.user = user;
-
-      this.postProvider.get(this.navParams.get('id'), { include_author: true }).subscribe((post: Post) => {
-        this.post = post
-      });
-    })
+  private async getPost() {
+    this.user = await this.sessionProvider.user();
+    this.post = await this.postProvider.get(this.navParams.get('id'), { include_author: true });
   }
 }

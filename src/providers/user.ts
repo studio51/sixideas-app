@@ -49,7 +49,7 @@ export class UserProvider {
   }
 
   public update(id: string, data: User | { }) {
-    return this.http.patch(`users/${ id }`, data)
+    // return this.http.patch(`users/${ id }`, data)
   }
 
   public follow(id: string) {

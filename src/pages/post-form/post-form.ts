@@ -52,18 +52,15 @@ export class PostFormPage {
     this.postID = navParams.get('id');
   }
 
-  ionViewDidLoad() {
-    this.sessionProvider.user().subscribe((user: User) => {
-      this.user = user;
-      (this.postID ? this.edit() : this.generateForm());
-    })
+  async ionViewDidLoad() {
+    this.user = await this.sessionProvider.user();
+    (this.postID ? this.edit() : this.generateForm());
   }
 
   private edit() {
-    this.postProvider.get(this.postID).subscribe((response: any) => {
-      Object.assign(this.post, response);
-      this.generateForm();
-    })
+    const response = this.postProvider.get(this.postID)
+    Object.assign(this.post, response);
+    this.generateForm();
   }
 
   private generateForm() {
@@ -130,6 +127,13 @@ export class PostFormPage {
         console.error(error)
       }
     })
+  }
+
+  public checkPostContent(event: any) {
+    console.log(event)
+    const expression: string = 'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)';
+    const regex: RegExp = new RegExp(expression);
+
   }
 
   public submit() {

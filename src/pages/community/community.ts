@@ -31,6 +31,8 @@ export class CommunityPage {
 
   newPostsCounter: number = 0;
 
+  currentUser: boolean = true;
+
   constructor(
     public events: Events,
     public navParams: NavParams,
@@ -49,13 +51,13 @@ export class CommunityPage {
     this.subscribeToPostTaggedEvents();
   }
 
-  ionViewDidEnter() {
-    this.sessionProvider.user().subscribe((user: User) => {
-      this.user = user;
-      this.tags = user.interests;
+  async ionViewDidEnter() {
+    const user = await this.sessionProvider.user()
+    
+    this.user = user;
+    this.tags = user.interests;
 
-      this.getPosts();
-    })
+    this.getPosts();
   }
 
   public showTags() {
@@ -77,7 +79,6 @@ export class CommunityPage {
     }
     
     this.setTag(tag);
-    this.showLoadingIndicator = true;
     this.getPosts();
   }
 
@@ -98,23 +99,25 @@ export class CommunityPage {
     this.getPosts(event.value)
   }
 
-  private getPosts(feed?: string) {
+  private async getPosts(feed?: string) {
+    this.showLoadingIndicator = true;
+
     const params = {}
           params['include_author'] = true
     
     if (this.tag) { params['tag'] = this.tag }
     if (feed && feed != 'community') { params['feed'] = feed }
 
-    this.postProvider.load('', params).subscribe((posts: Post[]) => {
-      this.posts = posts;
-      this.showLoadingIndicator = false;
+    this.posts = await this.postProvider.load('', params);
+    this.showLoadingIndicator = false;
 
-      if (this.refresher) {
-        this.refresher.complete()
-      }
+    console.log(this.posts)
 
-      this.resetTimer();
-    })
+    if (this.refresher) {
+      this.refresher.complete()
+    }
+
+    this.resetTimer();
   }
 
   public newPost() {
@@ -130,8 +133,6 @@ export class CommunityPage {
 
   private subscribeToTabChangedEvents() {
     this.events.subscribe('tab:changed', (data: any) => {
-      this.events.unsubscribe('tab:changed');
-
       if (data) {
         switch(data.want) {
           case 'tagged':
@@ -146,17 +147,16 @@ export class CommunityPage {
   }
 
   private subscribeToPostChangedEvents() {
-    this.events.subscribe('post:changed', (counter: number) => {
-      this.events.unsubscribe('post:changed');
-      this.newPostsCounter = counter;
-    })
+    // this.events.subscribe('post:changed', (counter: number) => {
+    //   this.newPostsCounter = counter;
+    // })
   }
   
   private subscribeToPostTaggedEvents() {
-    this.events.subscribe('post:tagged', (data: any) => {
-      this.events.unsubscribe('post:tagged');
-      this.getTaggedPosts(data['tag']);
-    })
+    // this.events.subscribe('post:tagged', (data: any) => {
+      
+    //   this.getTaggedPosts(data['tag']);
+    // })
   }
 
   private setTag(tag: string) { this.tag = tag }

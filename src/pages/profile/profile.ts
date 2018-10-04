@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 
 import { IonicPage, Events, App, Tabs, ViewController, ModalController, NavParams } from 'ionic-angular';
 
@@ -44,8 +43,8 @@ export class ProfilePage {
     this.getUser()
   }
 
-  private getUser() {
-    let subscriber: Observable<User>;
+  private async getUser() {
+    // let user: any;
     const params: Object = {};
 
     if (this.navParams.get('username')) {
@@ -56,19 +55,13 @@ export class ProfilePage {
 
     if (this.navParams.get('id') || this.navParams.get('username')) {
       this.currentUser = false;
-      subscriber = this.userProvider.get(this.navParams.get('id'), params)
+      this.user = await this.userProvider.get(this.navParams.get('id'), params)
     } else {
       this.currentUser = true;
-      subscriber = this.sessionProvider.user()
+      this.user = await this.sessionProvider.user()
     }
 
-    subscriber.subscribe((user: User) => {
-      this.user = user;
-
-      this.postProvider.load(user._id.$oid).subscribe((posts: Post[]) => {
-        this.posts = posts
-      });
-    })
+    this.posts = await this.postProvider.load(this.user._id.$oid);
   }
 
   public editProfile() {

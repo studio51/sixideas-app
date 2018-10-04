@@ -12,18 +12,18 @@ export class ImageProvider {
   ) { }
 
   public upload(image: string) {
-    return this.http.token().flatMap((token: string) => {
+    // return this.http.token().flatMap((token: string) => {
       const fileTransfer: FileTransferObject = this.transfer.create();
 
       let options: FileUploadOptions = {
         fileKey: 'file',
         fileName: 'name.png',
-        headers: {
-          token: token
-        }
+        // headers: {
+          // token: token
+        // }
       }
   
-      return fileTransfer.upload(image, `${ this.http.endpoint }/uploads`, options)
-    })
+      return fileTransfer.upload(image, `${ '' }/uploads`, options)
+    // })
   }
 }

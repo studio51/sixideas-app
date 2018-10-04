@@ -74,44 +74,38 @@ export class SixIdeasApp {
         this.currentTimestamp = (timestamp ? timestamp : new Date());
       });
 
-      this.checkSession().subscribe();
-    })
-  }
-
-  private checkSession() {
-    return Observable.create((observer) => {
-      this.storage.get('token').then((token: string) => {
-        if (token) {
-          this.sessionProvider.appear().subscribe(() => {
-            this.rootPage = 'TabsPage';
-            this.subscribeToNewPosts();
-            
-            observer.complete();
-          })
-        } else {
-          this.rootPage = 'AuthenticationPage';
-          observer.complete();
-        }
+      Observable.interval(5000).subscribe(() => {
+        this.checkSession();
       })
     })
   }
 
-  public logout() {
-    this.sessionProvider.logout().subscribe((response: any) => {
-      if (response) {
-        this.storage.remove('token').then(() => {
-          this.rootPage = 'AuthenticationPage'
-        })
-      }
-    })
+  private async checkSession() {
+    const token: string = await this.storage.get('token');
+    
+    if (token) {
+      // await this.sessionProvider.appear()
+      this.rootPage = 'TabsPage';
+      // this.subscribeToNewPosts();
+    } else {
+      this.rootPage = 'AuthenticationPage';
+    }
   }
 
-  private subscribeToNewPosts() {
-    Observable.interval(5000).subscribe(() => {
-      this.postProvider.check(this.currentTimestamp).subscribe((response: any) => {
-        this.events.publish('post:changed', response.count)
-      })
-    })
+  public async logout() {
+    const response: any = await this.sessionProvider.logout()
+    
+    if (response) {
+      await this.storage.remove('token')
+      this.rootPage = 'AuthenticationPage'
+    }
+  }
+
+  private async subscribeToNewPosts() {
+    if (this.currentTimestamp) {
+      const response = await this.postProvider.check(this.currentTimestamp)
+      this.events.publish('post:changed', response.count)
+    }
   }
 
   openPage(page: Page) {

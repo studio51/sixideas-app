@@ -43,11 +43,11 @@ export class SessionProvider {
   }
 
   public user() {
-    return this.http.get('sessions/user').map((response: any) => response.success ? response.user : response)
+    return this.http.get('sessions/user').then((response: any) => response.success ? response.user : response)
   }
 
   public logout() {
-    return this.http.delete('sessions/logout', {})
+    // return this.http.delete('sessions/logout', {})
   }
 
   public appear() {

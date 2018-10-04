@@ -50,24 +50,24 @@ export class LikeComponent implements OnInit {
     return (this.likeable.likes || []).filter((like: any) => like.user_id.$oid === this.user._id.$oid).length === 1
   }
 
-  private like() {
+  private async like() {
     this.updateCounter();
 
-    this.likeProvider.like(this.params).subscribe((response: any) => {
-      this.handleServerResponse(response)
-    }, (error: any) => {
-      console.log(error)
-    })
+    const response = await this.likeProvider.like(this.params)
+    this.handleServerResponse(response)
+    // }, (error: any) => {
+      // console.log(error)
+    // })
   }
   
   private unlike() {
     this.updateCounter(-1);
     
-    this.likeProvider.unlike(this.params).subscribe((response: any) => {
-      this.handleServerResponse(response)
-    }, (error: any) => {
-      console.log(error)
-    })
+    const response = this.likeProvider.unlike(this.params)
+    this.handleServerResponse(response)
+    // }, (error: any) => {
+      // console.log(error)
+    // })
   }
 
   private setParameters() {

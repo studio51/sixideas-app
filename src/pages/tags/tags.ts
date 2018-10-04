@@ -36,10 +36,8 @@ export class TagsPage {
     this.getTags()
   }
 
-  private getTags() {
-    this.tagProvider.load().subscribe((tags: any[]) => {
-      this.tags = this.qTags = tags
-    })
+  private async getTags() {
+    this.tags = this.qTags = await this.tagProvider.load()
   }
 
   public reloadTags() {

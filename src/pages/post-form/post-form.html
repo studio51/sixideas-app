@@ -60,7 +60,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-textarea rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
+        <ion-textarea (ionChange)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
         {{ form.controls.body.value }}
       </ion-item>
     </form>

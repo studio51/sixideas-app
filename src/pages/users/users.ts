@@ -28,14 +28,9 @@ export class UsersPage {
     this.getUsers()
   }
 
-  private getUsers() {
-    this.sessionProvider.user().subscribe((user: User) => {
-      this.user = user;
-      
-      this.userProvider.load().subscribe((users: User[]) => {
-        this.users = users
-      });
-    })
+  private async getUsers() {
+    this.user = await this.sessionProvider.user();
+    this.users = await this.userProvider.load();
   }
 
   public viewProfile(user: User) {
