@@ -1,5 +1,14 @@
 page-post-form {
 
+  .post-form--query {
+    max-height: calc(44px * 4);
+    overflow-y: scroll;
+
+    ion-list {
+      margin-bottom: 0;
+    }
+  }
+
   ion-card.card {
     box-shadow: none !important;
     border: none !important;

@@ -11,12 +11,17 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { User } from '../../models/user';
 import { Post } from '../../models/post';
+import { User } from '../../models/user';
+// import { Tag } from '../../models/tag';
 
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
+import { UserProvider } from '../../providers/user';
+import { TagProvider } from '../../providers/tag';
 import { ImageProvider } from '../../providers/image';
+
+import * as getURLs from 'get-urls';
 
 @IonicPage()
 @Component({
@@ -27,12 +32,21 @@ import { ImageProvider } from '../../providers/image';
 export class PostFormPage {
   postID: string;
 
-  user: User;
   post: Post;
+  user: User;
+
+  users: User[];
+  tags: any[];
+
   form: FormGroup;
 
   postTypes: Array<any> = [];
   imageChange: Object = {};
+
+  preview: any;
+
+  record: boolean = false;
+  query: string = '';
 
   constructor(
     public renderer: Renderer,
@@ -42,6 +56,8 @@ export class PostFormPage {
     public actionSheetCtrl: ActionSheetController,
     public sessionProvider: SessionProvider,
     public postProvider: PostProvider,
+    public userProvider: UserProvider,
+    public tagProvider: TagProvider,
     public imageProvider: ImageProvider
   
   ) {
@@ -129,11 +145,79 @@ export class PostFormPage {
     })
   }
 
-  public checkPostContent(event: any) {
-    console.log(event)
-    const expression: string = 'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)';
-    const regex: RegExp = new RegExp(expression);
+  public async checkPostContent(event: any) {
+    const value: string = event.value;
 
+    if (event.type === 'keyup') {
+      const moveOn: boolean = (event.code === 'Space' || event.key === ' ');
+      const ignoredChar: boolean = event.key === 'Shift' || event.key === 'Backspace';
+
+      if (moveOn) {
+        this.record = false;
+        this.query = '';
+
+        this.users = this.tags = [];
+
+        return
+      }
+
+      if (event.key.startsWith('@')) {
+        this.record = true;
+        this.query = '@';
+      }
+
+      if (this.record && this.query.startsWith('@') && this.query.length > 0) {
+        if (event.code === 'Backspace') {
+          this.query = this.query.slice(0, -1);
+          this.users = await this.userProvider.load(this.query);
+        } else {
+          if (!ignoredChar) {
+            this.query += event.key;
+            this.users = await this.userProvider.load(this.query);
+          }
+        }
+      }
+
+      if (event.key.startsWith('#')) {
+        this.record = true;
+        this.query = '#';
+      }
+
+      if (this.record && this.query.startsWith('#') && this.query.length > 0) {
+        if (event.code === 'Backspace') {
+          this.query = this.query.slice(0, -1);
+          this.tags = await this.tagProvider.load(this.query);
+        } else {
+          if (!ignoredChar) {
+            this.query += event.key;
+            this.tags = await this.tagProvider.load(this.query);
+          }
+        }
+      }
+    } else if (event.type === 'text') {
+      const URLs: Set<any> = getURLs(value);
+
+      // Check and see if there are any URLs in the string for us to check. Also,
+      // really important, check to make sure we haven't already created a preview for it.
+      // 
+      if (URLs.size > 0 && !this.preview) {
+        console.log(URLs)
+        // @ts-ignore
+        const previewURL: string = URLs.entries().next().value[0];
+        const response: any = await this.postProvider.preview(previewURL);
+
+        if (response) {
+          this.preview = response;
+          return
+        }
+
+        throw new Error('request failed');
+      } else if ( URLs.size === 0) { this.preview = null }
+
+      return
+    } else {
+      return
+    }
   }
 
   public submit() {
@@ -166,21 +250,28 @@ export class PostFormPage {
     })
   }
 
-  private processUpload() {
-    return Observable.create((observer) => {
-    
-      from(this.imageProvider.upload(this.imageChange['image'])).map((response) => JSON.parse(response.response)).subscribe((response: any) => {
-        if (response.success) {
-          observer.next({ image_id: response.image._id.$oid });
-          observer.complete();
-        } else {
-          console.log(response)
-        }
-      })
-    })
+  private async processUpload() {
+    const r = await this.imageProvider.upload(this.imageChange['image']);
+    const rr = JSON.parse(r.response);
+
+    if (rr.success) {
+      return { image_id: rr.image._id.$oid }
+    }
   }
 
   public dismissView(post?: Post) {
     this.viewCtrl.dismiss(post)
+  }
+
+  public replaceText(value: string) {
+    const body: any = this.form.controls.body;
+    
+    if (this.query.startsWith('@')) {
+      body.setValue(body.value.replace(this.query.replace('@@', '@'), `@${ value }`));
+    } else {
+      body.setValue(body.value.replace(this.query.replace('##', '#'), value));
+    }
+
+    this.query = '';
   }
 }

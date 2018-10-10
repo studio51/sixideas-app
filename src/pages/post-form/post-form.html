@@ -55,24 +55,45 @@
       </ion-grid>
 
       <ion-item *ngIf="form.controls.type.value === 'default'">
-        <ion-input type="text" formControlName="title" placeholder="Title (optional)"></ion-input>
+        <ion-input type="text" [(ngModel)]="myInput" formControlName="title" placeholder="Title (optional)"></ion-input>
         {{ form.controls.title.value }}
       </ion-item>
 
       <ion-item>
-        <ion-textarea (ionChange)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
+        <ion-textarea (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
         {{ form.controls.body.value }}
       </ion-item>
+      
+      <ng-container preview *ngIf="preview">
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col col-2 margin-right-2>
+              <img preview-image width="100%" [src]="preview.image" />
+            </ion-col>
+
+            <ion-col text-left>
+              <h2>{{ preview.title }}</h2>
+              <p preview-description>{{ preview.description }}</p>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ng-container>
     </form>
   </ion-card>
 
-  <!-- <ion-grid no-padding margin-top>
-    <ion-row justify-content-center>
-      <ion-col col-auto>
-        <button ion-button medium [disabled]="form && !form.valid" (tap)="submit()" ngClass="-colour-{{ user?.colour }}">
-          Create Post
-        </button>
-      </ion-col>
-    </ion-row>
-  </ion-grid> -->
+  <ion-footer *ngIf="query" class="post-form--query">
+    <ion-list>
+      <ng-container *ngIf="users">
+        <ion-item *ngFor="let user of users" (click)="replaceText(user.username)">
+          <p>@{{ user.username }}</p>
+        </ion-item>
+      </ng-container>
+
+      <ng-container *ngIf="tags">
+        <ion-item *ngFor="let tag of tags" (click)="replaceText(tag.display_text)">
+          <p>{{ tag.display_text }}</p>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+  </ion-footer>
 </ion-content>
