@@ -30,6 +30,16 @@ user-avatar {
         border-color: rgba(#6F6F6F, 1);
         background-color: rgba(#6F6F6F, 1);
       }
+
+      &.size {
+        &--small {
+          height: 35px;
+          width: 35px;
+    
+          img.avatar { border-width: 2px; }
+          p.initials { font-size: 10px; }
+        }
+      }
     }
 
     align-items: center;

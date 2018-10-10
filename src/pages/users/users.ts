@@ -31,6 +31,8 @@ export class UsersPage {
   private async getUsers() {
     this.user = await this.sessionProvider.user();
     this.users = await this.userProvider.load();
+
+    console.log(this.users)
   }
 
   public viewProfile(user: User) {

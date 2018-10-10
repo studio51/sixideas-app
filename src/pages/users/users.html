@@ -1,10 +1,21 @@
-<!-- <ion-header>
+<ion-header>
   <ion-navbar>
     <ion-title>Community</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
+
+  <ion-card no-padding *ngFor="let user of users" (tap)="viewProfile(user)">
+    <ion-card-content>
+      <ion-avatar item-start>
+        <user-avatar [user]="user" [size]="small"></user-avatar>
+      </ion-avatar>
+
+      <h1>{{ user.name }}</h1>
+      <span>@{{ user.username }}</span>
+    </ion-card-content>
+  </ion-card>
 
   <ion-card *ngFor="let user of users">
     <ion-card-header>
@@ -37,4 +48,4 @@
     </ion-card-content>
   </ion-card>
 
-</ion-content> -->
+</ion-content>

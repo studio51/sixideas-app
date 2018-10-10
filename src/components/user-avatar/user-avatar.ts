@@ -9,6 +9,7 @@ import { User } from '../../models/user';
 
 export class UserAvatarComponent {
   @Input() user: User;
+  @Input() size: string;
 
   constructor() { }
 }
