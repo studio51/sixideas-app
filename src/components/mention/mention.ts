@@ -17,7 +17,7 @@ export class MentionComponent {
     public modalCtrl: ModalController
 
   ) { }
-
+  
   public parseBody() {
     const body = this.body
       .replace(/\B\@([a-zA-Z0-9_-]+)/g, (originalValue, match): any => this.createElement(originalValue, match, 'mention'))
@@ -27,6 +27,7 @@ export class MentionComponent {
   }
 
   // Based on the event, which can 
+  // 
   public viewMention(event: any) {
     const node: any = event.srcEvent.path[0];
 

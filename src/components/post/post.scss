@@ -1,5 +1,6 @@
-post {
-  [post-container].card-ios {
+post, [post] {
+  [post-container].card-ios,
+  &[post-container].card-ios {
     box-shadow: none;
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem  !important;
