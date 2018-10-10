@@ -74,7 +74,11 @@ import { HTTPInterceptor } from '../services/http.interceptor';
     SessionProvider, MetaProvider, UserProvider, FeedProvider, TagProvider,
     PostProvider, CommentProvider, LikeProvider, ImageProvider,
 
-    { provide: HTTP_INTERCEPTORS, useClass: HTTPInterceptor, multi: true }
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: HTTPInterceptor,
+      multi: true
+    }
   ]
 })
 

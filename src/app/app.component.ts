@@ -25,6 +25,9 @@ export class SixIdeasApp {
   appPages: Page[] = [
     { index: 0, title: 'What we do', component: '', icon: '' },
     { index: 1, title: 'Regions', component: '', icon: '' },
+    { index: 2, title: 'Clients', component: '', icon: '' },
+    { index: 2, title: 'Clients', component: '', icon: '' },
+    { index: 2, title: 'Clients', component: '', icon: '' },
     { index: 2, title: 'Clients', component: '', icon: '' }
   ]
 
