@@ -147,16 +147,16 @@ export class CommunityPage {
   }
 
   private subscribeToPostChangedEvents() {
-    // this.events.subscribe('post:changed', (counter: number) => {
-    //   this.newPostsCounter = counter;
-    // })
+    this.events.subscribe('post:changed', (counter: number) => {
+      this.newPostsCounter = counter;
+    })
   }
   
   private subscribeToPostTaggedEvents() {
-    // this.events.subscribe('post:tagged', (data: any) => {
+    this.events.subscribe('post:tagged', (data: any) => {
       
-    //   this.getTaggedPosts(data['tag']);
-    // })
+      this.getTaggedPosts(data['tag']);
+    })
   }
 
   private setTag(tag: string) { this.tag = tag }
