@@ -52,6 +52,14 @@ export class SixIdeasHTTPService {
       .toPromise();
   }
 
+  public patch<T>(url: string, data: Object, options?: {}): Promise<any> {
+    return this.http
+      .put(this.generateURL(url), this.prepareData(data), this.generateOptions(options))
+      .map(this.responseHandler, this)
+      .catch(this.errorHandler.bind(this))
+      .toPromise();
+    }
+
   // get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
   //   return this.token().flatMap((token) => {
   //     this.setHeader('token', token)

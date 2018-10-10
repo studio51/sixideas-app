@@ -40,8 +40,9 @@ export class UserProvider {
     })
   }
 
-  public load() {
-    return this.http.get('users')
+  public load(query?: string) {
+    // return this.http.get('users', { params: { q: query }});
+    return this.http.get('users');
   }
 
   public get(id: string, params?: Object) {
@@ -49,7 +50,7 @@ export class UserProvider {
   }
 
   public update(id: string, data: User | { }) {
-    // return this.http.patch(`users/${ id }`, data)
+    return this.http.patch(`users/${ id }`, data)
   }
 
   public follow(id: string) {

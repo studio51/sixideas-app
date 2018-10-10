@@ -16,6 +16,6 @@ export class CommentProvider {
   }
 
   public update(commentID: string, comment: Comment) {
-    // return this.http.patch(`comments/${ commentID }`, comment)
+    return this.http.patch(`comments/${ commentID }`, comment)
   }
 }

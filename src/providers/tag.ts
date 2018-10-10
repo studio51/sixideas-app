@@ -5,7 +5,7 @@ import { SixIdeasHTTPService } from '../services/http';
 export class TagProvider {
   constructor(public http: SixIdeasHTTPService) { }
 
-  public load() {
-    return this.http.get(`meta/tags`)
+  public load(query?: any) {
+    return this.http.get('meta/tags', { params: { q: query }});
   }
 }

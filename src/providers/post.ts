@@ -21,12 +21,16 @@ export class PostProvider {
     return this.http.get(`posts/${ id }`, { params: options })
   }
 
+  public preview(url: string) {
+    return this.http.get(`posts/preview`, { params: { url: url }});
+  }
+
   public create(post: Post) {
     return this.http.post('posts', post)
   }
 
   public update(id: string, data: Post | { }) {
-    // return this.http.patch(`posts/${ id }`, data)
+    return this.http.patch(`posts/${ id }`, data)
   }
 
   public check(timestamp: Date) {
