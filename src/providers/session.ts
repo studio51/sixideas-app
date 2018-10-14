@@ -52,7 +52,7 @@ export class SessionProvider {
     return this.http.post('sessions/away', {});
   }
 
-  private dissapear() {
+  public dissapear() {
     return this.http.post('sessions/disappear', {});
   }
 }

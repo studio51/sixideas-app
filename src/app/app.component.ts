@@ -21,6 +21,7 @@ export class SixIdeasApp {
 
   rootPage: any;
   currentTimestamp: Date;
+  loggedIn: boolean = false;
 
   appPages: Page[] = [
     { index: 0, title: 'What we do', component: '', icon: '' },
@@ -47,68 +48,86 @@ export class SixIdeasApp {
 
     platform.ready().then((source: string) => {
       if (source === 'cordova') {
+        platform.resume.subscribe(() => { this.sessionProvider.appear(); });
+        platform.pause.subscribe(() => { this.sessionProvider.away(); })
+
         statusBar.styleDefault();
         splashScreen.hide();
-        
-        notificationService.notify().subscribe((notification: any) => {
-          const toast = this.toastCtrl.create({
-            message: notification.message,
-            duration: 3000,
-            showCloseButton: true,
-            closeButtonText: 'View',
-            position: 'top'
-          });
-    
-          toast.onDidDismiss((data: any, role: string) => {
-            if (role == 'close') {
-              const modal: any = this.modalCtrl.create('PostPage', {
-                id: notification.additionalData.post_id
-              });
-    
-              modal.present();
-            }
-          });
-    
-          toast.present();
-        })
       }
 
-      this.events.subscribe('app:timer', (timestamp: Date) => {
-        this.currentTimestamp = (timestamp ? timestamp : new Date());
-      });
-
-      Observable.interval(5000).subscribe(() => {
-        this.checkSession();
-      })
+      this.isLoggedIn();
+      this.checkSession();
     })
   }
 
   private async checkSession() {
+    if (this.loggedIn) {
+      this.events.subscribe('app:timer', (timestamp: Date) => {
+        this.currentTimestamp = (timestamp ? timestamp : new Date());
+      });
+
+      this.registerNotifications();
+
+      Observable.timer(5000).subscribe(() => {
+        // this.checkForNewPosts();
+      })
+    }
+  }
+
+  private async isLoggedIn() {
     const token: string = await this.storage.get('token');
     
     if (token) {
-      // await this.sessionProvider.appear()
+      await this.sessionProvider.appear();
+
       this.rootPage = 'TabsPage';
-      // this.subscribeToNewPosts();
     } else {
-      this.rootPage = 'AuthenticationPage';
+      this.rootPage = 'AuthenticationPage'
     }
+    
+    this.loggedIn = token.length != 0;
   }
 
   public async logout() {
     const response: any = await this.sessionProvider.logout()
     
     if (response) {
-      await this.storage.remove('token')
+      await this.storage.remove('token');
+      await this.sessionProvider.dissapear();
+
       this.rootPage = 'AuthenticationPage'
     }
   }
 
-  private async subscribeToNewPosts() {
+  private async checkForNewPosts() {
     if (this.currentTimestamp) {
       const response = await this.postProvider.check(this.currentTimestamp)
       this.events.publish('post:changed', response.count)
     }
+  }
+
+  private registerNotifications() {
+    this.notificationService.notify().subscribe((notification: any) => {
+      const toast = this.toastCtrl.create({
+        message: notification.message,
+        duration: 3000,
+        showCloseButton: true,
+        closeButtonText: 'View',
+        position: 'top'
+      });
+
+      toast.onDidDismiss((data: any, role: string) => {
+        if (role == 'close') {
+          const modal: any = this.modalCtrl.create('PostPage', {
+            id: notification.additionalData.post_id
+          });
+
+          modal.present();
+        }
+      });
+
+      toast.present();
+    })
   }
 
   openPage(page: Page) {
