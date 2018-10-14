@@ -18,28 +18,6 @@ export class UserProvider {
   
   ) { }
 
-  public authenticate(credentials?: Object) {
-    const device: Object = {};
-          device['device'] = {}
-    
-    if (this.platform.is('cordova')) {
-      device['device'] = {
-        platform: this.device.platform,
-        model: this.device.model,
-        uuid: this.device.uuid
-      }
-    }
-
-    return this.notificationService.register().flatMap((token: any) => {
-      if (this.platform.is('cordova')) {
-        device['device']['token'] = token.registrationId;
-        device['device']['type'] = token.registrationType;
-      }
-
-      return this.http.post('sessions/authenticate', Object.assign(credentials, device))
-    })
-  }
-
   public load(query?: string) {
     // return this.http.get('users', { params: { q: query }});
     return this.http.get('users');

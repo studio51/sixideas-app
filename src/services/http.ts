@@ -1,18 +1,13 @@
 import *  as SixIdeasConfig from '../app/app.config';
 
 import { HttpClient, HttpHeaders, HttpHeaderResponse } from '@angular/common/http';
-// import { Http, Response, RequestOptionsArgs, Headers } from '@angular/http';
 import { Storage } from '@ionic/storage';
 
 import { Injectable } from '@angular/core';
 
-// TODO
-import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
-// import 'rxjs/add/observable/from';
-// import 'rxjs/add/observable/flatMap';
 
 type ResponseInterceptor = (response: any) => any;
 type RequestInterceptor = (request: any) => any;
@@ -22,8 +17,6 @@ const absoluteURLPattern = /^((?:https:\/\/)|(?:http:\/\/)|(?:www))/;
 
 @Injectable()
 export class SixIdeasHTTPService {
-  protected _endpoint: string = SixIdeasConfig.endpoint;
-
   headers: any = '';
 
   private responseInterceptors: Array<ResponseInterceptor> = [];
@@ -44,7 +37,7 @@ export class SixIdeasHTTPService {
       .toPromise();
   }
 
-  post<T>(url: string, data: Object, options?: {}): Promise<any> {
+  public post<T>(url: string, data: Object, options?: {}): Promise<any> {
     return this.http
       .post<T>(this.generateURL(url), this.prepareData(data), this.generateOptions(options))
       .map(this.responseHandler, this)
@@ -54,67 +47,27 @@ export class SixIdeasHTTPService {
 
   public patch<T>(url: string, data: Object, options?: {}): Promise<any> {
     return this.http
+      .patch(this.generateURL(url), this.prepareData(data), this.generateOptions(options))
+      .map(this.responseHandler, this)
+      .catch(this.errorHandler.bind(this))
+      .toPromise();
+    }
+
+  public put<T>(url: string, data: Object, options?: {}): Promise<any> {
+    return this.http
       .put(this.generateURL(url), this.prepareData(data), this.generateOptions(options))
       .map(this.responseHandler, this)
       .catch(this.errorHandler.bind(this))
       .toPromise();
     }
 
-  // get<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-  //   return this.token().flatMap((token) => {
-  //     this.setHeader('token', token)
-      
-  //       return this.http.get(this.generateUrl(url), this.generateOptions(options))
-  //         .map(this.responseHandler, this)
-  //         .catch(this.errorHandler.bind(this))
-  //   })
-  // }
-
-  // post<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
-  //   const newData = this.prepareData(data);
-    
-  //   return this.token().flatMap((token) => {
-  //     this.setHeader('token', token)
-
-  //       return this.http.post(this.generateUrl(url), newData, this.generateOptions(options))
-  //         .map(this.responseHandler, this)
-  //         .catch(this.errorHandler.bind(this))
-  //     })
-  // }
-
-  // put<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
-  //   const newData = this.prepareData(data);
-    
-  //   return this.token().flatMap((token) => {
-  //     this.setHeader('token', token)
-     
-  //       return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
-  //         .map(this.responseHandler, this)
-  //         .catch(this.errorHandler.bind(this))
-  //     })
-  // }
-
-  // patch<T>(url: string, data: Object, options?: RequestOptionsArgs): Observable<T> {
-  //   const newData = this.prepareData(data);
-    
-  //   return this.token().flatMap((token) => {
-  //     this.setHeader('token', token)
-        
-  //       return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
-  //         .map(this.responseHandler, this)
-  //         .catch(this.errorHandler.bind(this))
-  //     })
-  // }
-
-  // delete<T>(url: string, options?: RequestOptionsArgs): Observable<T> {
-  //   return this.token().flatMap((token) => {
-  //     this.setHeader('token', token)
-        
-  //       return this.http.delete(this.generateUrl(url), this.generateOptions(options))
-  //         .map(this.responseHandler, this)
-  //         .catch(this.errorHandler.bind(this))
-  //     })
-  // }
+  public delete<T>(url: string, options?: {}): Promise<any> {
+    return this.http
+      .delete(this.generateURL(url), this.generateOptions(options))
+      .map(this.responseHandler, this)
+      .catch(this.errorHandler.bind(this))
+      .toPromise();
+    }
 
   protected prepareData(data: any): string {
     return this.requestInterceptors.reduce((acc, interceptor) => interceptor(acc), data);
@@ -129,7 +82,7 @@ export class SixIdeasHTTPService {
   }
 
   protected generateURL(url: string) {
-    return url.match(absoluteURLPattern) ? url : this._endpoint + url
+    return url.match(absoluteURLPattern) ? url : SixIdeasConfig.url + url
   }
 
   protected generateOptions(options: any = {}) {
