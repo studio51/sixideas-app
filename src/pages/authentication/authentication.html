@@ -1,7 +1,7 @@
 <ion-content>
   <ion-grid no-padding>
-    <ion-row justify-content-center>
-      <ion-col col-6>
+    <ion-row justify-content-center align-items-center>
+      <ion-col col-auto>
         <img src="assets/imgs/logo.png" height="75px" />
       </ion-col>
     </ion-row>
@@ -18,13 +18,13 @@
           <ng-container formGroupName="user">
             <ion-card>
               <ion-card-content>
-                <ion-input type="text" placeholder="Email Address" value="admin@madwire.co.ukss" formControlName="email"></ion-input>
+                <ion-input type="text" placeholder="Email Address" formControlName="email"></ion-input>
               </ion-card-content>
             </ion-card>
 
             <ion-card>
               <ion-card-content>
-                <ion-input type="password" placeholder="Password" value="123456aA" formControlName="password"></ion-input>
+                <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
               </ion-card-content>
             </ion-card>
           </ng-container>
