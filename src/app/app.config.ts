@@ -1,9 +1,7 @@
-export let environment = 'production';
+enum endpoints {
+  production  = 'https://1801-six-ideas.mdw.re',
+  development = 'http://lvh.me:3000'
+}
 
-let production = 'https://1801-six-ideas.mdw.re/';
-// let development = 'http://lvh.me:3000';
-
-export let endpoint = `${ environment }/api/v1/`;
-
-export let sentry_dns = '';
-export let release = '1.0.0.beta1';
+const environment: string = 'development'; 
+export const url: string = `${ endpoints[environment] }/api/v1/`;
