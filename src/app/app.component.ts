@@ -1,4 +1,7 @@
+import * as SixIdeasConfig from '../app/app.config';
 import { Component, ViewChild } from '@angular/core';
+
+import { Ng2Cable, Broadcaster } from 'ng2-cable';
 
 import { Nav, Platform, Events, ToastController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +24,8 @@ export class SixIdeasApp {
 
   rootPage: any;
   currentTimestamp: Date;
-  loggedIn: boolean = false;
+  
+  token: string = null;
 
   appPages: Page[] = [
     { index: 0, title: 'What we do', component: '', icon: '' },
@@ -34,6 +38,8 @@ export class SixIdeasApp {
 
   constructor(
     public platform: Platform,
+    public cable: Ng2Cable,
+    public broadcaster: Broadcaster,
     public events: Events,
     public toastCtrl: ToastController,
     public modalCtrl: ModalController,
@@ -55,13 +61,18 @@ export class SixIdeasApp {
         splashScreen.hide();
       }
 
-      this.isLoggedIn();
-      this.checkSession();
+      this.prepareApp();
     })
   }
 
+  private async prepareApp() {
+    await this.checkLoginStatus();
+    await this.checkSession();
+    await this.cableify();
+  }
+
   private async checkSession() {
-    if (this.loggedIn) {
+    if (this.token) {
       this.events.subscribe('app:timer', (timestamp: Date) => {
         this.currentTimestamp = (timestamp ? timestamp : new Date());
       });
@@ -71,40 +82,51 @@ export class SixIdeasApp {
       Observable.timer(5000).subscribe(() => {
         // this.checkForNewPosts();
       })
+
+      return true;
     }
+
+    return false;
   }
 
-  private async isLoggedIn() {
-    const token: string = await this.storage.get('token');
+  private async checkLoginStatus() {
+    this.token = await this.storage.get('token');
     
-    if (token) {
-      await this.sessionProvider.appear();
-
+    if (this.token) {
       this.rootPage = 'TabsPage';
     } else {
       this.rootPage = 'AuthenticationPage'
     }
+  }
+
+  private cableify() {
+    const url: string = `${ SixIdeasConfig.url }cable?token=${ this.token }`;
     
-    this.loggedIn = token.length != 0;
+    this.cable.subscribe(url, 'AppearanceChannel', { room: 'appearances' });
+    this.broadcaster.on<string>('AppearanceChannel').subscribe(message => {
+      console.log('message', message)
+    })
+    // this.cable.subscribe(url, 'PostChannel', { room: 'posts' });
   }
 
   public async logout() {
     const response: any = await this.sessionProvider.logout()
     
-    if (response) {
+    if (response.success) {
       await this.storage.remove('token');
-      await this.sessionProvider.dissapear();
 
       this.rootPage = 'AuthenticationPage'
+    } else {
+      // TODO: Return feedback
     }
   }
 
-  private async checkForNewPosts() {
-    if (this.currentTimestamp) {
-      const response = await this.postProvider.check(this.currentTimestamp)
-      this.events.publish('post:changed', response.count)
-    }
-  }
+  // private async checkForNewPosts() {
+  //   if (this.currentTimestamp) {
+  //     const response = await this.postProvider.check(this.currentTimestamp)
+  //     this.events.publish('post:changed', response.count)
+  //   }
+  // }
 
   private registerNotifications() {
     this.notificationService.notify().subscribe((notification: any) => {

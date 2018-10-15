@@ -1,11 +1,8 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { HttpModule } from '@angular/http'; // Deprecated
-
-// TODO: Replace the HTTPModule with the new HTTPClientModule
-// 
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Ng2CableModule } from 'ng2-cable';
 
 import { SixIdeasApp } from './app.component';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
@@ -44,12 +41,13 @@ import { HTTPInterceptor } from '../services/http.interceptor';
   
   imports: [
     BrowserModule,
-    HttpModule, HttpClientModule, SixIdeasHTTPModule,
+    HttpClientModule, SixIdeasHTTPModule,
     IonicModule.forRoot(SixIdeasApp, {
       mode: 'ios',
       iconMode: 'ios'
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    Ng2CableModule
   ],
   
   bootstrap: [IonicApp],
