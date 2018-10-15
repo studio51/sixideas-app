@@ -1,32 +1,38 @@
-<ion-menu [content]="content">
+<ion-menu *ngIf="user" [content]="content" class="-color-{{ user?.colour || 'grey' }}">
   <ion-content>
-    <ion-list no-lines>
-      <ion-segment [(ngModel)]="feed" (ionChange)="feedChanged($event)" color="primary" ngClass="-colour-{{ user?.colour }}">
-          <ion-segment-button value="community">
-            <i class="fal fa-newspaper"></i>
-          </ion-segment-button>
-      
-          <ion-segment-button value="trending">
-            <i class="fal fa-list"></i>
-          </ion-segment-button>
-      
-          <ion-segment-button value="likes">
-            <i class="fal fa-heart"></i>
-          </ion-segment-button>
-        </ion-segment>
-    </ion-list>
-    
-    <ion-list no-lines>
-      <button menuClose *ngFor="let page of appPages" (tap)="openPage(page.component)">
-        <ion-icon [name]="page.icon"></ion-icon>
-        {{ page.title }}
-      </button>
-    </ion-list>
+    <div class="column">
+      <div class="column-cell -auto">
+        <button menuClose *ngFor="let page of appPages" (tap)="openPage(page.component)">
+          <i class="fal fa-{{ page.icon }}"></i>
+          {{ page.title }}
+        </button>
+      </div>
 
-    <button menuClose (tap)="logout()">
-      <ion-icon name="log-out"></ion-icon>
-      Sign out
-    </button>
+      <div class="column-cell">
+        <div class="divider">Interests</div>
+
+        <div class="user-interests">
+          <button menuClose *ngFor="let tag of user.interests" (tap)="openPage('CommunityPage', tag)">
+            #{{ tag }}
+          </button>
+        </div>
+      </div>
+
+      <div class="column-cell -auto">
+        <div class="divider">Consultancy</div>
+    
+        <button menuClose *ngFor="let page of staticPages" (tap)="openPage(page.url)">
+          {{ page.title }}
+        </button>
+      </div>
+
+      <div class="column-cell -auto">
+        <button menuClose (tap)="logout()" margin-top-2>
+          <ion-icon name="log-out"></ion-icon>
+          Sign out
+        </button>
+      </div>
+    </div>
   </ion-content>
 </ion-menu>
 

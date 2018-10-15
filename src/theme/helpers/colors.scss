@@ -1,0 +1,3 @@
+@each $color in $sixideas-palette {
+  [color="#{ $color }"] { color: color($color) !important; }
+}

@@ -1,0 +1,27 @@
+.row {
+	display: flex;
+	align-items: flex-start;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+  flex: 1;
+	flex-wrap: nowrap;
+	
+	&-cell {
+		display: flex;
+		align-items: flex-start;
+		flex: 1 0 auto;
+		flex-direction: column;
+		flex-basis: 100%;
+		max-width: 100%;
+		
+		&.-auto { flex: 0 1 auto; }
+	}
+}
+
+ion-col[justify-content-end] {
+	display: flex;
+	justify-content: flex-end;
+}

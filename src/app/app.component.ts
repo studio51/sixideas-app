@@ -3,12 +3,14 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Ng2Cable, Broadcaster } from 'ng2-cable';
 
-import { Nav, Platform, Events, ToastController, ModalController } from 'ionic-angular';
+import { Nav, Platform, Events, MenuController, ToastController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
+
+import { User } from '../models/user';
 
 import { SessionProvider } from '../providers/session';
 import { PostProvider } from '../providers/post';
@@ -26,14 +28,18 @@ export class SixIdeasApp {
   currentTimestamp: Date;
   
   token: string = null;
+  user: User;
 
   appPages: Page[] = [
-    { index: 0, title: 'What we do', component: '', icon: '' },
-    { index: 1, title: 'Regions', component: '', icon: '' },
-    { index: 2, title: 'Clients', component: '', icon: '' },
-    { index: 2, title: 'Clients', component: '', icon: '' },
-    { index: 2, title: 'Clients', component: '', icon: '' },
-    { index: 2, title: 'Clients', component: '', icon: '' }
+    { index: 0, title: 'News Feed', component: 'CommunityPage', target: 'feed', icon: 'newspaper'},
+    { index: 1, title: 'Trending', component: 'CommunityPage', target: 'tags', icon: 'list' },
+    { index: 2, title: 'Likes', component: 'CommunityPage', target: 'likes', icon: 'heart' },
+  ]
+
+  staticPages: Page[] = [
+    { index: 0, title: 'What we do', url: 'https://1801-six-ideas.mdw.re/'},
+    { index: 1, title: 'Regions', url: 'https://1801-six-ideas.mdw.re/#region'},
+    { index: 2, title: 'Clients', url: 'https://1801-six-ideas.mdw.re/' },
   ]
 
   constructor(
@@ -41,6 +47,7 @@ export class SixIdeasApp {
     public cable: Ng2Cable,
     public broadcaster: Broadcaster,
     public events: Events,
+    public menuCtrl: MenuController,
     public toastCtrl: ToastController,
     public modalCtrl: ModalController,
     public storage: Storage,
@@ -62,7 +69,14 @@ export class SixIdeasApp {
       }
 
       this.prepareApp();
+      console.log('1', this.user)
     })
+
+    console.log('2', this.user)
+  }
+  
+  public openSideMenu() {
+    this.menuCtrl.open();
   }
 
   private async prepareApp() {
@@ -91,7 +105,8 @@ export class SixIdeasApp {
 
   private async checkLoginStatus() {
     this.token = await this.storage.get('token');
-    
+    this.user = await this.sessionProvider.user();
+
     if (this.token) {
       this.rootPage = 'TabsPage';
     } else {
@@ -103,9 +118,6 @@ export class SixIdeasApp {
     const url: string = `${ SixIdeasConfig.url }cable?token=${ this.token }`;
     
     this.cable.subscribe(url, 'AppearanceChannel', { room: 'appearances' });
-    this.broadcaster.on<string>('AppearanceChannel').subscribe(message => {
-      console.log('message', message)
-    })
     // this.cable.subscribe(url, 'PostChannel', { room: 'posts' });
   }
 
@@ -184,6 +196,8 @@ export class SixIdeasApp {
 export interface Page {
   index: number;
   title: string;
-  component: any;
-  icon: string;
+  component?: any;
+  target?: string;
+  url?: string;
+  icon?: string;
 }
