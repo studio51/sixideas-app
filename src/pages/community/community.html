@@ -1,17 +1,17 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar transparent>
     <ion-grid no-padding>
       <ion-row align-items-center>
         <ion-col col-auto>
           <ion-label>
-            <button ion-button small icon block outline ngClass="-colour-{{ user?.colour }}">
+            <button ion-button small icon block outline color="white" (tap)="app.openSideMenu()">
               <ion-icon name="menu"></ion-icon>
             </button>
           </ion-label>
         </ion-col>
         
         <ion-col col>
-          <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="showTags()" (ionCancel)="setTag(null)"></ion-searchbar>
+          <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="app.showTags()" (ionCancel)="app.setTag(null)"></ion-searchbar>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -23,9 +23,7 @@
     <ion-refresher-content pullingText="Pull to load new Posts" refreshingText="Loading new Posts.."></ion-refresher-content>
   </ion-refresher>
   
-  <!-- *ngSwitchCase="'community'" -->
-  <!-- *ngUnless="tag" -->
-  <ion-card post post-container *ngIf="user" (click)="newPost()">
+  <ion-card post post-container *ngIf="user" (click)="newPost()" no-margin-bottom>
     <ion-card-header no-padding-top no-padding-bottom>
       <ion-item no-padding>
         <user-avatar item-start [user]="user" size="small"></user-avatar>
@@ -35,7 +33,7 @@
   </ion-card>
 
   <ion-grid no-padding>
-    <ion-row justify-content-center *ngIf="showLoadingIndicator || postsChanged">
+    <ion-row justify-content-center margin-top *ngIf="showLoadingIndicator || postsChanged">
       <ion-col col-auto>
         <ion-spinner></ion-spinner>
       </ion-col>

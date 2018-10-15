@@ -6,10 +6,13 @@ import { User } from '../../models/user';
 import { SessionProvider } from '../../providers/session';
 import { UserProvider } from '../../providers/user';
 
+import { SixIdeasApp } from '../../app/app.component';
+
 @IonicPage()
 @Component({
   selector: 'page-users',
   templateUrl: 'users.html',
+  providers: [SixIdeasApp]
 })
 
 export class UsersPage {
@@ -18,9 +21,10 @@ export class UsersPage {
   users: User[] = [];
 
   constructor(
-    public modalCtrl: ModalController,
-    public sessionProvider: SessionProvider,
-    public userProvider: UserProvider
+    public app: SixIdeasApp,
+    private modalCtrl: ModalController,
+    private sessionProvider: SessionProvider,
+    private userProvider: UserProvider
 
   ) { }
 

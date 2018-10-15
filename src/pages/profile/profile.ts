@@ -10,10 +10,13 @@ import { UserProvider } from '../../providers/user';
 import { Post } from '../../models/post';
 import { PostProvider } from '../../providers/post';
 
+import { SixIdeasApp } from '../../app/app.component';
+
 @IonicPage()
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html',
+  providers: [SixIdeasApp]
 })
 
 export class ProfilePage {
@@ -25,18 +28,19 @@ export class ProfilePage {
   tabs: any;
 
   constructor(
-    public events: Events,
-    public app: App,
-    public viewCtrl: ViewController,
-    public modalCtrl: ModalController,
-    public navParams: NavParams,
-    public sessionProvider: SessionProvider,
-    public userProvider: UserProvider,
-    public postProvider: PostProvider
+    private events: Events,
+    platform: App,
+    public app: SixIdeasApp,
+    private viewCtrl: ViewController,
+    private modalCtrl: ModalController,
+    private navParams: NavParams,
+    private sessionProvider: SessionProvider,
+    private userProvider: UserProvider,
+    private postProvider: PostProvider
   
   ) {
     
-    this.tabs = this.app.getNavByIdOrName('sixIdeasMainNav') as Tabs;
+    this.tabs = platform.getNavByIdOrName('sixIdeasMainNav') as Tabs;
   }
 
   ionViewDidEnter() {

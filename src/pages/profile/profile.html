@@ -1,19 +1,21 @@
 <ion-header>
-  <ion-navbar>
-    <ion-buttons start *ngUnless="currentUser">
-      <button ion-button icon color="danger" (tap)="dismissView()">
-        <i class="fal fa-times-circle" color="red"></i>
-      </button>
-    </ion-buttons>
-
-    <ion-title>{{ user ? user.name : 'Profile' }}</ion-title>
-
-    <ion-buttons end *ngIf="currentUser">
-      <button ion-button icon (tap)="editProfile()">
-        <ion-icon name="create"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+  <ion-toolbar transparent>
+    <ion-grid no-padding>
+      <ion-row align-items-center>
+        <ion-col col-auto>
+          <ion-label>
+            <button ion-button small icon block outline color="white" (tap)="app.openSideMenu()">
+              <ion-icon name="menu"></ion-icon>
+            </button>
+          </ion-label>
+        </ion-col>
+        
+        <ion-col col>
+          <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="app.showTags()" (ionCancel)="app.setTag(null)"></ion-searchbar>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>

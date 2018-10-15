@@ -1,12 +1,15 @@
 // http://ionicframework.com/docs/theming/
 
-$sixideas-palette: (blue, green, yellow, orange, red, grey);
+$sixideas-palette: (white, blue, green, yellow, orange, red, grey);
 $config: (
 	ui: (
 		spacing: 13px
 	),
 
   palette: (
+		white: (
+			base: #fff
+		),
     blue: (
       base: #2067C3
     ),
@@ -65,7 +68,31 @@ $config: (
 
 p[size-small] { font-size: .6em; }
 
-.app-root {
+ng-component.app-root {
+
+	.toolbar {
+		padding: 0 ui(spacing) ui(spacing);
+
+		.label-ios { margin: 0; }
+
+		&[transparent] .toolbar-background {
+			background-image: url('../assets/imgs/background.png') !important;
+			background-size: cover;
+			background-position: center center;
+		}
+	
+		&-content {
+			.button-ios { padding: ui(spacing); }
+
+	  	.searchbar-ios { min-height: auto; }
+			.searchbar-search-icon { fill: #fff !important; }
+			.searchbar-input::-webkit-input-placeholder { color: #fff; }
+			.searchbar-input-container {
+				background-color: rgba(color(white), .5);
+				border-radius: 3px;
+			}
+		}
+	}
 
 	.user-interests {
 		width: 100%;

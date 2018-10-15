@@ -39,6 +39,15 @@ $colors: (
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
+button[color="white"] {
+  border-color: #fff;
+
+  &.activated {
+    background-color: #fff;
+    color: grey !important;
+  }
+}
+
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can

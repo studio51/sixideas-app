@@ -7,10 +7,13 @@ import { Post } from '../../models/post';
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
 
+import { SixIdeasApp } from '../../app/app.component';
+
 @IonicPage()
 @Component({
   selector: 'page-community',
   templateUrl: 'community.html',
+  providers: [SixIdeasApp]
 })
 
 export class CommunityPage {
@@ -34,11 +37,12 @@ export class CommunityPage {
   currentUser: boolean = true;
 
   constructor(
-    public events: Events,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public sessionProvider: SessionProvider,
-    public postProvider: PostProvider
+    private events: Events,
+    navParams: NavParams,
+    private modalCtrl: ModalController,
+    private sessionProvider: SessionProvider,
+    private postProvider: PostProvider,
+    public app: SixIdeasApp
   
   ) {
 
