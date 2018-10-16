@@ -51,7 +51,7 @@ export class CommunityPage {
     }
 
     this.subscribeToTabChangedEvents();
-    this.subscribeToPostChangedEvents();
+    // this.subscribeToPostChangedEvents();
     this.subscribeToPostTaggedEvents();
   }
 
@@ -64,18 +64,18 @@ export class CommunityPage {
     this.getPosts();
   }
 
-  public showTags() {
-    const tagsModal = this.modalCtrl.create('TagsPage', {
-      tag: this.tag
-    });
+  // public showTags() {
+  //   const tagsModal = this.modalCtrl.create('TagsPage', {
+  //     tag: this.tag
+  //   });
   
-    tagsModal.present();
-    tagsModal.onDidDismiss((tag: string) => {
-      if (tag) {
-        this.getTaggedPosts(tag)
-      }
-    })
-  }
+  //   tagsModal.present();
+  //   tagsModal.onDidDismiss((tag: string) => {
+  //     if (tag) {
+  //       this.getTaggedPosts(tag)
+  //     }
+  //   })
+  // }
 
   private getTaggedPosts(tag: string) {
     if (this.feed != 'community') {
@@ -136,7 +136,7 @@ export class CommunityPage {
   }
 
   private subscribeToTabChangedEvents() {
-    this.events.subscribe('tab:changed', (data: any) => {
+    this.events.subscribe('post:changed', (data: any) => {
       if (data) {
         switch(data.want) {
           case 'tagged':
@@ -150,15 +150,14 @@ export class CommunityPage {
     })
   }
 
-  private subscribeToPostChangedEvents() {
-    this.events.subscribe('post:changed', (counter: number) => {
-      this.newPostsCounter = counter;
-    })
-  }
+  // private subscribeToPostChangedEvents() {
+  //   this.events.subscribe('post:changed', (counter: number) => {
+  //     this.newPostsCounter = counter;
+  //   })
+  // }
   
   private subscribeToPostTaggedEvents() {
     this.events.subscribe('post:tagged', (data: any) => {
-      
       this.getTaggedPosts(data['tag']);
     })
   }

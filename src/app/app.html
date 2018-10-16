@@ -2,7 +2,7 @@
   <ion-content>
     <div class="column">
       <div class="column-cell -auto">
-        <button menuClose *ngFor="let page of appPages" (tap)="openPage(page.component)">
+        <button menuClose *ngFor="let page of appPages" (tap)="changeFeed(page.feed)">
           <i class="fal fa-{{ page.icon }}"></i>
           {{ page.title }}
         </button>
@@ -12,7 +12,7 @@
         <div class="divider">Interests</div>
 
         <div class="user-interests">
-          <button menuClose *ngFor="let tag of user.interests" (tap)="openPage('CommunityPage', tag)">
+          <button menuClose *ngFor="let tag of user.interests" (tap)="setTag(tag)">
             #{{ tag }}
           </button>
         </div>

@@ -4,4 +4,6 @@ enum endpoints {
 }
 
 const environment: string = 'development'; 
-export const url: string = `${ endpoints[environment] }/api/v1/`;
+
+export const webURL: string = `${ endpoints[environment] }`;
+export const url: string = `${ webURL }/api/v1/`;

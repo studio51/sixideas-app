@@ -18,12 +18,12 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [ngSwitch]="feed">
+<ion-content>
   <ion-refresher (ionRefresh)="refresh($event)">
     <ion-refresher-content pullingText="Pull to load new Posts" refreshingText="Loading new Posts.."></ion-refresher-content>
   </ion-refresher>
   
-  <ion-card post post-container *ngIf="user" (click)="newPost()" no-margin-bottom>
+  <ion-card post post-container *ngIf="user && !tag" (click)="newPost()" no-margin-bottom>
     <ion-card-header no-padding-top no-padding-bottom>
       <ion-item no-padding>
         <user-avatar item-start [user]="user" size="small"></user-avatar>
@@ -39,7 +39,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row *ngIf="tag" margin-left>
+    <ion-row *ngIf="tag" margin-left margin-top>
       <ion-col>
         <h3 no-margin>#{{ tag }}</h3>
       </ion-col>

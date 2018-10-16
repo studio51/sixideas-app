@@ -1,10 +1,11 @@
 import * as SixIdeasConfig from '../app/app.config';
-import { Component, ViewChild } from '@angular/core';
 
-import { Ng2Cable, Broadcaster } from 'ng2-cable';
-
-import { Nav, Platform, Events, MenuController, ToastController, ModalController } from 'ionic-angular';
+import { Component } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
+import { Ng2Cable } from 'ng2-cable';
+
+import { Platform, App, Events, MenuController, ToastController, ModalController } from 'ionic-angular';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -13,7 +14,6 @@ import { Storage } from '@ionic/storage';
 import { User } from '../models/user';
 
 import { SessionProvider } from '../providers/session';
-import { PostProvider } from '../providers/post';
 
 import { NotificationService } from '../services/notification';
 
@@ -22,8 +22,6 @@ import { NotificationService } from '../services/notification';
 })
 
 export class SixIdeasApp {
-  @ViewChild(Nav) nav: Nav;
-
   rootPage: any;
   currentTimestamp: Date;
   
@@ -31,31 +29,29 @@ export class SixIdeasApp {
   user: User;
 
   appPages: Page[] = [
-    { index: 0, title: 'News Feed', component: 'CommunityPage', target: 'feed', icon: 'newspaper'},
-    { index: 1, title: 'Trending', component: 'CommunityPage', target: 'tags', icon: 'list' },
-    { index: 2, title: 'Likes', component: 'CommunityPage', target: 'likes', icon: 'heart' },
+    { index: 0, title: 'News Feed', target: 'feed', icon: 'newspaper'},
+    { index: 1, title: 'Trending', target: 'tags', icon: 'list' },
+    { index: 2, title: 'Likes', target: 'likes', icon: 'heart' },
   ]
-
   staticPages: Page[] = [
-    { index: 0, title: 'What we do', url: 'https://1801-six-ideas.mdw.re/'},
-    { index: 1, title: 'Regions', url: 'https://1801-six-ideas.mdw.re/#region'},
-    { index: 2, title: 'Clients', url: 'https://1801-six-ideas.mdw.re/' },
+    { index: 0, title: 'What we do', target: `${ SixIdeasConfig.webURL }` },
+    { index: 1, title: 'Regions', target: `${ SixIdeasConfig.webURL }#region` },
+    { index: 2, title: 'Clients', target: `${ SixIdeasConfig.webURL }` },
   ]
 
   constructor(
-    public platform: Platform,
-    public cable: Ng2Cable,
-    public broadcaster: Broadcaster,
-    public events: Events,
-    public menuCtrl: MenuController,
-    public toastCtrl: ToastController,
-    public modalCtrl: ModalController,
-    public storage: Storage,
+    private cable: Ng2Cable,
+    platform: Platform,
+    private appCtrl: App,
+    private events: Events,
+    private menuCtrl: MenuController,
+    private toastCtrl: ToastController,
+    private modalCtrl: ModalController,
+    private storage: Storage,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    public sessionProvider: SessionProvider,
-    public postProvider: PostProvider,
-    public notificationService: NotificationService
+    private sessionProvider: SessionProvider,
+    private notificationService: NotificationService
 
   ) {
 
@@ -69,14 +65,39 @@ export class SixIdeasApp {
       }
 
       this.prepareApp();
-      console.log('1', this.user)
     })
-
-    console.log('2', this.user)
   }
   
-  public openSideMenu() {
-    this.menuCtrl.open();
+  public async openSideMenu() {
+    await this.menuCtrl.open();
+  }
+
+  public chnageFeed(feed: string) {
+    this.events.publish('post:tagged', {
+      tag: null,
+      want: feed
+    });
+
+    this.updateView();
+  }
+
+  public setTag(tag: string) {
+    this.events.publish('post:tagged', {
+      tag: tag,
+      want: 'tagged'
+    });
+
+    this.updateView();
+  }
+
+  private async updateView() {
+    const index: number = 0;
+
+    await this.menuCtrl.close();
+    await this.appCtrl
+      .getRootNavs()[index]
+      .getActiveChildNavs()[index]
+      .select(index);
   }
 
   private async prepareApp() {
@@ -91,7 +112,7 @@ export class SixIdeasApp {
         this.currentTimestamp = (timestamp ? timestamp : new Date());
       });
 
-      this.registerNotifications();
+      // this.registerNotifications();
 
       Observable.timer(5000).subscribe(() => {
         // this.checkForNewPosts();
@@ -163,41 +184,11 @@ export class SixIdeasApp {
       toast.present();
     })
   }
-
-  openPage(page: Page) {
-    let params = {};
-
-    // the nav component was found using @ViewChild(Nav)
-    // setRoot on the nav to remove previous pages and only have this page
-    // we wouldn't want the back button to show in this scenario
-    // 
-    if (page.index) {
-      params = {
-        tabIndex: page.index
-      }
-    }
-
-    // If we are already on tabs just change the selected tab
-    // don't setRoot again, this maintains the history stack of the
-    // tabs even if changing them from the menu
-    // 
-    if (this.nav.getActiveChildNavs().length && page.index != undefined) {
-      this.nav.getActiveChildNavs()[0].select(page.index);
-    // Set the root of the nav with params if it's a tab index
-    } else {
-      this.nav.setRoot(page.title, params).catch((err: any) => {
-        console.log(`Didn't set nav root: ${err}`);
-      });
-    }
-    // this.nav.setRoot(page)
-  }
 }
 
 export interface Page {
   index: number;
   title: string;
-  component?: any;
   target?: string;
-  url?: string;
   icon?: string;
 }
