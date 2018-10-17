@@ -1,14 +1,24 @@
 page-post-form {
 
+  /* The mention / hasthag container */
+
+  ion-card[preview] ion-card-content {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+    border-radius: 0.25rem  !important;
+
+    .preview-description { font-size: small; }
+  }
+
   .post-form--query {
     max-height: calc(44px * 4);
     overflow-y: scroll;
 
-    ion-list {
-      margin-bottom: 0;
-    }
+    ion-list { margin-bottom: 0; }
   }
 
+  /* The actual form container and all of its contents */
+  
   ion-card.card {
     box-shadow: none !important;
     border: none !important;
@@ -16,7 +26,7 @@ page-post-form {
     
     .card-header {
       padding: 0 !important;
-      margin-bottom: -45px;
+      margin-bottom: -35px;
       z-index: 100;
       position: relative;
     }
@@ -24,12 +34,11 @@ page-post-form {
     [ion-card-content] {
       position: relative;
       padding: 1.25rem !important;
-      padding-top: calc(0.25rem + 45px) !important;
+      padding-top: calc(0.25rem + 35px) !important;
       display: flex;
       flex-direction: column;
       min-width: 0;
       word-wrap: break-word;
-      background-color: #fff;
       background-clip: border-box;
       border: 1px solid rgba(0, 0, 0, 0.125);
       border-radius: 0.25rem  !important;
@@ -45,18 +54,7 @@ page-post-form {
         object-fit: cover;
       }
 
-      &.-default,
-      &.-default .text-input-ios { background-color: rgba(#fff, 1); }
-      &.-info,
-      &.-info .text-input-ios { background-color: rgba(#007bff, 1); }
-      &.-success,
-      &.-success .text-input-ios { background-color: rgba(#28a745, 1); }
-      &.-warning,
-      &.-warning .text-input-ios { background-color: rgba(#ffc107, 1); }
-      &.-danger,
-      &.-danger .text-input-ios { background-color: rgba(#dc3545, 1); }
-
-      &:not(.-default) {
+      &:not(.-color-white) {
         transform: transition(all .3 ease-in);
 
         .post-form--types { justify-content: center; }
@@ -71,49 +69,53 @@ page-post-form {
           &::-webkit-input-placeholder { color: #fff; }
         }
       }
+
+      .color-selection {
+        display: flex;
+        width: ui(spacing) * 2; 
+        height: ui(spacing) * 2; 
+        border-radius: 6px;
+        margin-right: ui(spacing) / 2;
+        
+        &.selected:not(.-color-white) { margin-top: -3px; }
+      }
+
+      @each $color in $sixideas-posts {
+        &.-color-#{ $color },
+        &.-color-#{ $color } .input { background-color: rgba(color($color, $from: 'post'), 1); }
+        
+        .color-selection.-color-#{ $color } {
+          background-color: rgba(color($color, $from: 'post'), 1);
+          
+          &.selected {
+            @if ($color == white) {
+              border: 1px solid color(gray);
+            } @else {
+              box-shadow: 0 0 4px 2px rgba(darken(color($color, $from: 'post'), 8%), 1);
+            }
+          }
+        }
+      }
     }
-  }
-  
-  .post-colour {
-    display: flex;
-    width: 27px;
-    height: 27px;
-    border-radius: 6px;
 
-    &.-default { background-color: rgba(#fff, 1); }
-    &.-info { background-color: rgba(#007bff, 1); }
-    &.-success { background-color: rgba(#28a745, 1); }
-    &.-warning { background-color: rgba(#ffc107, 1); }
-    &.-danger { background-color: rgba(#dc3545, 1); }
+    .item-ios {
+      padding-left: 0;
 
-    &.selected {
-      background-color: #fff;
-      
-      &.-default { box-shadow: 0 0 4px 2px rgba(#fff, .25); }
-      &.-info { box-shadow: 0 0 4px 2px rgba(#007bff, .25); }
-      &.-success { box-shadow: 0 0 4px 2px rgba(#28a745, .25); }
-      &.-warning { box-shadow: 0 0 4px 2px rgba(#ffc107, .25); }
-      &.-danger { box-shadow: 0 0 4px 2px rgba(#dc3545, .25); }
+      .item-inner { padding-right: 0 !important; }
     }
-  }
 
-  .item-ios {
-    padding-left: 0;
+    .label-ios {
+      margin: ui(spacing) 0 !important;
+      padding: 0;
+    }
 
-    .item-inner { padding-right: 0 !important; }
-  }
-
-  .label-ios {
-    margin: 13px 0 !important;
-    padding: 0;
-  }
-
-  .text-input-ios {
-    border: 1px solid #dee2e6;
-    margin: 0 !important;
-    width: 100% !important;
-    padding: .8rem 1rem;
-    border-radius: 0.25rem;
-    color: #6c757d;
+    .text-input-ios {
+      border: 1px solid #dee2e6;
+      margin: 0 !important;
+      width: 100% !important;
+      padding: .8rem 1rem;
+      border-radius: 0.25rem;
+      color: #6c757d;
+    }
   }
 }

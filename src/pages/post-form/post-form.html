@@ -6,7 +6,7 @@
       </button>
     </ion-buttons>
 
-    <ion-title>Post</ion-title>
+    <ion-title>What's new?</ion-title>
 
     <ion-buttons *ngIf="form" end>
       <i *ngUnless="form.valid" class="fal fa-exclamation" color="red" margin-right_2></i>
@@ -30,17 +30,16 @@
       </ion-grid>
     </ion-card-header>
 
-    <form ion-card-content *ngIf="form" [formGroup]="form" ngClass="-{{ form.controls.type.value }}">
-
+    <form ion-card-content *ngIf="form" [formGroup]="form" ngClass="form -color-{{ postColor[form.controls.type.value] }}">
       <img *ngIf="post.image_url && form.controls.type.value === 'default'" [src]="post.image_url" />
 
-      <ion-grid no-padding margin-top margin-bottom_2>
+      <ion-grid no-padding margin-top margin-bottom>
         <ion-row align-items-center>
           <ion-col>
             <ion-grid no-padding>
               <ion-row col-auto class="post-form--types">
                 <ion-col col-auto *ngFor="let type of postTypes" margin-right_2>
-                  <span class="post-colour" ngClass="-{{ type }} {{ form.controls.type.value === type ? 'selected' : '' }}" (tap)="changeFormType(type)"></span>
+                  <span class="color-selection" ngClass="-color-{{ postColor[type] }} {{ form.controls.type.value === type ? 'selected' : '' }}" (tap)="changeFormType(type)"></span>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -60,25 +59,32 @@
       </ion-item>
 
       <ion-item>
-        <ion-textarea (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
+        <ion-textarea class="input" (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
         {{ form.controls.body.value }}
       </ion-item>
-      
-      <ng-container preview *ngIf="preview">
-        <ion-grid no-padding>
-          <ion-row>
-            <ion-col col-2 margin-right-2>
-              <img preview-image width="100%" [src]="preview.image" />
-            </ion-col>
-
-            <ion-col text-left>
-              <h2>{{ preview.title }}</h2>
-              <p preview-description>{{ preview.description }}</p>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ng-container>
     </form>
+  </ion-card>
+
+  <ion-card preview *ngIf="preview" margin-top>
+    <ion-card-content>
+      <ion-grid no-padding>
+        <ion-row>
+          <ion-col col-3 margin-right-2>
+            <img preview-image width="100%" [src]="preview.image" />
+          </ion-col>
+
+          <ion-col text-left>
+            <h4 no-margin>{{ preview.title }}</h4>
+          </ion-col>
+        </ion-row>
+
+        <ion-row margin-top-2>
+          <ion-col>
+            <p preview-description no-margin>{{ preview.description }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
   </ion-card>
 
   <ion-footer *ngIf="query" class="post-form--query">

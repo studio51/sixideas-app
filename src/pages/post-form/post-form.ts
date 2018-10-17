@@ -1,10 +1,4 @@
 import { Component, Renderer } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { of } from 'rxjs/observable/of';
-import { from } from 'rxjs/observable/from';
-
 import { IonicPage, ViewController, NavParams, ActionSheetController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
@@ -48,6 +42,14 @@ export class PostFormPage {
   record: boolean = false;
   query: string = '';
 
+  public postColor: any = {
+    default: 'white',
+    info: 'blue',
+    success: 'green',
+    warning: 'yellow',
+    danger: 'red'
+  }
+
   constructor(
     public renderer: Renderer,
     public camera: Camera,
@@ -62,7 +64,7 @@ export class PostFormPage {
   
   ) {
 
-    this.postTypes = ['default', 'info', 'success', 'danger', 'warning'];
+    this.postTypes = Object.keys(this.postColor);
 
     this.post = new Post({});
     this.postID = navParams.get('id');
@@ -73,9 +75,8 @@ export class PostFormPage {
     (this.postID ? this.edit() : this.generateForm());
   }
 
-  private edit() {
-    const response = this.postProvider.get(this.postID)
-    Object.assign(this.post, response);
+  private async edit() {
+    Object.assign(this.post, await this.postProvider.get(this.postID));
     this.generateForm();
   }
 
@@ -93,30 +94,28 @@ export class PostFormPage {
     this.form.controls.type.setValue(type)
   }
 
-  public showImageOptions() {
-    const buttons: Array<any> = [];
-
-    buttons.push({
-      text: 'Camera',
-      handler: () => { this.captureImage('CAMERA') }
-    })
-    
-    buttons.push({
-      text: 'Library',
-      handler: () => { this.captureImage('LIBRARY') }
-    })
-
-    buttons.push({
-      text: 'Cancel',
-      role: 'cancel'
-    });
-
-    let actionSheet = this.actionSheetCtrl.create({
+  public async showImageOptions() {
+    const options: any = {
       title: 'Choose Image Source',
-      buttons: buttons
-    });
+      buttons: [
+        {
+          text: 'Camera',
+          handler: () => { this.captureImage('CAMERA') }
+        },
+        {
+          text: 'Library',
+          handler: () => { this.captureImage('LIBRARY') }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    }
 
-    actionSheet.present();
+    await this.actionSheetCtrl
+      .create(options)
+      .present();
   }
 
   private captureImage(source: string) {
@@ -220,42 +219,27 @@ export class PostFormPage {
     }
   }
 
-  public submit() {
-    let batch: any[] = [];
-    let subscriber: any;
+  public async submit() {
+    let post: any, image: any, response: any;
 
-    if (Object.keys(this.imageChange).length > 0) {
-      batch.push(this.processUpload())
+    // if (Object.keys(this.imageChange).length > 0) {
+    //   image = await this.imageProvider.upload(this.imageChange['image']);
+    //   post = Object.assign(this.form.value, {
+    //     image_id: JSON.parse(image.response).image._id.$oid
+    //   })
+    // }
+
+    if (this.postID) {
+      response = await this.postProvider.update(this.postID, post)
     } else {
-      batch.push(of(false))
+      response = await this.postProvider.create(post)
     }
 
-    forkJoin(batch).subscribe((response: Array<any>) => {
-      const postChanges: any = Object.assign(this.form.value, response[0]);
-
-      if (this.postID) {
-        subscriber = this.postProvider.update(this.postID, postChanges)
-      } else {
-        subscriber = this.postProvider.create(postChanges)
-      }
-
-      subscriber.subscribe((response: any) => {
-        console.log(response)
-        if (response.status === 'ok') {
-          this.dismissView(response.post)
-        } else {
-          console.log('error')
-        }
-      })
-    })
-  }
-
-  private async processUpload() {
-    const r = await this.imageProvider.upload(this.imageChange['image']);
-    const rr = JSON.parse(r.response);
-
-    if (rr.success) {
-      return { image_id: rr.image._id.$oid }
+    console.log(response)
+    if (response.status === 'ok') {
+      this.dismissView(response.post)
+    } else {
+      console.log('error')
     }
   }
 
