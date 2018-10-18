@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController } from 'ionic-angular';
+import { IonicPage, Events, ModalController } from 'ionic-angular';
 
 import { User } from '../../models/user';
 
@@ -19,50 +19,68 @@ export class UsersPage {
   private user: User;
 
   users: User[] = [];
+  params: any;
 
   constructor(
     public app: SixIdeasApp,
+    private events: Events,
     private modalCtrl: ModalController,
     private sessionProvider: SessionProvider,
     private userProvider: UserProvider
 
-  ) { }
+  ) {
+
+    this.subscribeToTabChanges();
+  }
 
   ionViewDidEnter() {
-    this.getUsers()
+    this.get()
   }
 
-  private async getUsers() {
+  private async get() {
     this.user = await this.sessionProvider.user();
-    this.users = await this.userProvider.load();
+    const users: User[] = await this.userProvider.load();
 
-    console.log(this.users)
+    if (this.params) {
+
+      console.log('asdasdas')
+
+      // Clear the current Users list
+      // 
+      this.users = []
+
+      // Find the Users that match the passed User IDs'
+      // TODO: This seems really inefficient.
+      // 
+      this.params['users']
+        .map((u: any) => u['$oid'])
+        .forEach((userID: string) => {
+          this.users.push(users.filter((user: User) => user._id.$oid === userID)[0]);
+        });
+    } else {
+      this.users = users;
+    }
   }
 
-  public viewProfile(user: User) {
-    const modal = this.modalCtrl.create('ProfilePage', {
-      id: user._id.$oid
+  public async view(user: User) {
+    const modal = await this.modalCtrl.create('ProfilePage', {
+      id: user._id.$oid,
+      header: false
     });
 
-    modal.present();
+    await modal.present();
   }
 
-  public follow(user: User) {
-    let subscriber: any;
+  public async follow(user: User) {
+    let response: any;
 
     if (this.imFollowing(user)) {
-      subscriber = this.userProvider.unfollow(user._id.$oid)
+      response = await this.userProvider.unfollow(user._id.$oid)
     } else {
-      subscriber = this.userProvider.follow(user._id.$oid)
+      response = await this.userProvider.follow(user._id.$oid)
     }
 
-    subscriber.subscribe((response: any) => {
-      if (response.status === 'ok') {
-        this.user = response.user
-      } else {
-        console.log('error')
-      }
-    })
+    this.user = response.user;
   }
 
   public itsaMeMario(user: User) {
@@ -70,10 +88,26 @@ export class UsersPage {
   }
 
   public isFollowing(user: User) {
-    return this.user.follower_ids.map(k => k.$oid).includes(user._id.$oid)
+    return this.user.follower_ids.map(u => u.$oid).includes(user._id.$oid)
   }
 
   public imFollowing(user: User) {
-    return this.user.following_ids.map(k => k.$oid).includes(user._id.$oid)
+    return this.user.following_ids.map(u => u.$oid).includes(user._id.$oid)
   }
+
+  private subscribeToTabChanges() {
+    this.events.subscribe('tab:changed', (data: any) => {
+      this.params = data;
+    })
+  }
+}
+
+function findObjectByKey(array, key, value) {
+  for (var i = 0; i < array.length; i++) {
+   if (array[i][key] === value) {
+      return array[i];
+    }
+  }
+  
+  return null;
 }

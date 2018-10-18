@@ -1,33 +1,7 @@
 page-users {
   ion-card {
     box-shadow: none !important;
-    border: none !important;
-    background-color: none !important;
-    
-    &-header {
-      padding: 0 !important;
-      margin-bottom: -45px;
-      z-index: 100;
-      position: relative;
-    }
-
-    &-content {
-      position: relative;
-      padding: 1.25rem !important;
-      padding-top: calc(0.25rem + 45px) !important;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      word-wrap: break-word;
-      background-color: #fff;
-      background-clip: border-box;
-      border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem  !important;
-      text-align: center;
-    }
-  }
-
-  .user {
-    &-bio { margin-top: 0.5rem; }
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem  !important;
   }
 }
