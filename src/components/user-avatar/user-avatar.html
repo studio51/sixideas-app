@@ -1,4 +1,4 @@
-<div class="container -size-{{ size }}" ngClass="-color-{{ user.colour ? user.colour : 'grey' }}">
+<div class="container -size-{{ size }}" ngClass="-color-{{ user.colour || 'grey' }}">
   <span class="-state -state-{{ state }}"></span>
 
   <img *ngIf="user.avatar_url" class="avatar" [src]="user.avatar_url" />

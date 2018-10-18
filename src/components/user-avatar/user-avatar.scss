@@ -22,7 +22,7 @@ user-avatar {
     }
 
     &.-color {
-      @each $color in $colors {
+      @each $color in $sixideas-palette {
         &-#{ $color } {
           border-color: color($color);
           background-color: color($color);
@@ -57,9 +57,8 @@ user-avatar {
       top: 6%;
       right: 6%;
 
-      &-online { background-color: green; }
-      &-offline { background-color: red; }
-      &-away { background-color: yellow; }
+      &-online { background-color: color(green); }
+      &-away { background-color: color(yellow); }
     }
   }
 }
