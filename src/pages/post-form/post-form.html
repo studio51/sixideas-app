@@ -55,37 +55,16 @@
 
       <ion-item *ngIf="form.controls.type.value === 'default'">
         <ion-input type="text" [(ngModel)]="myInput" formControlName="title" placeholder="Title (optional)"></ion-input>
-        {{ form.controls.title.value }}
       </ion-item>
 
       <ion-item>
-        <ion-textarea class="input" (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
-        {{ form.controls.body.value }}
+        <ion-textarea class="input" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
+        <!--  (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)"  -->
       </ion-item>
     </form>
   </ion-card>
 
-  <ion-card preview *ngIf="preview" margin-top>
-    <ion-card-content>
-      <ion-grid no-padding>
-        <ion-row>
-          <ion-col col-3 margin-right-2>
-            <img preview-image width="100%" [src]="preview.image" />
-          </ion-col>
-
-          <ion-col text-left>
-            <h4 no-margin>{{ preview.title }}</h4>
-          </ion-col>
-        </ion-row>
-
-        <ion-row margin-top-2>
-          <ion-col>
-            <p preview-description no-margin>{{ preview.description }}</p>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
+  <preview *ngIf="form" [body]="form.controls.body.value"></preview>
 
   <ion-footer *ngIf="query" class="post-form--query">
     <ion-list>

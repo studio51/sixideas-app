@@ -1,0 +1,21 @@
+<ion-card *ngIf="preview" no-margin-left no-margin-bottom no-margin-right margin-top full>
+  <ion-card-content>
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col col-3 margin-right-2>
+          <img preview-image width="100%" [src]="preview.image" />
+        </ion-col>
+
+        <ion-col text-left>
+          <h4 no-margin>{{ preview.title }}</h4>
+        </ion-col>
+      </ion-row>
+
+      <ion-row margin-top-2>
+        <ion-col>
+          <p preview-description no-margin>{{ preview.description }}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-content>
+</ion-card>

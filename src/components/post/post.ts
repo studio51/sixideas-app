@@ -15,26 +15,26 @@ export class PostComponent {
   @Input() user: User;
 
   constructor(
-    public modalCtrl: ModalController
+    private modalCtrl: ModalController
   
   ) { }
 
-  public viewProfile(userID: string) {
-    const modal = this.modalCtrl.create('ProfilePage', {
+  public async viewUserProfile(userID: string) {
+    const modal: any = await this.modalCtrl.create('ProfilePage', {
       id: userID
     });
 
-    modal.present();
+    await modal.present();
   }
 
-  public editPost() {
-    const modal: any = this.modalCtrl.create('PostFormPage', {
+  public async edit() {
+    const modal: any = await this.modalCtrl.create('PostFormPage', {
       id: this.post._id.$oid,
       post: this.post
     });
 
-    modal.present();
-    modal.onDidDismiss((post: Post) => {
+    await modal.present();
+    await modal.onDidDismiss((post: Post) => {
       Object.assign(this.post, post)
     })
   }

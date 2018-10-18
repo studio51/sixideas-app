@@ -51,12 +51,12 @@ export class CommentsComponent implements OnInit {
     })
   }
 
-  public viewProfile(userID: string) {
-    const modal = this.modalCtrl.create('ProfilePage', {
+  public async viewUserProfile(userID: string) {
+    const modal = await this.modalCtrl.create('ProfilePage', {
       id: userID
     });
 
-    modal.present();
+    await modal.present();
   }
 
   public async submit() {

@@ -15,8 +15,6 @@ import { UserProvider } from '../../providers/user';
 import { TagProvider } from '../../providers/tag';
 import { ImageProvider } from '../../providers/image';
 
-import * as getURLs from 'get-urls';
-
 @IonicPage()
 @Component({
   selector: 'page-post-form',
@@ -118,7 +116,7 @@ export class PostFormPage {
       .present();
   }
 
-  private captureImage(source: string) {
+  private async captureImage(source: string) {
     const options: CameraOptions = {
       
                  quality: 100,
@@ -131,92 +129,11 @@ export class PostFormPage {
                mediaType: this.camera.MediaType.PICTURE
     }
 
-    this.camera.getPicture(options).then((image: any) => {
-      this.imageChange['image'] = image;
-      this.post.image_url = normalizeURL(image);
-      this.form.controls.image_id.setValue(this.imageChange['image_id'])
-    }, (error) => {
-      console.error(error);
+    const image: any = await this.camera.getPicture(options);
 
-      if (error !== 'no image selected' || error !== 'No camera available') {
-        console.error(error)
-      }
-    })
-  }
-
-  public async checkPostContent(event: any) {
-    const value: string = event.value;
-
-    if (event.type === 'keyup') {
-      const moveOn: boolean = (event.code === 'Space' || event.key === ' ');
-      const ignoredChar: boolean = event.key === 'Shift' || event.key === 'Backspace';
-
-      if (moveOn) {
-        this.record = false;
-        this.query = '';
-
-        this.users = this.tags = [];
-
-        return
-      }
-
-      if (event.key.startsWith('@')) {
-        this.record = true;
-        this.query = '@';
-      }
-
-      if (this.record && this.query.startsWith('@') && this.query.length > 0) {
-        if (event.code === 'Backspace') {
-          this.query = this.query.slice(0, -1);
-          this.users = await this.userProvider.load(this.query);
-        } else {
-          if (!ignoredChar) {
-            this.query += event.key;
-            this.users = await this.userProvider.load(this.query);
-          }
-        }
-      }
-
-      if (event.key.startsWith('#')) {
-        this.record = true;
-        this.query = '#';
-      }
-
-      if (this.record && this.query.startsWith('#') && this.query.length > 0) {
-        if (event.code === 'Backspace') {
-          this.query = this.query.slice(0, -1);
-          this.tags = await this.tagProvider.load(this.query);
-        } else {
-          if (!ignoredChar) {
-            this.query += event.key;
-            this.tags = await this.tagProvider.load(this.query);
-          }
-        }
-      }
-    } else if (event.type === 'text') {
-      const URLs: Set<any> = getURLs(value);
-
-      // Check and see if there are any URLs in the string for us to check. Also,
-      // really important, check to make sure we haven't already created a preview for it.
-      // 
-      if (URLs.size > 0 && !this.preview) {
-        console.log(URLs)
-        // @ts-ignore
-        const previewURL: string = URLs.entries().next().value[0];
-        const response: any = await this.postProvider.preview(previewURL);
-
-        if (response) {
-          this.preview = response;
-          return
-        }
-
-        throw new Error('request failed');
-      } else if ( URLs.size === 0) { this.preview = null }
-
-      return
-    } else {
-      return
-    }
+    this.imageChange['image'] = image;
+    this.post.image_url = normalizeURL(image);
+    this.form.controls.image_id.setValue(this.imageChange['image_id']);
   }
 
   public async submit() {
@@ -243,19 +160,7 @@ export class PostFormPage {
     }
   }
 
-  public dismissView(post?: Post) {
-    this.viewCtrl.dismiss(post)
-  }
-
-  public replaceText(value: string) {
-    const body: any = this.form.controls.body;
-    
-    if (this.query.startsWith('@')) {
-      body.setValue(body.value.replace(this.query.replace('@@', '@'), `@${ value }`));
-    } else {
-      body.setValue(body.value.replace(this.query.replace('##', '#'), value));
-    }
-
-    this.query = '';
+  public async dismissView(post?: Post) {
+    await this.viewCtrl.dismiss(post)
   }
 }

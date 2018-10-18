@@ -7,6 +7,7 @@ import { DirectivesModule } from '../directives/directives.module';
 import { UserAvatarComponent } from './user-avatar/user-avatar';
 import { PostComponent } from './post/post';
 import { CommentsComponent } from './comments/comments';
+import { PreviewComponent } from './preview/preview';
 import { LikeComponent } from './like/like';
 import { MentionComponent } from './mention/mention';
 
@@ -15,6 +16,7 @@ import { MentionComponent } from './mention/mention';
     UserAvatarComponent,
     PostComponent,
     CommentsComponent,
+    PreviewComponent,
     LikeComponent,
     MentionComponent
   ],
@@ -35,6 +37,7 @@ import { MentionComponent } from './mention/mention';
     UserAvatarComponent,
     PostComponent,
     CommentsComponent,
+    PreviewComponent,
     LikeComponent,
     MentionComponent
   ]

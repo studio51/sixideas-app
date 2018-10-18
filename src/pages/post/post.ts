@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 import { User } from '../../models/user';
 import { Post } from '../../models/post';
@@ -7,10 +7,7 @@ import { Post } from '../../models/post';
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
 
-@IonicPage({
-  segment: 'post/:id'
-})
-
+@IonicPage({ segment: 'post/:id' })
 @Component({
   selector: 'page-post',
   templateUrl: 'post.html',
@@ -21,18 +18,20 @@ export class PostPage {
   post: Post;
 
   constructor(
-    public navParams: NavParams,
-    public sessionProvider: SessionProvider,
-    public postProvider: PostProvider
+    private navParams: NavParams,
+    private sessionProvider: SessionProvider,
+    private postProvider: PostProvider
   
   ) { }
 
   ionViewDidLoad() {
-    this.getPost()
+    this.getPost();
   }
 
   private async getPost() {
     this.user = await this.sessionProvider.user();
-    this.post = await this.postProvider.get(this.navParams.get('id'), { include_author: true });
+    this.post = await this.postProvider.get(this.navParams.get('id'), {
+      include_author: true
+    });
   }
 }

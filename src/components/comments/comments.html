@@ -6,8 +6,8 @@
   </ion-row>
 
   <ng-container *ngIf="comments && comments.length > 0">
-    <ion-row *ngFor="let comment of comments.slice(0, limit)" align-items-center>
-      <ion-col col-auto (tap)="viewProfile(comment.user._id.$oid)">
+    <ion-row *ngFor="let comment of comments.slice(0, limit)" align-items-start>
+      <ion-col col-auto (tap)="viewUserProfile(comment.user._id.$oid)">
         <user-avatar [user]="comment.user" size="small"></user-avatar>
       </ion-col>
 
@@ -18,6 +18,8 @@
             <mention [body]="comment.body" editable=true></mention>
           </ion-card-content>
         </ion-card>
+
+        <preview [body]="comment.body"></preview>
       </ion-col>
     </ion-row>
   </ng-container>
@@ -45,6 +47,5 @@
         <i class="fal fa-paper-plane" *ngUnless="processingComment"></i>
       </button>
     </ion-col>
-
   </form>
 </ion-grid>

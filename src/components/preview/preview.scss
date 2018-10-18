@@ -1,0 +1,9 @@
+preview {
+  ion-card[preview] ion-card-content {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.125) !important;
+    border-radius: 0.25rem  !important;
+
+    .preview-description { font-size: small; }
+  }
+}
