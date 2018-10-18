@@ -1,4 +1,4 @@
-import *  as SixIdeasConfig from '../app/app.config';
+import * as SixIdeasConfig from '../app/app.config';
 
 import { HttpClient, HttpHeaders, HttpHeaderResponse } from '@angular/common/http';
 import { Storage } from '@ionic/storage';

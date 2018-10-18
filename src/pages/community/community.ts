@@ -115,8 +115,6 @@ export class CommunityPage {
     this.posts = await this.postProvider.load('', params);
     this.showLoadingIndicator = false;
 
-    console.log(this.posts)
-
     if (this.refresher) {
       this.refresher.complete()
     }

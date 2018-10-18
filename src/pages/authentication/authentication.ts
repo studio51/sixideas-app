@@ -5,6 +5,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 
 import { SessionProvider } from '../../providers/session';
+import { HttpResponse } from '@angular/common/http';
 
 @IonicPage()
 @Component({
@@ -14,7 +15,7 @@ import { SessionProvider } from '../../providers/session';
 
 export class AuthenticationPage {
   form: FormGroup;
-  authentication: any = null;
+  authentication: HttpResponse<any> = null;
 
   constructor(
     public navCtrl: NavController,
@@ -38,16 +39,11 @@ export class AuthenticationPage {
 
   async submit() {
     const response: any = await this.sessionProvider.authenticate(this.form.value);
-    console.log(response)
+
     if (response.success) {
-      this.authentication = null;
-
       await this.storage.set('token', response.user._id.$oid);
-      console.log('token is set');
 
-      await this.sessionProvider.appear();
-      console.log('appaeared');
-
+      this.authentication = null;
       this.navCtrl.setRoot('TabsPage');
     } else {
       this.authentication = response;

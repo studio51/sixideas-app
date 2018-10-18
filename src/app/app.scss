@@ -1,6 +1,8 @@
 // http://ionicframework.com/docs/theming/
 
 $sixideas-palette: (white, blue, green, yellow, orange, red, grey);
+$sixideas-posts: (white, blue, green, yellow, red);
+
 $config: (
 	ui: (
 		spacing: 13px
@@ -8,25 +10,30 @@ $config: (
 
   palette: (
 		white: (
-			base: #fff
+			base: #fff,
+			post: #fff
 		),
     blue: (
-      base: #2067C3
+			base: #2067C3,
+			post: #007bff
     ),
     green: (
-      base: #009989
+      base: #009989,
+			post: #28a745
     ),
     yellow: (
-      base: #FCCD10
+      base: #FCCD10,
+			post: #ffc107
     ),
     orange: (
-      base: #F85931
+			base: #F85931
     ),
     red: (
-      base: #CE1836
+      base: #CE1836,
+			post: #dc3545
     ),
     grey: (
-      base: #6F6F6F
+			base: #6F6F6F
     )
   )
 );
@@ -39,8 +46,8 @@ $config: (
   @return $map;
 }
 
-@function color($key, $saturation: 'base') {
-  @return config($config, palette, #{ $key }, $saturation);
+@function color($key, $from: 'base') {
+  @return config($config, palette, #{ $key }, $from);
 }
 
 @function ui($key) {
@@ -66,7 +73,21 @@ $config: (
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+[full] { width: 100% !important; }
 p[size-small] { font-size: .6em; }
+p[size-tiny] { font-size: .4em; }
+
+button[round] {
+	padding-left: ui(spacing) / 2;
+	padding-right: ui(spacing);
+}
+
+p[badge] {
+	background-color: color(gray);
+	border-radius: 250px;
+	color: #fff;
+	padding: 2px 6px;
+}
 
 ng-component.app-root {
 

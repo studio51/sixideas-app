@@ -48,7 +48,7 @@ export class PreviewComponent implements OnInit {
         throw new Error('Request failed or the API returned no acceptable response.');
       } else if ( URLs.size === 0) { this.preview = null }
     }
-    console.log(this.body)
+
     return;
   }
 }
