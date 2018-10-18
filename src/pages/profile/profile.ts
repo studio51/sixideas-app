@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { IonicPage, Events, App, Tabs, ViewController, ModalController, NavParams } from 'ionic-angular';
+import { IonicPage, Events, App, ViewController, ModalController, NavParams } from 'ionic-angular';
 
 import { SessionProvider } from '../../providers/session';
 
@@ -25,101 +25,94 @@ export class ProfilePage {
 
   currentUser: boolean = false;
 
-  tabs: any;
-
   constructor(
     private events: Events,
-    platform: App,
+    private appCtrl: App,
     public app: SixIdeasApp,
     private viewCtrl: ViewController,
     private modalCtrl: ModalController,
-    private navParams: NavParams,
+    private params: NavParams,
     private sessionProvider: SessionProvider,
     private userProvider: UserProvider,
     private postProvider: PostProvider
   
-  ) {
-    
-    this.tabs = platform.getNavByIdOrName('sixIdeasMainNav') as Tabs;
-  }
+  ) { }
 
   ionViewDidEnter() {
-    this.getUser()
+    this.get();
   }
 
-  private async getUser() {
-    // let user: any;
-    const params: Object = {};
+  private async get() {
+    const params: Object = {}
+    const username: string = this.params.get('username');
 
-    if (this.navParams.get('username')) {
+    if (username) {
       params['params'] = {
-        username: this.navParams.get('username')
+        username: username
       }
     }
 
-    if (this.navParams.get('id') || this.navParams.get('username')) {
+    if (this.params.get('id') || username) {
       this.currentUser = false;
-      this.user = await this.userProvider.get(this.navParams.get('id'), params)
+      this.user = await this.userProvider.get(this.params.get('id'), params);
     } else {
       this.currentUser = true;
-      this.user = await this.sessionProvider.user()
+      this.user = await this.sessionProvider.user();
     }
 
     this.posts = await this.postProvider.load(this.user._id.$oid);
   }
 
-  public editProfile() {
-    const profileFormModal = this.modalCtrl.create('ProfileFormPage');
+  public async edit() {
+    const modal = await this.modalCtrl.create('ProfileFormPage');
   
-    profileFormModal.present();
-    profileFormModal.onDidDismiss((userChanges: User) => {
-      if (userChanges) {
-        this.user = Object.assign(this.user, userChanges)
+    await modal.present();
+    await modal.onDidDismiss((changes: User) => {
+      if (changes) {
+        this.user = Object.assign(this.user, changes);
       }
     })
   }
-
-  public viewFollowing(userID: string) {
-    this.events.publish('tab:changed', {
+  public viewCommunity(want: string, userID: string, users: Array<string>) {
+    
+    console.log(userID)
+    console.log(users)
+    
+    this.goToTab('tab:changed', {
       userID: userID,
-      want: 'following'
-    });
-
-    this.tabs.select(2);
-  }
-
-  public viewFollowers(userID: string) {
-    this.events.publish('tab:changed', {
-      userID: userID,
-      want: 'followers'
-    });
-
-    this.tabs.select(2);
+      users: users,
+      want: want
+    }, 1);
   }
 
   public viewLikes(userID: string) {
-    if (this.viewCtrl.component.name === 'ModalCmp') {
-      this.dismissView()
-    }
-
-    this.events.publish('tab:changed', {
+    this.goToTab('tab:changed', {
       userID: userID,
       want: 'likes'
     });
-
-    this.tabs.select(1);
   }
 
   public viewPosts(tag: string) {
-    this.events.publish('post:tagged', {
+    this.goToTab('post:tagged', {
       tag: tag,
       want: 'tagged'
     });
+  }
 
-    this.tabs.select(1);
+  private async goToTab(key: string, data: Object, index: number = 0) {
+    this.events.publish(key, data);
+
+    if (this.viewCtrl.isOverlay) {
+      this.dismissView();
+    }
+
+    await this.appCtrl
+      .getRootNavs()[0]
+      .getActiveChildNavs()[0]
+      .select(index);
   }
 
   public dismissView() {
-    this.viewCtrl.dismiss()
+    this.viewCtrl.dismiss();
   }
 }

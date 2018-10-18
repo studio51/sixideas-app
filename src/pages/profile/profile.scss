@@ -1,7 +1,16 @@
 page-profile {
-  .background-image { height: 150px; }
+  .user-background {
+    height: 150px;
+    display: flex;
   
-  [user-grid] { margin-top: -45px; }
+    span.-color {
+      @each $color in $sixideas-palette {
+        &-#{ $color } { background-color: rgba(color($color), 1); }
+      }
+    }
+  }
+  
+  [user-grid] { margin-top: -40px; }
 
   .tag { font-size: 1.25rem; }
   .bio { font-size: 1.5rem; }
@@ -13,7 +22,7 @@ page-profile {
 
     p {
       margin: 0;
-      color: #007bff;
+      color: color(blue);
       font-weight: bold;
     }
   }
@@ -21,13 +30,10 @@ page-profile {
   [user-interests] {
     box-shadow: 0px 7px 60px -15px rgba(0, 0, 0, 0.75);
 
-    &.colour {
-      &--blue { background-color: rgba(#2067C3, 1); }
-      &--green { background-color: rgba(#009989, 1); }
-      &--yellow { background-color: rgba(#FCCD10, 1); }
-      &--orange { background-color: rgba(#F85931, 1); }
-      &--red { background-color: rgba(#CE1836, 1); }
-      &--grey { background-color: rgba(#6F6F6F, 1); }
+    &.-color {
+      @each $color in $sixideas-palette {
+        &-#{ $color } { background-color: rgba(color($color), 1); }
+      }
     }
   }
 }
