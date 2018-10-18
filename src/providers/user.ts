@@ -19,8 +19,9 @@ export class UserProvider {
   ) { }
 
   public load(query?: string) {
-    // return this.http.get('users', { params: { q: query }});
-    return this.http.get('users');
+    const params: any = query ? { params: { q: query }} : {};
+
+    return this.http.get('users', params);
   }
 
   public get(id: string, params?: Object) {
