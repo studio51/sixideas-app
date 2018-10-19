@@ -28,13 +28,21 @@ export class UsersPage {
     private sessionProvider: SessionProvider,
     private userProvider: UserProvider
 
-  ) {
-
-    this.subscribeToTabChanges();
-  }
+  ) { }
 
   ionViewDidEnter() {
-    this.get()
+    this.get();
+  }
+
+  ionViewWillEnter() {
+    this.events.subscribe('tab:changed', (data: any) => {
+      this.params = data;
+      this.get();
+    });
+  }
+
+  ionViewDidLeave() {
+    this.events.unsubscribe('tab:changed');
   }
 
   private async get() {
@@ -42,8 +50,6 @@ export class UsersPage {
     const users: User[] = await this.userProvider.load();
 
     if (this.params) {
-
-      console.log('asdasdas')
 
       // Clear the current Users list
       // 
@@ -83,31 +89,19 @@ export class UsersPage {
     this.user = response.user;
   }
 
-  public itsaMeMario(user: User) {
+  public currentUser(user: User) {
     return this.user._id.$oid === user._id.$oid
   }
 
   public isFollowing(user: User) {
-    return this.user.follower_ids.map(u => u.$oid).includes(user._id.$oid)
+    return this.user.follower_ids
+      .map((u: any) => u.$oid)
+      .includes(user._id.$oid)
   }
 
   public imFollowing(user: User) {
-    return this.user.following_ids.map(u => u.$oid).includes(user._id.$oid)
+    return this.user.following_ids
+      .map((u: any) => u.$oid)
+      .includes(user._id.$oid)
   }
-
-  private subscribeToTabChanges() {
-    this.events.subscribe('tab:changed', (data: any) => {
-      this.params = data;
-    })
-  }
-}
-
-function findObjectByKey(array, key, value) {
-  for (var i = 0; i < array.length; i++) {
-   if (array[i][key] === value) {
-      return array[i];
-    }
-  }
-  
-  return null;
 }

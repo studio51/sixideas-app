@@ -23,7 +23,7 @@ export class ProfilePage {
   user: User;
   posts: Post[] = [];
 
-  currentUser: boolean = false;
+  currentUser: User;
 
   constructor(
     private events: Events,
@@ -46,6 +46,8 @@ export class ProfilePage {
     const params: Object = {}
     const username: string = this.params.get('username');
 
+    this.currentUser = await this.sessionProvider.user();
+
     if (username) {
       params['params'] = {
         username: username
@@ -53,11 +55,10 @@ export class ProfilePage {
     }
 
     if (this.params.get('id') || username) {
-      this.currentUser = false;
       this.user = await this.userProvider.get(this.params.get('id'), params);
     } else {
-      this.currentUser = true;
-      this.user = await this.sessionProvider.user();
+      console.log('currentuser');
+      this.user = this.currentUser;
     }
 
     this.posts = await this.postProvider.load(this.user._id.$oid);
@@ -74,10 +75,6 @@ export class ProfilePage {
     })
   }
   public viewCommunity(want: string, userID: string, users: Array<string>) {
-    
-    console.log(userID)
-    console.log(users)
-    
     this.goToTab('tab:changed', {
       userID: userID,
       users: users,
@@ -110,6 +107,8 @@ export class ProfilePage {
       .getRootNavs()[0]
       .getActiveChildNavs()[0]
       .select(index);
+
+    this.events.unsubscribe(key);
   }
 
   public dismissView() {

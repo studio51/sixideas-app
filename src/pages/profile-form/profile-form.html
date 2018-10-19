@@ -9,7 +9,7 @@
     <ion-title>{{ user ? user?.name : 'Profile' }}</ion-title>
 
     <ion-buttons *ngIf="form" end>
-      <i *ngUnless="form.valid" class="fal fa-exclamation" color="red" margin-right_2></i>
+      <i *ngUnless="form.valid" class="fal fa-exclamation" color="red" margin-right-2></i>
 
       <button *ngIf="form.valid" ion-button icon color="secondary" (tap)="submit()">
         <i class="fal fa-check-circle" color="green"></i>
@@ -32,16 +32,16 @@
             </ion-col>
           </ion-row>
 
-          <ion-row>
+          <ion-row margin-top>
             <ion-col text-center>
               <h1 no-margin>{{ user.name }}</h1>
               <p no-margin>Lets edit your profile</p>
             </ion-col>
           </ion-row>
 
-          <ion-row align-items-center justify-content-center padding-top_2 padding-bottom_2>
-            <ion-col col-auto *ngFor="let colour of colours">
-              <span class="user-colour" ngClass="-{{ colour }} {{ form.controls.colour.value === colour ? 'selected' : '' }}" (tap)="changeformColour(colour)"></span>
+          <ion-row align-items-center justify-content-center padding-top padding-bottom-2>
+            <ion-col col-auto *ngFor="let color of colors">
+              <span class="color-selection" ngClass="-color-{{ color }} {{ form.controls.color.value === color ? 'selected' : '' }}" (tap)="changeformColor(color)"></span>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -69,14 +69,14 @@
           </ion-row>
 
           <ion-row>
-            <ion-col col-6 padding-right_2>
+            <ion-col col-6 padding-right-2>
               <ion-item>
                 <ion-label stacked>Forename</ion-label>
                 <ion-input formControlName="forename" placeholder=""></ion-input>
               </ion-item>
             </ion-col>
 
-            <ion-col col-6 padding-left_2>
+            <ion-col col-6 padding-left-2>
               <ion-item>
                 <ion-label stacked>Surname</ion-label>
                 <ion-input formControlName="surname" placeholder=""></ion-input>
@@ -107,14 +107,14 @@
           <div class="separator"></div>
 
           <ion-row>
-            <ion-col col-6 padding-right_2>
+            <ion-col col-6 padding-right-2>
               <ion-item>
                 <ion-label stacked>Password</ion-label>
                 <ion-input type="password" formControlName="password" placeholder=""></ion-input>
               </ion-item>
             </ion-col>
 
-            <ion-col col-6 padding-left_2>
+            <ion-col col-6 padding-left-2>
               <ion-item>
                 <ion-label stacked>Password Confirmation</ion-label>
                 <ion-input type="password" formControlName="password_confirmation" placeholder=""></ion-input>
@@ -122,7 +122,7 @@
             </ion-col>
           </ion-row>
 
-          <ion-row margin-top_2>
+          <ion-row margin-top-2>
             <ion-col>
               <p text-center>Leave blank if you dont want to change it</p>
             </ion-col>

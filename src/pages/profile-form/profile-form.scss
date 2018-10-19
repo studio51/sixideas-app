@@ -13,7 +13,7 @@ page-profile-form {
     
     .card-header {
       padding: 0 !important;
-      margin-bottom: -135px;
+      margin-bottom: -143px;
       z-index: 100;
       position: relative;
     }
@@ -21,7 +21,7 @@ page-profile-form {
     [ion-card-content] {
       position: relative;
       padding: 1.25rem !important;
-      padding-top: calc(0.25rem + 135px) !important;
+      padding-top: calc(0.25rem + 143px) !important;
       display: flex;
       flex-direction: column;
       min-width: 0;
@@ -34,7 +34,7 @@ page-profile-form {
     }
   }
 
-  .user-colour {
+  .color-selection {
     display: flex;
     width: 25px;
     height: 25px;
@@ -42,23 +42,17 @@ page-profile-form {
     margin-left: 4px;
     margin-right: 4px;
 
-    &.-blue { background-color: rgba(#2067C3, 1); }
-    &.-green { background-color: rgba(#009989, 1); }
-    &.-yellow { background-color: rgba(#FCCD10, 1); }
-    &.-orange { background-color: rgba(#F85931, 1); }
-    &.-red { background-color: rgba(#CE1836, 1); }
-    &.-grey { background-color: rgba(#6F6F6F, 1); }
+    &.-color {
+      @each $color in $sixideas-palette {
+        &-#{ $color } {
+          background-color: rgba(color($color), 1);
 
-    &.selected {
-      background-color: #fff;
-      
-      &.-blue { box-shadow: 0 0 4px 2px rgba(#2067C3, .25); }
-      &.-green { box-shadow: 0 0 4px 2px rgba(#009989, .25); }
-      &.-yellow { box-shadow: 0 0 4px 2px rgba(#FCCD10, .25); }
-      &.-orange { box-shadow: 0 0 4px 2px rgba(#F85931, .25); }
-      &.-red { box-shadow: 0 0 4px 2px rgba(#CE1836, .25); }
-      &.-grey { box-shadow: 0 0 4px 2px rgba(#6F6F6F, .25); }
+          &.selected { box-shadow: 0 0 0 2px rgba(darken(color($color), 8%), 1); }
+        }
+      }
     }
+
+    &.selected { background-color: #fff; }
   }
 
   .separator {

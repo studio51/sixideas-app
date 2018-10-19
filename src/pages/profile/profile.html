@@ -26,9 +26,23 @@
     </div>
 
     <ion-grid no-padding margin-bottom user-grid>
-      <ion-row justify-content-center>
+      <ion-row>
+        <ion-col padding-left-2>
+          <button *ngIf="viewCtrl.isOverlay" ion-button small round color="danger" (tap)="dismissView()">
+            <i class="far fa-times-circle" margin-right-2></i>
+            Close
+          </button>
+        </ion-col>
+
         <ion-col col-auto>
           <user-avatar [user]="user" (press)="showImageOptions('avatar')"></user-avatar>
+        </ion-col>
+
+        <ion-col justify-content-end padding-right-2>
+          <button *ngIf="currentUser === user" ion-button small round (tap)="edit()">
+            <i class="fal fa-cog" margin-right-2></i>
+            Edit profile
+          </button>
         </ion-col>
       </ion-row>
 
@@ -88,6 +102,6 @@
 
     <h3 text-center no-margin>Recent Posts</h3>
 
-    <post *ngFor="let post of posts" [post]="post" [author]="user" [user]="user"></post>
+    <post *ngFor="let post of posts" [post]="post" [author]="user" [user]="currentUser"></post>
   </ng-container>
 </ion-content>

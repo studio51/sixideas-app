@@ -42,14 +42,14 @@
                         <span>@{{ user.username }}</span>      
                       </ion-col>
               
-                      <ion-col col-auto *ngUnless="itsaMeMario(user) || !isFollowing(user) " margin-left-2>
+                      <ion-col col-auto *ngUnless="currentUser(user) || !isFollowing(user) " margin-left-2>
                         <p size-tiny no-margin badge>Follows you</p>
                       </ion-col>
                     </ion-row>
                   </ion-grid>
                 </ion-col>
 
-                <ion-col col-auto margin-left *ngUnless="itsaMeMario(user)">
+                <ion-col col-auto margin-left *ngUnless="currentUser(user)">
                   <button ion-button small round no-margin (tap)="follow(user)">
                     <i class="fal fa-{{ imFollowing(user) ? 'check' : 'plus' }}-circle" margin-right-2></i>
                     {{ imFollowing(user) ? 'Following' : 'Follow' }}

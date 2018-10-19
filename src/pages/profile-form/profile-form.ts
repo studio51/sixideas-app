@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+// import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs/Observable';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { of } from 'rxjs/observable/of';
+// import { forkJoin } from 'rxjs/observable/forkJoin';
+// import { of } from 'rxjs/observable/of';
 import { from } from 'rxjs/observable/from';
 
 import { IonicPage, ViewController, ActionSheetController, normalizeURL } from 'ionic-angular';
@@ -28,71 +28,56 @@ export class ProfileFormPage {
   user: User;
   form: FormGroup;
 
-  colours: Array<any> = [];
+  colors: Array<any> = [];
   interests: Array<any> = [];
 
   imageChanges: Object = {};
 
   constructor(
-    public sanitizer: DomSanitizer,
-    public camera: Camera,
-    public viewCtrl: ViewController,
-    public actionSheetCtrl: ActionSheetController,
-    public sessionProvider: SessionProvider,
-    public userProvider: UserProvider,
-    public metaProvider: MetaProvider,
-    public imageProvider: ImageProvider
+    // private sanitizer: DomSanitizer,
+    private camera: Camera,
+    private viewCtrl: ViewController,
+    private actionSheetCtrl: ActionSheetController,
+    private sessionProvider: SessionProvider,
+    private userProvider: UserProvider,
+    private metaProvider: MetaProvider,
+    private imageProvider: ImageProvider
   
   ) { }
 
-  ionViewDidLoad() { 
-    this.getUserAndMeta()
+  async ionViewDidLoad() {
+    this.user = await this.sessionProvider.user();
+    this.colors = await this.metaProvider.colors();
+    this.interests = await this.metaProvider.interests();
+
+    this.generateForm();
   }
 
-  private getUserAndMeta() {
-    forkJoin([
-      this.sessionProvider.user(),
-      this.metaProvider.colours(),
-      this.metaProvider.interests()
-    
-    ]).subscribe((response: Array<any>) => {
-      this.user = response[0];
-      this.colours = response[1];
-      this.interests = response[2];
-
-      this.generateForm();
-    })
-  }
-
-  public showImageOptions(caller: string) {
-    const buttons: Array<any> = [];
-
-    buttons.push({
-      text: 'Camera',
-      handler: () => { this.captureImage('CAMERA', caller) }
-    })
-    
-    buttons.push({
-      text: 'Library',
-      handler: () => { this.captureImage('LIBRARY', caller) }
-    })
-
-    buttons.push({
-      text: 'Cancel',
-      role: 'cancel'
-    });
-
-    let actionSheet = this.actionSheetCtrl.create({
+  public async showImageOptions(caller: string) {
+    const actionSheet = await this.actionSheetCtrl.create({
       title: 'Choose Image Source',
-      buttons: buttons
+      buttons: [
+        {
+          text: 'Camera',
+          handler: () => { this.captureImage('CAMERA', caller) }
+        },
+        {
+          text: 'Library',
+          handler: () => { this.captureImage('LIBRARY', caller) }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
     });
 
-    actionSheet.present();
+    await actionSheet.present();
   }
 
   private generateForm() {
     this.form = new FormGroup({
-      colour: new FormControl(this.user.colour),
+      color: new FormControl(this.user.colour),
 
       email:    new FormControl(this.user.email, Validators.required),
       username: new FormControl({
@@ -111,7 +96,7 @@ export class ProfileFormPage {
 
       avatar_id:         new FormControl(this.user.avatar_id),
       profile_banner_id: new FormControl(this.user.profile_banner_id)
-    })
+    });
   }
 
   private captureImage(source: string, caller: string) {
@@ -146,27 +131,30 @@ export class ProfileFormPage {
     })
   }
 
-  changeformColour(colour: string) {
-    this.user.colour = colour;
-    this.form.controls.colour.setValue(colour);
+  changeformColor(color: string) {
+    this.user.colour = color;
+    this.form.controls.color.setValue(color);
   }
 
   async submit() {
     let batch: any[] = [];
 
-    if (Object.keys(this.imageChanges).length > 0) {
-      batch.push(this.processUploads())
-    } else {
-      batch.push(of(false))
-    }
+    // if (Object.keys(this.imageChanges).length > 0) {
+    //   batch.push(this.processUploads())
+    // } else {
+    //   batch.push(of(false))
+    // }
 
-    const rr = await forkJoin(batch)
-    const userChanges: any = Object.assign(this.form.value, rr[0]);
-    const response: any = this.userProvider.update(this.user._id.$oid, userChanges)
+    // const rr = await forkJoin(batch)
+    // const userChanges: any = Object.assign(this.form.value, rr[0]);
+    const userChanges: any = {}
+
+    const response: any = await this.userProvider.update(this.user._id.$oid, userChanges)
+    
     if (response.status === 'ok') {
       this.dismissView(response.user)
     } else {
-      console.log('error')
+      console.log('error') 
     }
   }
 
