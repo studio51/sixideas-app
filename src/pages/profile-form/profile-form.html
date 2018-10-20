@@ -41,7 +41,7 @@
 
           <ion-row align-items-center justify-content-center padding-top padding-bottom-2>
             <ion-col col-auto *ngFor="let color of colors">
-              <span class="color-selection" ngClass="-color-{{ color }} {{ form.controls.color.value === color ? 'selected' : '' }}" (tap)="changeformColor(color)"></span>
+              <span class="color-selection" ngClass="-color-{{ color }} {{ form.controls.colour.value === color ? 'selected' : '' }}" (tap)="changeformColor(color)"></span>
             </ion-col>
           </ion-row>
         </ion-grid>

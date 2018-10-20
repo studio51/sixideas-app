@@ -1,5 +1,5 @@
-import { Component, Renderer } from '@angular/core';
-import { IonicPage, ViewController, NavParams, ActionSheetController, normalizeURL } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, ViewController, NavParams, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -11,8 +11,8 @@ import { User } from '../../models/user';
 
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
-import { UserProvider } from '../../providers/user';
-import { TagProvider } from '../../providers/tag';
+// import { UserProvider } from '../../providers/user';
+// import { TagProvider } from '../../providers/tag';
 import { ImageProvider } from '../../providers/image';
 
 @IonicPage()
@@ -22,7 +22,7 @@ import { ImageProvider } from '../../providers/image';
 })
 
 export class PostFormPage {
-  postID: string;
+  public postID: string = '';
 
   post: Post;
   user: User;
@@ -35,10 +35,7 @@ export class PostFormPage {
   postTypes: Array<any> = [];
   imageChange: Object = {};
 
-  preview: any;
-
-  record: boolean = false;
-  query: string = '';
+  loader: any;
 
   public postColor: any = {
     default: 'white',
@@ -49,22 +46,22 @@ export class PostFormPage {
   }
 
   constructor(
-    public renderer: Renderer,
-    public camera: Camera,
-    public viewCtrl: ViewController,
-    public navParams: NavParams,
-    public actionSheetCtrl: ActionSheetController,
-    public sessionProvider: SessionProvider,
-    public postProvider: PostProvider,
-    public userProvider: UserProvider,
-    public tagProvider: TagProvider,
-    public imageProvider: ImageProvider
+    private camera: Camera,
+    private viewCtrl: ViewController,
+    private navParams: NavParams,
+    private actionSheetCtrl: ActionSheetController,
+    private loadingCtrl: LoadingController,
+    private sessionProvider: SessionProvider,
+    private postProvider: PostProvider,
+    // private userProvider: UserProvider,
+    // private tagProvider: TagProvider,
+    private imageProvider: ImageProvider
   
   ) {
 
     this.postTypes = Object.keys(this.postColor);
 
-    this.post = new Post({});
+    this.post = new Post({ });
     this.postID = navParams.get('id');
   }
 
@@ -137,30 +134,50 @@ export class PostFormPage {
   }
 
   public async submit() {
-    let post: any, image: any, response: any;
+    let post: any, response: any;
 
-    // if (Object.keys(this.imageChange).length > 0) {
-    //   image = await this.imageProvider.upload(this.imageChange['image']);
-    //   post = Object.assign(this.form.value, {
-    //     image_id: JSON.parse(image.response).image._id.$oid
-    //   })
-    // }
+    await this.loading().present();
+
+    if (Object.keys(this.imageChange).length > 0) {
+      const response: any = await this.imageProvider
+        .upload(this.imageChange['image'])
+        .then((response: any) => JSON.parse(response.response));
+      
+      if (response.success) {
+        post = Object.assign(this.form.value, {
+          image_id: response.image._id.$oid
+        });
+      }
+    } else {
+      post = this.form.value;
+    }
+
+    console.log(post)
 
     if (this.postID) {
       response = await this.postProvider.update(this.postID, post)
     } else {
       response = await this.postProvider.create(post)
     }
-
-    console.log(response)
+    
     if (response.status === 'ok') {
-      this.dismissView(response.post)
+      this.loader.dismiss();
+      this.dismissView(response.post);
     } else {
-      console.log('error')
+      console.log('error') 
     }
   }
+  
+  public async dismissView(data?: { }) {
+    await this.viewCtrl.dismiss(data);
+  }
 
-  public async dismissView(post?: Post) {
-    await this.viewCtrl.dismiss(post)
+  private loading() {
+    this.loader = this.loadingCtrl.create({
+      dismissOnPageChange: true,
+      content: 'Please wait..'
+    });
+
+    return this.loader;
   }
 }

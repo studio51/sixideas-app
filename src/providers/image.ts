@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
 import { SixIdeasHTTPService } from '../services/http';
 
-import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
+import { Storage } from '@ionic/storage';
+import { FileTransfer, FileUploadOptions, FileTransferObject, FileUploadResult } from '@ionic-native/file-transfer';
 
 @Injectable()
 export class ImageProvider {
   constructor(
-    public http: SixIdeasHTTPService,
-    public transfer: FileTransfer
+    private http: SixIdeasHTTPService,
+    private storage: Storage,
+    private transfer: FileTransfer
 
   ) { }
 
-  public upload(image: string) {
-    // return this.http.token().flatMap((token: string) => {
-      const fileTransfer: FileTransferObject = this.transfer.create();
-
-      let options: FileUploadOptions = {
-        fileKey: 'file',
-        fileName: 'name.png',
-        // headers: {
-          // token: token
-        // }
+  public async upload(image: string): Promise<FileUploadResult> {
+    const token: string = await this.storage.get('token');
+    const fileTransfer: FileTransferObject = this.transfer.create();
+    const options: FileUploadOptions = {
+      fileKey: 'file',
+      fileName: 'name.png',
+      headers: {
+        token: token
       }
-  
-      return fileTransfer.upload(image, `${ '' }/uploads`, options)
-    // })
+    }
+
+    return fileTransfer.upload(image, `${ this.http.url }/uploads`, options);
   }
 }

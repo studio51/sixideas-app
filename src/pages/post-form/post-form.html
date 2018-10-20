@@ -6,7 +6,7 @@
       </button>
     </ion-buttons>
 
-    <ion-title>What's new?</ion-title>
+    <ion-title>{{ postID ? "Changed your mind?" : "What's new?" }}</ion-title>
 
     <ion-buttons *ngIf="form" end>
       <i *ngUnless="form.valid" class="fal fa-exclamation" color="red" margin-right_2></i>

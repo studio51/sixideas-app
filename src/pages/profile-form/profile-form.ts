@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-// import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { Observable } from 'rxjs/Observable';
-// import { forkJoin } from 'rxjs/observable/forkJoin';
-// import { of } from 'rxjs/observable/of';
-import { from } from 'rxjs/observable/from';
-
-import { IonicPage, ViewController, ActionSheetController, normalizeURL } from 'ionic-angular';
+import { IonicPage, ViewController, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -33,11 +27,13 @@ export class ProfileFormPage {
 
   imageChanges: Object = {};
 
+  loader: any;
+
   constructor(
-    // private sanitizer: DomSanitizer,
     private camera: Camera,
     private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
+    private loadingCtrl: LoadingController,
     private sessionProvider: SessionProvider,
     private userProvider: UserProvider,
     private metaProvider: MetaProvider,
@@ -77,7 +73,7 @@ export class ProfileFormPage {
 
   private generateForm() {
     this.form = new FormGroup({
-      color: new FormControl(this.user.colour),
+      colour: new FormControl(this.user.colour),
 
       email:    new FormControl(this.user.email, Validators.required),
       username: new FormControl({
@@ -99,100 +95,84 @@ export class ProfileFormPage {
     });
   }
 
-  private captureImage(source: string, caller: string) {
+  private async captureImage(source: string, caller: string) {
     const options: CameraOptions = {
-      
                  quality: 100,
-        saveToPhotoAlbum: (source == 'CAMERA'),
+        saveToPhotoAlbum: (source === 'CAMERA'),
                allowEdit: false,
       correctOrientation: true,
          destinationType: this.camera.DestinationType.FILE_URI,
-              sourceType: (source == 'CAMERA' ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY),
+              sourceType: (source === 'CAMERA' ? this.camera.PictureSourceType.CAMERA : this.camera.PictureSourceType.PHOTOLIBRARY),
             encodingType: this.camera.EncodingType.JPEG,
                mediaType: this.camera.MediaType.PICTURE
     }
 
-    this.camera.getPicture(options).then((image: any) => {
-      if (caller === 'avatar') {
-        this.imageChanges['avatar'] = image;
-        this.user.avatar_url = normalizeURL(image);
-        this.form.controls.avatar_id.setValue(this.imageChanges['avatar_id']);
-      } else {
-        this.imageChanges['profile_banner'] = image;
-        this.user.profile_banner_url = normalizeURL(image);
-        this.form.controls.profile_banner_id.setValue(this.imageChanges['profile_banner_id']);
-      }
-    }, (error) => {
-      console.error(error);
-
-      if (error !== 'no image selected' || error !== 'No camera available') {
-        console.error(error)
-      }
-    })
-  }
-
-  changeformColor(color: string) {
-    this.user.colour = color;
-    this.form.controls.color.setValue(color);
-  }
-
-  async submit() {
-    let batch: any[] = [];
-
-    // if (Object.keys(this.imageChanges).length > 0) {
-    //   batch.push(this.processUploads())
-    // } else {
-    //   batch.push(of(false))
-    // }
-
-    // const rr = await forkJoin(batch)
-    // const userChanges: any = Object.assign(this.form.value, rr[0]);
-    const userChanges: any = {}
-
-    const response: any = await this.userProvider.update(this.user._id.$oid, userChanges)
+    const image: any = await this.camera.getPicture(options);
     
+    if (caller === 'avatar') {
+      this.imageChanges['avatar'] = image;
+      this.user.avatar_url = normalizeURL(image);
+      this.form.controls.avatar_id.setValue(this.imageChanges['avatar_id']);
+    } else {
+      this.imageChanges['profile_banner'] = image;
+      this.user.profile_banner_url = normalizeURL(image);
+      this.form.controls.profile_banner_id.setValue(this.imageChanges['profile_banner_id']);
+    }
+  }
+
+  public changeformColor(color: string) {
+    this.user.colour = color;
+    this.form.controls.colour.setValue(color);
+  }
+
+  public async submit() {
+    let imageResponse: any = { };
+
+    await this.loading().present();
+
+    if (Object.keys(this.imageChanges).length > 0) {
+      imageResponse = await this.processUploads();
+    }
+
+    const response: any = await this.userProvider.update(this.user._id.$oid, Object.assign(this.form.value, imageResponse));
+
     if (response.status === 'ok') {
-      this.dismissView(response.user)
+      this.loader.dismiss();
+      this.dismissView(response.user);
     } else {
       console.log('error') 
     }
   }
 
-  private processUploads() {
-    return Observable.create((observer) => {
+  private async processUploads() {
+    const userChanges: any = { };
 
-      // Object.entries is fairly new and TS support requires you to enable experimentalDecorators
-      // in order for TS not to error out.
-      // As such, declare the object as: any until support in TS is added by default.
-      // 
-      const _obj: any = Object;
+    for (const [key, value] of Object.entries(this.imageChanges)) {
+      const response: any = await this.imageProvider
+        .upload(value)
+        .then((response: any) => JSON.parse(response.response));
 
-      let images: any[];
-          images = _obj.entries(this.imageChanges)
+      if (response.success) {
+        userChanges[`${ key }_id`] = response.image.public_id;
+      } else {
+        return false;
+      }
+    }
 
-      let counter: number = images.length;
-      const userChanges: any = { };
-
-      images.forEach(([key, value]) => {
-        from(this.imageProvider.upload(value)).map((response) => JSON.parse(response.response)).subscribe((response: any) => {
-          if (response.success) {
-            userChanges[`${ key }_id`] = response.image.public_id;
-            counter--;
-          } else {
-            console.log(response)
-          }
-
-          if (counter === 0) {
-            observer.next(userChanges);
-            observer.complete()
-          }
-        })
-      })
-    })
+    return userChanges;
   }
 
-  public dismissView(data?: { }) {
-    this.viewCtrl.dismiss(data)
+  public async dismissView(data?: { }) {
+    await this.viewCtrl.dismiss(data);
+  }
+
+  private loading() {
+    this.loader = this.loadingCtrl.create({
+      dismissOnPageChange: true,
+      content: 'Please wait..'
+    });
+
+    return this.loader;
   }
 
   // private validatePassword(AC: AbstractControl) {

@@ -1,4 +1,15 @@
 page-profile-form {
+  ion-spinner * {
+    width: 28px;
+    height: 28px;
+    stroke: #444;
+    fill: #222;
+    z-index: 1000;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+  }
+
   .background-image {
     height: 200px;
     width: 100%;
