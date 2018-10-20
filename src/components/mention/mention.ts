@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Events } from 'ionic-angular';
-
-import { ModalController } from 'ionic-angular';
+import { Events, App, ViewController, ModalController } from 'ionic-angular';
 
 @Component({
   selector: 'mention',
@@ -14,6 +12,8 @@ export class MentionComponent {
 
   constructor(
     public events: Events,
+    public appCtrl: App,
+    public viewCtrl: ViewController,
     public modalCtrl: ModalController
 
   ) { }
@@ -23,29 +23,39 @@ export class MentionComponent {
       .replace(/\B\@([a-zA-Z0-9_-]+)/g, (originalValue, match): any => this.createElement(originalValue, match, 'mention'))
       .replace(/\B\S*#(\[[^\]]+\]|\S+)/g, (originalValue, match): any => this.createElement(originalValue, match, 'tag'));
 
-    return body
+    return body;
   }
 
   // Based on the event, which can 
   // 
-  public viewMention(event: any) {
-    const node: any = event.srcEvent.path[0];
+  public async viewMention(event: any) {
+    const node: any = event.target;
 
-    if (node.nodeName != 'ABBR') return
+    if (node.nodeName != 'ABBR') return;
     
-    const type: string = node.getAttribute('type')
+    const type: string = node.getAttribute('type');
     const options: any = {}
 
     if (type === 'mention') {
       options['username'] = node.getAttribute('value');
 
-      const modal: any = this.modalCtrl.create('ProfilePage', options);
-            modal.present();
+      const modal: any = await this.modalCtrl
+        .create('ProfilePage', options)
+        .present();
 
     } else if (type === 'tag') {
       options['tag'] = node.getAttribute('value');
 
-      this.events.publish('post:tagged', options)
+      this.events.publish('post:tagged', options);
+
+      if (this.viewCtrl.isOverlay) {
+        this.viewCtrl.dismiss();
+      }
+  
+      await this.appCtrl
+        .getRootNavs()[0]
+        .getActiveChildNavs()[0]
+        .select(0);
     }
   }
 

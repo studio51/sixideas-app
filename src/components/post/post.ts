@@ -36,6 +36,6 @@ export class PostComponent {
     await modal.present();
     await modal.onDidDismiss((post: Post) => {
       Object.assign(this.post, post);
-    })
+    });
   }
 }

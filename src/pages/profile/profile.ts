@@ -57,7 +57,6 @@ export class ProfilePage {
     if (this.params.get('id') || username) {
       this.user = await this.userProvider.get(this.params.get('id'), params);
     } else {
-      console.log('currentuser');
       this.user = this.currentUser;
     }
 
@@ -107,8 +106,6 @@ export class ProfilePage {
       .getRootNavs()[0]
       .getActiveChildNavs()[0]
       .select(index);
-
-    this.events.unsubscribe(key);
   }
 
   public dismissView() {
