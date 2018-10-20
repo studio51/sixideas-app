@@ -11,8 +11,8 @@ import { User } from '../../models/user';
 
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
-// import { UserProvider } from '../../providers/user';
-// import { TagProvider } from '../../providers/tag';
+import { UserProvider } from '../../providers/user';
+import { TagProvider } from '../../providers/tag';
 import { ImageProvider } from '../../providers/image';
 
 @IonicPage()
@@ -37,6 +37,11 @@ export class PostFormPage {
 
   loader: any;
 
+  record: any;
+  query: any;
+  users: User[];
+  tag: any[];
+
   public postColor: any = {
     default: 'white',
     info: 'blue',
@@ -53,8 +58,8 @@ export class PostFormPage {
     private loadingCtrl: LoadingController,
     private sessionProvider: SessionProvider,
     private postProvider: PostProvider,
-    // private userProvider: UserProvider,
-    // private tagProvider: TagProvider,
+    private userProvider: UserProvider,
+    private tagProvider: TagProvider,
     private imageProvider: ImageProvider
   
   ) {
@@ -179,5 +184,73 @@ export class PostFormPage {
     });
 
     return this.loader;
+  }
+
+  public replaceText(value: string) {
+    const body: any = this.form.controls.body;
+    
+    if (this.query.startsWith('@')) {
+      body.setValue(body.value.replace(this.query.replace('@@', '@'), `@${ value }`));
+    } else {
+      body.setValue(body.value.replace(this.query.replace('##', '#'), value));
+    }
+
+    this.query = '';
+  }
+
+  public async checkContent(event: any) {
+    const value: string = event.value;
+
+    if (event.type === 'keyup') {
+      const moveOn: boolean = (event.code === 'Space' || event.key === ' ');
+      const ignoredChar: boolean = event.key === 'Shift' || event.key === 'Backspace';
+
+      if (moveOn) {
+        this.record = false;
+        this.query = '';
+
+        this.users = this.tags = [];
+
+        return
+      }
+
+      if (event.key.startsWith('@')) {
+        this.record = true;
+        this.query = '@';
+      }
+
+      if (this.record && this.query.startsWith('@') && this.query.length > 0) {
+        if (event.code === 'Backspace') {
+          this.query = this.query.slice(0, -1);
+          this.users = await this.userProvider.load(this.query);
+        } else {
+          if (!ignoredChar) {
+            this.query += event.key;
+            this.users = await this.userProvider.load(this.query);
+          }
+        }
+      }
+
+      if (event.key.startsWith('#')) {
+        this.record = true;
+        this.query = '#';
+      }
+
+      if (this.record && this.query.startsWith('#') && this.query.length > 0) {
+        if (event.code === 'Backspace') {
+          this.query = this.query.slice(0, -1);
+          this.tags = await this.tagProvider.load(this.query);
+        } else {
+          if (!ignoredChar) {
+            this.query += event.key;
+            this.tags = await this.tagProvider.load(this.query);
+          }
+        }
+      }
+    } else if (event.type === 'text') {
+      
+    } else {
+      return
+    }
   }
 }

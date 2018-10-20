@@ -37,7 +37,7 @@
 
     <ion-col margin-left-2>
       <ion-item>
-        <ion-input class="mentionable" comment-form-input formControlName="body" placeholder="Write a comment"></ion-input>
+        <ion-input class="mentionable" comment-form-input formControlName="body" placeholder="Write a comment" (ionChange)="checkContent($event)" (keyup)="checkContent($event)"></ion-input>
       </ion-item>
     </ion-col>
 
@@ -49,3 +49,17 @@
     </ion-col>
   </form>
 </ion-grid>
+
+<ion-list *ngIf="query" class="post-form--query">
+  <ng-container *ngIf="users">
+    <ion-item *ngFor="let user of users" (click)="replaceText(user.username)">
+      <p>@{{ user.username }}</p>
+    </ion-item>
+  </ng-container>
+
+  <ng-container *ngIf="tags">
+    <ion-item *ngFor="let tag of tags" (click)="replaceText(tag.display_text)">
+      <p>{{ tag.display_text }}</p>
+    </ion-item>
+  </ng-container>
+</ion-list>

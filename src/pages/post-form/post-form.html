@@ -58,8 +58,7 @@
       </ion-item>
 
       <ion-item>
-        <ion-textarea class="input" rows="5" formControlName="body" placeholder="What's new?"></ion-textarea>
-        <!--  (ionChange)="checkPostContent($event)" (keyup)="checkPostContent($event)"  -->
+        <ion-textarea class="input" rows="5" formControlName="body" placeholder="What's new?" (ionChange)="checkContent($event)" (keyup)="checkContent($event)"></ion-textarea>
       </ion-item>
     </form>
   </ion-card>

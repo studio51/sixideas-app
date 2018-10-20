@@ -40,4 +40,11 @@ comments {
     height: 13px;
     width: 13px;
   }
+  
+  .post-form--query {
+    max-height: calc(44px * 4);
+    overflow-y: scroll;
+
+    ion-list { margin-bottom: 0; }
+  }
 }
