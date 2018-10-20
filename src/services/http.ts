@@ -29,6 +29,10 @@ export class SixIdeasHTTPService {
 
   ) { }
 
+  public get url(): string {
+    return SixIdeasConfig.url;
+  }
+
   public get<T>(url: string, options?: {}): Promise<any> {
     return this.http
       .get<T>(this.generateURL(url), this.generateOptions(options))
@@ -82,7 +86,7 @@ export class SixIdeasHTTPService {
   }
 
   protected generateURL(url: string) {
-    return url.match(absoluteURLPattern) ? url : SixIdeasConfig.url + url
+    return url.match(absoluteURLPattern) ? url : this.url + url
   }
 
   protected generateOptions(options: any = {}) {

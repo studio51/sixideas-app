@@ -2,7 +2,7 @@
   <ion-card-header>
     <ion-grid no-padding>
       <ion-row align-items-center>
-        <ion-col margin-right-2 (tap)="viewUserProfile(author._id.$oid)">
+        <ion-col margin-right-2 (tap)="viewUserProfile(author?._id?.$oid)">
 
           <ion-grid no-padding>
             <ion-row align-items-center>
@@ -21,7 +21,7 @@
         <ion-col col-auto>
           <ion-grid no-padding>
             <ion-row align-items-center>
-              <ng-container *ngIf="user._id.$oid === author._id.$oid">
+              <ng-container *ngIf="user?._id?.$oid === author?._id?.$oid">
                 <button ion-button clear small (tap)="edit()">Edit</button>
               </ng-container>
     
@@ -45,6 +45,6 @@
   </ion-card-content>
 
   <div class="ion-card-footer">
-    <comments [post]="post" [author]="author" [user]="user" ></comments>
+    <comments [post]="post" [author]="author" [user]="user"></comments>
   </div>
 </ion-card>

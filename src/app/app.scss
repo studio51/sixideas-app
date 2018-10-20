@@ -33,7 +33,9 @@ $config: (
 			post: #dc3545
     ),
     grey: (
-			base: #6F6F6F
+			base: #6F6F6F,
+			light: lighten(#6F6F6F, 50%),
+			lighter: lighten(#6F6F6F, 75%)
     )
   )
 );

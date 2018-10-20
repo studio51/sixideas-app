@@ -10,6 +10,7 @@ import { Platform, App, Events, MenuController, ToastController, ModalController
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
+import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
 
 import { User } from '../models/user';
 
@@ -40,6 +41,10 @@ export class SixIdeasApp {
   ]
 
   constructor(
+    statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    private storage: Storage,
+    private iab: InAppBrowser,
     private cable: Ng2Cable,
     platform: Platform,
     private appCtrl: App,
@@ -47,9 +52,6 @@ export class SixIdeasApp {
     private menuCtrl: MenuController,
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
-    private storage: Storage,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
     private sessionProvider: SessionProvider,
     private notificationService: NotificationService
 
@@ -57,8 +59,10 @@ export class SixIdeasApp {
 
     platform.ready().then((source: string) => {
       if (source === 'cordova') {
-        platform.resume.subscribe(() => { this.sessionProvider.appear(); });
-        platform.pause.subscribe(() => { this.sessionProvider.away(); })
+        if (this.user) {
+          platform.resume.subscribe(() => { this.sessionProvider.appear(); });
+          platform.pause.subscribe(() => { this.sessionProvider.away(); })
+        }
 
         statusBar.styleDefault();
         splashScreen.hide();
@@ -72,7 +76,7 @@ export class SixIdeasApp {
     await this.menuCtrl.open();
   }
 
-  public chnageFeed(feed: string) {
+  public changeFeed(feed: string) {
     this.events.publish('post:tagged', {
       tag: null,
       want: feed
@@ -91,13 +95,12 @@ export class SixIdeasApp {
   }
 
   private async updateView() {
-    const index: number = 0;
+    await this.appCtrl
+      .getRootNavs()[0]
+      .getActiveChildNavs()[0]
+      .select(0);
 
     await this.menuCtrl.close();
-    await this.appCtrl
-      .getRootNavs()[index]
-      .getActiveChildNavs()[index]
-      .select(index);
   }
 
   private async prepareApp() {
@@ -126,9 +129,9 @@ export class SixIdeasApp {
 
   private async checkLoginStatus() {
     this.token = await this.storage.get('token');
-    this.user = await this.sessionProvider.user();
 
     if (this.token) {
+      this.user = await this.sessionProvider.user();
       this.rootPage = 'TabsPage';
     } else {
       this.rootPage = 'AuthenticationPage'
@@ -161,28 +164,31 @@ export class SixIdeasApp {
   //   }
   // }
 
-  private registerNotifications() {
-    this.notificationService.notify().subscribe((notification: any) => {
-      const toast = this.toastCtrl.create({
-        message: notification.message,
-        duration: 3000,
-        showCloseButton: true,
-        closeButtonText: 'View',
-        position: 'top'
-      });
+  private async registerNotifications() {
+    const notification: any = await this.notificationService.notify();
+    const toast: any = await this.toastCtrl.create({
+      message: notification.message,
+      duration: 3000,
+      showCloseButton: true,
+      closeButtonText: 'View',
+      position: 'top'
+    });
 
-      toast.onDidDismiss((data: any, role: string) => {
-        if (role == 'close') {
-          const modal: any = this.modalCtrl.create('PostPage', {
-            id: notification.additionalData.post_id
-          });
+    await toast.onDidDismiss((data: any, role: string) => {
+      if (role == 'close') {
+        const modal: any = this.modalCtrl.create('PostPage', {
+          id: notification.additionalData.post_id
+        });
 
-          modal.present();
-        }
-      });
+        modal.present();
+      }
+    });
 
-      toast.present();
-    })
+    await toast.present();
+  }
+
+  public async openIAB(url: string) {
+    await this.iab.create(url);
   }
 }
 
