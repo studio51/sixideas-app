@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.studio51.sixideas" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.cogitor.sixideas" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>sixideas-app</name>
     <description>SixIdeas Community App</description>
     <author email="hi@studio51.solutions" href="https://studio51.solutions/">Studio51 Solutions</author>
@@ -123,11 +123,13 @@
         <variable name="FCM_VERSION" value="11.6.2" />
     </plugin>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
-    <content src="index.html" />
+    <content original-src="index.html" src="http://192.168.1.2:8100" />
     <allow-navigation href="http://192.168.1.84:8101" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.19" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <allow-navigation href="http://192.168.1.2:8100" />
+    <plugin name="cordova-plugin-inappbrowser" spec="^3.0.0" />
     <engine name="android" spec="7.1.0" />
-    <engine name="ios" spec="~4.5.4" />
+    <engine name="ios" spec="4.5.5" />
 </widget>

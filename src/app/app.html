@@ -2,7 +2,7 @@
   <ion-content>
     <div class="column">
       <div class="column-cell -auto">
-        <button menuClose *ngFor="let page of appPages" (tap)="changeFeed(page.feed)">
+        <button menuClose *ngFor="let page of appPages" (tap)="changeFeed(page.target)">
           <i class="fal fa-{{ page.icon }}"></i>
           {{ page.title }}
         </button>
@@ -21,7 +21,7 @@
       <div class="column-cell -auto">
         <div class="divider">Consultancy</div>
     
-        <button menuClose *ngFor="let page of staticPages" (tap)="openPage(page.url)">
+        <button menuClose *ngFor="let page of staticPages" (tap)="openIAB(page.target)">
           {{ page.title }}
         </button>
       </div>
