@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser';
+
 import { PostProvider } from '../../providers/post';
 
 import * as getURLs from 'get-urls';
@@ -15,6 +17,7 @@ export class PreviewComponent implements OnInit {
   public preview: any;
 
   constructor(
+    private iab: InAppBrowser,
     private postProvider: PostProvider
   
   ) { }
@@ -23,7 +26,11 @@ export class PreviewComponent implements OnInit {
   // the body input.
   // 
   ngOnInit() {
-    this.check()
+    this.check();
+  }
+
+  public async openIAB(url: string) {
+    await this.iab.create(url);
   }
 
   private async check() {
@@ -42,7 +49,7 @@ export class PreviewComponent implements OnInit {
 
         if (response) {
           this.preview = response;
-          return
+          return;
         }
 
         throw new Error('Request failed or the API returned no acceptable response.');

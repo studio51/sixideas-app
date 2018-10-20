@@ -1,4 +1,4 @@
-<ion-card *ngIf="preview" no-margin-left no-margin-bottom no-margin-right margin-top full>
+<ion-card *ngIf="preview" (tap)="openIAB(preview.url)" no-margin-left no-margin-bottom no-margin-right margin-top full>
   <ion-card-content>
     <ion-grid no-padding>
       <ion-row>
