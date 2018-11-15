@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 
+import { StatusBar } from '@ionic-native/status-bar';
+
 import { SixIdeasApp } from '../../app/app.component';
 
 import { User } from '../../models/user';
@@ -23,13 +25,19 @@ export class UsersPage {
   params: any;
 
   constructor(
+    private statusBar: StatusBar,
     public app: SixIdeasApp,
     public viewCtrl: ViewController,
     public navParams: NavParams,
     private userProvider: UserProvider,
     private sessionProvider: SessionProvider
 
-  ) { }
+  ) {
+
+    if (viewCtrl.isOverlay) {
+      statusBar.styleDefault();
+    }
+  }
 
   ionViewDidEnter() {
     this.get();
@@ -53,6 +61,10 @@ export class UsersPage {
 
   public async dismissView() {
     await this.viewCtrl.dismiss();
+
+    if (this.viewCtrl.isOverlay) {
+      await this.statusBar.styleLightContent();
+    }
   }
 
   private async get() {

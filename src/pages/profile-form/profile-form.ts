@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { IonicPage, ViewController, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { User } from '../../models/user';
 
@@ -31,6 +32,7 @@ export class ProfileFormPage {
 
   constructor(
     private camera: Camera,
+    private statusBar: StatusBar,
     private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
     private loadingCtrl: LoadingController,
@@ -39,7 +41,10 @@ export class ProfileFormPage {
     private metaProvider: MetaProvider,
     private imageProvider: ImageProvider
   
-  ) { }
+  ) {
+
+    statusBar.styleDefault();
+  }
 
   async ionViewDidLoad() {
     this.user = await this.sessionProvider.user();
@@ -163,6 +168,7 @@ export class ProfileFormPage {
   }
 
   public async dismissView(data?: { }) {
+    await this.statusBar.styleLightContent();
     await this.viewCtrl.dismiss(data);
   }
 

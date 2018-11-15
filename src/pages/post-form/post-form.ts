@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { IonicPage, ViewController, NavParams, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { StatusBar } from '@ionic-native/status-bar';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Post } from '../../models/post';
 import { User } from '../../models/user';
-// import { Tag } from '../../models/tag';
+import { Tag } from '../../models/tag';
 
 import { SessionProvider } from '../../providers/session';
 import { PostProvider } from '../../providers/post';
@@ -28,7 +29,7 @@ export class PostFormPage {
   user: User;
 
   users: User[];
-  tags: any[];
+  tags: Tag[];
 
   form: FormGroup;
 
@@ -39,8 +40,6 @@ export class PostFormPage {
 
   record: any;
   query: any;
-  users: User[];
-  tag: any[];
 
   public postColor: any = {
     default: 'white',
@@ -52,6 +51,7 @@ export class PostFormPage {
 
   constructor(
     private camera: Camera,
+    private statusBar: StatusBar,
     private viewCtrl: ViewController,
     private navParams: NavParams,
     private actionSheetCtrl: ActionSheetController,
@@ -63,6 +63,7 @@ export class PostFormPage {
     private imageProvider: ImageProvider
   
   ) {
+    statusBar.styleDefault();
 
     this.postTypes = Object.keys(this.postColor);
 
@@ -157,8 +158,6 @@ export class PostFormPage {
       post = this.form.value;
     }
 
-    console.log(post)
-
     if (this.postID) {
       response = await this.postProvider.update(this.postID, post)
     } else {
@@ -174,6 +173,7 @@ export class PostFormPage {
   }
   
   public async dismissView(data?: { }) {
+    await this.statusBar.styleLightContent();
     await this.viewCtrl.dismiss(data);
   }
 
