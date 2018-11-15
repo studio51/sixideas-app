@@ -1,0 +1,47 @@
+<ion-card no-padding>
+  <ion-card-content>
+
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col col-auto (tap)="view(); false">
+          <user-avatar [user]="user" size="small"></user-avatar>
+        </ion-col>
+
+        <ion-col margin-left>
+
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col no-padding (tap)="view(); false">
+                <h2 no-margin>{{ user.name }}</h2>
+
+                <ion-grid no-padding>
+                  <ion-row align-items-center>
+                    <ion-col col-auto no-padding>
+                      <span>@{{ user.username }}</span>      
+                    </ion-col>
+            
+                    <ion-col col-auto *ngUnless="currentUser || !follower " margin-left-2>
+                      <p size-tiny no-margin badge>Follows you</p>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-col>
+
+              <ion-col col-auto margin-left *ngUnless="currentUser">
+                <button ion-button small round no-margin (tap)="follow()">
+                  <i class="fal fa-{{ following ? 'check' : 'plus' }}-circle" margin-right-2></i>
+                  {{ following ? 'Following' : 'Follow' }}
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          
+          <ion-row *ngIf="user.bio" margin-top (tap)="view(); false">
+            <p class="user-bio" text-left no-margin>{{ user.bio }}</p>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card-content>
+</ion-card>
