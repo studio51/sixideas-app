@@ -18,7 +18,9 @@ import { SixIdeasApp } from '../../app/app.component';
 export class UsersPage {
   private user: User;
 
-  users: User[] = [];
+  users: User[];
+  qUsers: User[] = [];
+
   params: any;
 
   constructor(
@@ -45,6 +47,22 @@ export class UsersPage {
     this.events.unsubscribe('tab:changed');
   }
 
+  public searchUsers(event: any) {
+    this.users = this.qUsers;
+
+    const value: string = event.target.value;
+
+    if (value && value.trim() != '') {
+      this.users = this.users.filter((user: User) => {
+        return (
+          this.filter(user.email, value),
+          this.filter(user.username, value),
+          this.filter(user.name, value)
+        );
+      });
+    }
+  }
+
   private async get() {
     this.user = await this.sessionProvider.user();
     const users: User[] = await this.userProvider.load();
@@ -61,10 +79,13 @@ export class UsersPage {
       this.params['users']
         .map((u: any) => u['$oid'])
         .forEach((userID: string) => {
-          this.users.push(users.filter((user: User) => user._id.$oid === userID)[0]);
+          const u = users.filter((user: User) => user._id.$oid === userID)[0];
+
+          this.users.push(u);
+          this.qUsers.push(u);
         });
     } else {
-      this.users = users;
+      this.users = this.qUsers = users;
     }
   }
 
@@ -77,31 +98,35 @@ export class UsersPage {
     await modal.present();
   }
 
+  public currentUser(user: User) {
+    return this.user._id.$oid === user._id.$oid;
+  }
+
   public async follow(user: User) {
     let response: any;
 
-    if (this.imFollowing(user)) {
-      response = await this.userProvider.unfollow(user._id.$oid)
+    if (this.following(user)) {
+      response = await this.userProvider.unfollow(user._id.$oid);
     } else {
-      response = await this.userProvider.follow(user._id.$oid)
+      response = await this.userProvider.follow(user._id.$oid);
     }
 
     this.user = response.user;
   }
 
-  public currentUser(user: User) {
-    return this.user._id.$oid === user._id.$oid
-  }
-
-  public isFollowing(user: User) {
+  public follower(user: User) {
     return this.user.follower_ids
-      .map((u: any) => u.$oid)
-      .includes(user._id.$oid)
+      .map((user: User) => user.$oid)
+      .includes(user._id.$oid);
   }
 
-  public imFollowing(user: User) {
+  public following(user: User) {
     return this.user.following_ids
-      .map((u: any) => u.$oid)
-      .includes(user._id.$oid)
+      .map((user: User) => user.$oid)
+      .includes(user._id.$oid);
+  }
+
+  private filter(query: string, value: string) {
+    return query.toLowerCase().indexOf(value.toLowerCase()) > -1;
   }
 }
