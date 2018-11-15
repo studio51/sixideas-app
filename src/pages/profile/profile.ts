@@ -73,12 +73,13 @@ export class ProfilePage {
       }
     })
   }
-  public viewCommunity(want: string, userID: string, users: Array<string>) {
-    this.goToTab('tab:changed', {
-      userID: userID,
-      users: users,
+  public async viewCommunity(want: string, userID: string) {
+    const modal = await this.modalCtrl.create('UsersPage', {
+      id: userID,
       want: want
-    }, 1);
+    });
+
+    await modal.present();
   }
 
   public viewLikes(userID: string) {
@@ -95,20 +96,20 @@ export class ProfilePage {
     });
   }
 
-  private async goToTab(key: string, data: Object, index: number = 0) {
-    this.events.publish(key, data);
+  private goToTab(key: string, data: Object, index: number = 0) {
+    this.events.publish('tab:changed', data);
 
     if (this.viewCtrl.isOverlay) {
       this.dismissView();
     }
 
-    await this.appCtrl
+    this.appCtrl
       .getRootNavs()[0]
       .getActiveChildNavs()[0]
       .select(index);
   }
 
-  public dismissView() {
-    this.viewCtrl.dismiss();
+  public async dismissView() {
+    await this.viewCtrl.dismiss();
   }
 }

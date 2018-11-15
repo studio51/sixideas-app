@@ -3,6 +3,7 @@ import { IonicPageModule } from 'ionic-angular';
 
 import { ComponentsModule } from '../../components/components.module';
 import { DirectivesModule } from '../../directives/directives.module';
+import { TemplatesModule } from '../../templates/templates.module';
 
 import { UsersPage } from './users';
 
@@ -11,7 +12,8 @@ import { UsersPage } from './users';
   imports: [
     IonicPageModule.forChild(UsersPage),
     ComponentsModule,
-    DirectivesModule
+    DirectivesModule,
+    TemplatesModule
   ]
 })
 

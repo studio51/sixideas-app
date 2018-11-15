@@ -58,7 +58,7 @@
       </ion-row>
 
       <ion-row margin-top margin-bottom>
-        <ion-col col-4 text-center (tap)="viewCommunity('following', user._id.$oid, user.following_ids)">
+        <ion-col col-4 text-center (tap)="viewCommunity('following', user._id.$oid)">
           <h6>Following</h6>
           
           <ion-card user-stat-card>
@@ -68,7 +68,7 @@
           </ion-card>
         </ion-col>
 
-        <ion-col col-4 text-center (tap)="viewCommunity('followers', user._id.$oid, user.follower_ids)">
+        <ion-col col-4 text-center (tap)="viewCommunity('followers', user._id.$oid)">
           <h6>Followers</h6>
           
           <ion-card user-stat-card>

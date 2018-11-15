@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar transparent>
+  <ion-toolbar transparent *ngUnless="viewCtrl.isOverlay">
     <ion-grid no-padding>
       <ion-row align-items-center>
         <ion-col col-auto>
@@ -16,59 +16,22 @@
       </ion-row>
     </ion-grid>
   </ion-toolbar>
+
+  <ion-navbar *ngIf="viewCtrl.isOverlay">
+    <ion-buttons start>
+      <button ion-button icon color="danger" (tap)="dismissView()">
+        <i class="fal fa-times-circle" color="red"></i>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{ navParams.get('want') }}</ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <ion-searchbar (ionInput)="searchUsers($event)"></ion-searchbar>
+  <ion-searchbar (ionInput)="search($event)"></ion-searchbar>
 
   <p *ngIf="users && users.length === 0" text-center size-medium>No users found matching your criteria.</p>
 
-  <ion-card no-padding *ngFor="let user of users">
-    <ion-card-content>
-
-      <ion-grid no-padding>
-        <ion-row>
-          <ion-col col-auto (tap)="view(user); false">
-            <user-avatar [user]="user" size="small"></user-avatar>
-          </ion-col>
-
-          <ion-col margin-left>
-
-            <ion-grid no-padding>
-              <ion-row>
-                <ion-col no-padding (tap)="view(user); false">
-                  <h2 no-margin>{{ user.name }}</h2>
-
-                  <ion-grid no-padding>
-                    <ion-row align-items-center>
-                      <ion-col col-auto no-padding>
-                        <span>@{{ user.username }}</span>      
-                      </ion-col>
-              
-                      <ion-col col-auto *ngUnless="currentUser(user) || !follower(user) " margin-left-2>
-                        <p size-tiny no-margin badge>Follows you</p>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-                </ion-col>
-
-                <ion-col col-auto margin-left *ngUnless="currentUser(user)">
-                  <button ion-button small round no-margin (tap)="follow(user)">
-                    <i class="fal fa-{{ following(user) ? 'check' : 'plus' }}-circle" margin-right-2></i>
-                    {{ following(user) ? 'Following' : 'Follow' }}
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-            
-            <ion-row *ngIf="user.bio" margin-top (tap)="view(user); false">
-              <p class="user-bio" text-left no-margin>{{ user.bio }}</p>
-            </ion-row>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-    </ion-card-content>
-  </ion-card>
-
+  <user *ngFor="let user of users" [sessionUser]="currentUser" [user]="user"></user>
 </ion-content>

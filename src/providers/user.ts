@@ -25,7 +25,7 @@ export class UserProvider {
   }
 
   public get(id: string, params?: Object) {
-    return this.http.get(`users/${ id ? id : '' }`, params)
+    return this.http.get(`users/${ id ? id : '' }`, { params: params })
   }
 
   public update(id: string, data: User | { }) {

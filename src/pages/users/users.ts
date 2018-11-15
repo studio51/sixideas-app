@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, Events, ModalController } from 'ionic-angular';
-
-import { User } from '../../models/user';
-
-import { SessionProvider } from '../../providers/session';
-import { UserProvider } from '../../providers/user';
+import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 
 import { SixIdeasApp } from '../../app/app.component';
+
+import { User } from '../../models/user';
+import { UserProvider } from '../../providers/user';
+import { SessionProvider } from '../../providers/session';
 
 @IonicPage()
 @Component({
@@ -16,7 +15,7 @@ import { SixIdeasApp } from '../../app/app.component';
 })
 
 export class UsersPage {
-  private user: User;
+  public currentUser: User;
 
   users: User[];
   qUsers: User[] = [];
@@ -25,10 +24,10 @@ export class UsersPage {
 
   constructor(
     public app: SixIdeasApp,
-    private events: Events,
-    private modalCtrl: ModalController,
-    private sessionProvider: SessionProvider,
-    private userProvider: UserProvider
+    public viewCtrl: ViewController,
+    public navParams: NavParams,
+    private userProvider: UserProvider,
+    private sessionProvider: SessionProvider
 
   ) { }
 
@@ -36,18 +35,7 @@ export class UsersPage {
     this.get();
   }
 
-  ionViewWillEnter() {
-    this.events.subscribe('tab:changed', (data: any) => {
-      this.params = data;
-      this.get();
-    });
-  }
-
-  ionViewDidLeave() {
-    this.events.unsubscribe('tab:changed');
-  }
-
-  public searchUsers(event: any) {
+  public search(event: any) {
     this.users = this.qUsers;
 
     const value: string = event.target.value;
@@ -63,67 +51,23 @@ export class UsersPage {
     }
   }
 
+  public async dismissView() {
+    await this.viewCtrl.dismiss();
+  }
+
   private async get() {
-    this.user = await this.sessionProvider.user();
-    const users: User[] = await this.userProvider.load();
+    this.currentUser = await this.sessionProvider.user();
 
-    if (this.params) {
+    if (this.navParams.get('id')) {
+      const user: User[] = await this.userProvider.get(this.navParams.get('id'), {
+        include: this.navParams.get('want')
+      });
 
-      // Clear the current Users list
-      // 
-      this.users = []
-
-      // Find the Users that match the passed User IDs'
-      // TODO: This seems really inefficient.
-      // 
-      this.params['users']
-        .map((u: any) => u['$oid'])
-        .forEach((userID: string) => {
-          const u = users.filter((user: User) => user._id.$oid === userID)[0];
-
-          this.users.push(u);
-          this.qUsers.push(u);
-        });
+      // @ts-ignore
+      this.users = this.qUsers = user[this.navParams.get('want')];
     } else {
-      this.users = this.qUsers = users;
+      this.users = this.qUsers = await this.userProvider.load();
     }
-  }
-
-  public async view(user: User) {
-    const modal = await this.modalCtrl.create('ProfilePage', {
-      id: user._id.$oid,
-      header: false
-    });
-
-    await modal.present();
-  }
-
-  public currentUser(user: User) {
-    return this.user._id.$oid === user._id.$oid;
-  }
-
-  public async follow(user: User) {
-    let response: any;
-
-    if (this.following(user)) {
-      response = await this.userProvider.unfollow(user._id.$oid);
-    } else {
-      response = await this.userProvider.follow(user._id.$oid);
-    }
-
-    this.user = response.user;
-  }
-
-  public follower(user: User) {
-    return this.user.follower_ids
-      .map((user: User) => user.$oid)
-      .includes(user._id.$oid);
-  }
-
-  public following(user: User) {
-    return this.user.following_ids
-      .map((user: User) => user.$oid)
-      .includes(user._id.$oid);
   }
 
   private filter(query: string, value: string) {
