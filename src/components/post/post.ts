@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 
+import { PhotoViewer } from '@ionic-native/photo-viewer';
+
 import { Post } from '../../models/post';
 import { User } from '../../models/user';
 
@@ -15,8 +17,9 @@ export class PostComponent {
   @Input() user: User;
 
   constructor(
-    private modalCtrl: ModalController
-  
+    private modalCtrl: ModalController,
+    public photoViewer: PhotoViewer
+
   ) { }
 
   public async viewUserProfile(userID: string) {

@@ -17,6 +17,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { Camera } from '@ionic-native/camera';
 import { FileTransfer } from '@ionic-native/file-transfer';
 import { InAppBrowser } from '@ionic-native/in-app-browser';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 /*** Services ************/
 
@@ -63,6 +64,7 @@ import { HTTPInterceptor } from '../services/http.interceptor';
     /*** Native Components ***/        
     
     Push, Device, StatusBar, SplashScreen, Camera, FileTransfer, InAppBrowser,
+    PhotoViewer,
 
     /*** Services ************/
 

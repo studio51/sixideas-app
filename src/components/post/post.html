@@ -35,7 +35,7 @@
 
   <ion-card-content post-content [ngClass]="post.type">
     <ng-container *ngIf="post.type === 'default'">
-      <img *ngIf="post.image_url" [src]="post.image_url" />
+      <img *ngIf="post.image_url" [src]="post.image_url" (tap)="photoViewer.show(post.image_url)" />
 
       <mention *ngIf="post.title" [body]="post.title" class="post-title"></mention>
     </ng-container>
