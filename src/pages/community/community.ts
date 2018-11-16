@@ -96,14 +96,14 @@ export class CommunityPage {
     const params = {}
           params['include_author'] = true
     
-    if (this.tag) { params['tag'] = this.tag }
+    if (this.tag) { params['q'] = this.tag }
     if (feed && feed != 'community') { params['feed'] = feed }
 
     this.posts = await this.postProvider.load('', params);
     this.showLoadingIndicator = false;
 
     if (this.refresher) {
-      this.refresher.complete()
+      this.refresher.complete();
     }
 
     this.resetTimer();

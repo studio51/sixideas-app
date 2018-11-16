@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header transparent>
   <ion-toolbar transparent>
     <ion-grid no-padding>
       <ion-row align-items-center>
@@ -11,7 +11,7 @@
         </ion-col>
         
         <ion-col col>
-          <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="app.showTags()" (ionCancel)="app.setTag(null)"></ion-searchbar>
+          <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="app.showTags()" (ionCancel)="app.setTag(null)" (showCancelButton)="true"></ion-searchbar>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -41,7 +41,7 @@
 
     <ion-row *ngIf="tag" margin-left margin-top>
       <ion-col>
-        <h3 no-margin>#{{ tag }}</h3>
+        <h3 no-margin>{{ tag }}</h3>
       </ion-col>
     </ion-row>
   </ion-grid>

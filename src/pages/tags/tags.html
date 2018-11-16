@@ -6,14 +6,20 @@
       </button>
     </ion-buttons>
 
-    <ion-searchbar [(ngModel)]="tag" [formControl]="searchControl" (ionInput)="searchTags($event)" (ionCancel)="dismissView()"></ion-searchbar>
+    <ion-searchbar #searchBar [(ngModel)]="tag" [formControl]="searchControl" (ionInput)="search($event)" (ionCancel)="dismissView()"></ion-searchbar>
   </ion-toolbar>
 
   <ion-list>
-    <ion-item *ngFor="let tag of tags" (tap)="dismissView(tag.display_text.replace('#', ''))">
+    <ion-item *ngFor="let tag of tags" (tap)="dismissView(tag.display_text)">
       {{ tag.display_text }}
     </ion-item>
   </ion-list>
 
-  <p *ngIf="noResultsQuery" text-center size-medium>They are no #hashtags found, but you can still search for {{ searchControl.value }}</p>
+  <p *ngIf="tags && tags.length === 0" text-center size-medium>
+    There are no #hashtags found, but you can still search for
+
+    <a (tap)="dismissView(searchControl.value)">
+      {{ searchControl.value }}
+    </a>
+  </p>
 </ion-content>

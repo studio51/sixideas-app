@@ -3,9 +3,14 @@ import { SixIdeasHTTPService } from '../services/http';
 
 @Injectable()
 export class TagProvider {
-  constructor(public http: SixIdeasHTTPService) { }
+  constructor(
+    public http: SixIdeasHTTPService
+  
+  ) { }
 
-  public load(query?: any) {
-    return this.http.get('meta/tags', { params: { q: query }});
+  public load(query?: string) {
+    const params: any = query ? { params: { q: query }} : {};
+
+    return this.http.get('meta/tags', params);
   }
 }
