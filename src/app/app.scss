@@ -133,7 +133,7 @@ ng-component.app-root {
 
 	*/
 
-	ion-menu {	
+	ion-menu {
 		&.-color {
 			@each $color in $sixideas-palette {
 				&-#{ $color } {
@@ -142,6 +142,37 @@ ng-component.app-root {
 					button:not(.button):hover { border-color: darken(color($color), 20%); }
 					.divider { color: darken(color($color), 20%); }
 				}
+			}
+		}
+
+		.user {
+			img.avatar,
+			p.initials {
+				width: 40px;
+				height: 40px;
+				border-radius: 100%;
+			}
+
+			img.avatar {
+				height: 100%;
+				max-width: auto; /* Overwrite Ionic's defaults */
+				vertical-align: middle;
+			}
+	
+			p.initials {
+				font-size: 15px;
+				font-weight: bold;
+				font-family: Helvetica, Arial, sans-serif;
+				background-color: #fff;
+				color: #000;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.username {
+				color: #fff;
+				font-size: 15px;
 			}
 		}
 	
@@ -186,7 +217,7 @@ ng-component.app-root {
 		button:not(.button) {
 			display: flex;
 			flex: 1;
-			padding: (ui(spacing) / 1.5) ui(spacing);
+			padding: (ui(spacing) / 1.5) (ui(spacing) * 1.5);
 			font-size: 1.3em;
 			font-weight: 400;
 			color: #fff;

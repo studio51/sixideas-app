@@ -1,6 +1,27 @@
 <ion-menu *ngIf="user" [content]="content" class="-color-{{ user?.colour || 'grey' }}">
   <ion-content>
     <div class="column">
+      <div class="column-cell -auto" margin-left margin-bottom (tap)="updateView(2)">
+        <ion-grid class="user" no-padding>
+          <ion-row align-items-center>
+            <ion-col col-auto>
+              <img *ngIf="user.avatar_url" class="avatar" [src]="user.avatar_url" />
+              <p *ngIf="!user.avatar_url" no-margin class="initials">{{ user.initials }}</p>
+            </ion-col>
+
+            <ion-col margin-left-2>
+              <h4 class="username" no-margin>{{ user.username }}</h4>
+            </ion-col>
+
+            <ion-col col-auto margin-right-2>
+              <button ion-button small round icon-only color="danger" menuClose (tap)="logout()">
+                <ion-icon name="log-out"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
       <div class="column-cell -auto">
         <button menuClose *ngFor="let page of appPages" (tap)="changeFeed(page.target)">
           <i class="fal fa-{{ page.icon }}"></i>
@@ -23,13 +44,6 @@
     
         <button menuClose *ngFor="let page of staticPages" (tap)="openIAB(page.target)">
           {{ page.title }}
-        </button>
-      </div>
-
-      <div class="column-cell -auto">
-        <button menuClose (tap)="logout()" margin-top-2>
-          <ion-icon name="log-out"></ion-icon>
-          Sign out
         </button>
       </div>
     </div>
