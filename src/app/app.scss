@@ -213,14 +213,15 @@ ng-component.app-root {
 	}
 
 	ion-nav {
-		transform: none !important;
-		transition: transform 150ms ease-out !important;
+		// transform: none !important;
+		// transition: transform 150ms ease-out !important;
 
 		&.menu-content-open {
-			transform: translate3d(200px, 0, 0) scale(.75) !important;
-			transition: transform 200ms ease-in !important;
-			box-shadow: -10px 0 35px 10px rgba(black, .3) !important;
-			will-change: transform;
+			// transform: translate3d(200px, 0, 0) scale(.75) !important;
+			// transform: scale(.75) !important;
+			// transition: transform 200ms ease-in !important;
+			// box-shadow: -10px 0 35px 10px rgba(black, .3) !important;
+			// will-change: transform;
 		}
 	}
 }
