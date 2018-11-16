@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { IonicPage, ViewController, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
+import { IonicPage, Events, ViewController, ActionSheetController, LoadingController, normalizeURL } from 'ionic-angular';
 
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -33,6 +33,7 @@ export class ProfileFormPage {
   constructor(
     private camera: Camera,
     private statusBar: StatusBar,
+    private events: Events,
     private viewCtrl: ViewController,
     private actionSheetCtrl: ActionSheetController,
     private loadingCtrl: LoadingController,
@@ -144,6 +145,7 @@ export class ProfileFormPage {
     if (response.status === 'ok') {
       this.loader.dismiss();
       this.dismissView(response.user);
+      this.events.publish('user:changed', response.user);
     } else {
       console.log('error') 
     }
