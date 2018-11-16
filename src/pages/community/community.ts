@@ -64,19 +64,6 @@ export class CommunityPage {
     this.getPosts();
   }
 
-  // public showTags() {
-  //   const tagsModal = this.modalCtrl.create('TagsPage', {
-  //     tag: this.tag
-  //   });
-  
-  //   tagsModal.present();
-  //   tagsModal.onDidDismiss((tag: string) => {
-  //     if (tag) {
-  //       this.getTaggedPosts(tag)
-  //     }
-  //   })
-  // }
-
   private getTaggedPosts(tag: string) {
     if (this.feed != 'community') {
       this.feed = 'community'
@@ -88,12 +75,12 @@ export class CommunityPage {
 
   public refresh(refresher?: any) {
     if (refresher) {
-      this.refresher = refresher
+      this.refresher = refresher;
     } else {
-      this.showLoadingIndicator = true
+      this.showLoadingIndicator = true;
     }
 
-    this.getPosts();
+    this.getPosts('', false);
   }
 
   public feedChanged(event: any) {
@@ -103,8 +90,8 @@ export class CommunityPage {
     this.getPosts(event.value)
   }
 
-  private async getPosts(feed?: string) {
-    this.showLoadingIndicator = true;
+  private async getPosts(feed?: string, showLoadingIndicator: boolean = true) {
+    this.showLoadingIndicator = showLoadingIndicator;
 
     const params = {}
           params['include_author'] = true
@@ -155,8 +142,8 @@ export class CommunityPage {
   // }
   
   private subscribeToPostTaggedEvents() {
-    this.events.subscribe('post:tagged', (data: any) => {
-      this.getTaggedPosts(data['tag']);
+    this.events.subscribe('post:tagged', (tag: string) => {
+      this.getTaggedPosts(tag);
     })
   }
 
