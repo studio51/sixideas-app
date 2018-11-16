@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { SafeResourceUrl, DomSanitizer } from '@angular/platform-browser';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser';
 
@@ -15,11 +16,13 @@ export class PreviewComponent implements OnInit {
   @Input() body: string;
 
   public preview: any;
+  public sanitizedURL: SafeResourceUrl;
 
   constructor(
     private iab: InAppBrowser,
-    private postProvider: PostProvider
-  
+    private postProvider: PostProvider,
+    private domSanitizer: DomSanitizer
+    
   ) { }
 
   // Make sure it's first initialized otherwise we'll get undefined from
@@ -49,6 +52,11 @@ export class PreviewComponent implements OnInit {
 
         if (response) {
           this.preview = response;
+          
+          if (response.iframe) {
+            this.sanitizedURL = this.sanitizeURL(response.url);
+          }
+
           return;
         }
 
@@ -57,5 +65,9 @@ export class PreviewComponent implements OnInit {
     }
 
     return;
+  }
+
+  private sanitizeURL(url: string): SafeResourceUrl {
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(url.replace('watch?v=', 'embed/'));
   }
 }

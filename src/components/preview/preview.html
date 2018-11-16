@@ -1,4 +1,4 @@
-<ion-card *ngIf="preview" (tap)="openIAB(preview.url)" no-margin-left no-margin-bottom no-margin-right margin-top full>
+<ion-card *ngIf="preview && !preview.iframe" (tap)="openIAB(preview.url)" no-margin-left no-margin-bottom no-margin-right margin-top full>
   <ion-card-content>
     <ion-grid no-padding>
       <ion-row>
@@ -19,3 +19,9 @@
     </ion-grid>
   </ion-card-content>
 </ion-card>
+
+<ng-container *ngIf="preview && preview.iframe">
+  <div class="video-container" margin-top>
+    <iframe width="560" height="315" [src]="sanitizedURL" frameborder="0" allowfullscreen></iframe>
+  </div>
+</ng-container>
