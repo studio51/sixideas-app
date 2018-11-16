@@ -45,7 +45,7 @@ export class TagsPage {
   public search(event) {
     this.tags = this.qTags;
 
-    const value = event.target.value;
+    const value = event.target.value.replace(/^#/, '');
 
     if (value && value.trim() != '') {
       this.tags = this.tags.filter((tag: any) => {
