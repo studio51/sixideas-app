@@ -76,8 +76,12 @@ $config: (
 // automatically applied to the <body> element in the app.
 
 [full] { width: 100% !important; }
-p[size-small] { font-size: .6em; }
-p[size-tiny] { font-size: .4em; }
+
+p[size-small],
+i[size-small] { font-size: .6em; }
+
+p[size-tiny],
+i[size-tiny] { font-size: .4em; }
 
 button[round] {
 	padding-left: ui(spacing) / 2;

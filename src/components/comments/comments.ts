@@ -8,6 +8,7 @@ import { MetaProvider } from '../../providers/meta';
 import { Post } from '../../models/post';
 import { Comment } from '../../models/comment';
 import { User } from '../../models/user';
+import { Tag } from '../../models/tag';
 
 import { UserProvider } from '../../providers/user';
 import { TagProvider } from '../../providers/tag';
@@ -31,7 +32,7 @@ export class CommentsComponent implements OnInit {
   record: any;
   query: any;
   users: User[];
-  tag: any[];
+  tags: Tag[];
 
   constructor(
     private modalCtrl: ModalController,

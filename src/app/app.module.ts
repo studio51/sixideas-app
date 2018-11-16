@@ -29,6 +29,7 @@ import { NotificationService } from '../services/notification';
 import { SessionProvider } from '../providers/session';
 import { MetaProvider } from '../providers/meta';
 import { UserProvider } from '../providers/user';
+import { NotificationProvider } from '../providers/notification';
 import { FeedProvider } from '../providers/feed';
 import { TagProvider } from '../providers/tag';
 import { PostProvider } from '../providers/post';
@@ -72,8 +73,8 @@ import { HTTPInterceptor } from '../services/http.interceptor';
 
     /*** Providers * HTTP ****/
     
-    SessionProvider, MetaProvider, UserProvider, FeedProvider, TagProvider,
-    PostProvider, CommentProvider, LikeProvider, ImageProvider,
+    SessionProvider, MetaProvider, UserProvider, NotificationProvider, FeedProvider,
+    TagProvider, PostProvider, CommentProvider, LikeProvider, ImageProvider,
 
     { 
       provide: HTTP_INTERCEPTORS,

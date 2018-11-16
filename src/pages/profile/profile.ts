@@ -73,6 +73,7 @@ export class ProfilePage {
       }
     })
   }
+  
   public async viewCommunity(want: string, userID: string) {
     const modal = await this.modalCtrl.create('UsersPage', {
       id: userID,
