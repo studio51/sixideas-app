@@ -1,5 +1,11 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon color="danger" (tap)="dismissView()">
+        <i class="fal fa-times-circle" color="red"></i>
+      </button>
+    </ion-buttons>
+
     <ion-title>{{ post && post?.title ? post.title : 'Post' }}</ion-title>
   </ion-navbar>
 </ion-header>

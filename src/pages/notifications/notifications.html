@@ -1,0 +1,81 @@
+<ion-header *ngUnless="viewCtrl.isOverlay">
+    <ion-toolbar transparent>
+      <ion-grid no-padding >
+        <ion-row align-items-center>
+          <ion-col col-auto>
+            <ion-label>
+              <button ion-button small icon block outline color="white" (tap)="app.openSideMenu()">
+                <ion-icon name="menu"></ion-icon>
+              </button>
+            </ion-label>
+          </ion-col>
+          
+          <ion-col col>
+            <ion-searchbar no-padding-right [(ngModel)]="tag" (ionFocus)="app.showTags()" (ionCancel)="app.setTag(null)"></ion-searchbar>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <p *ngIf="notifications && notifications.length === 0" text-center size-medium>You have no Notifications!</p>
+  
+  <ion-grid no-padding *ngIf="notifications && notifications.length > 0">
+    <ion-row padding-right padding-top>
+      <ion-col justify-content-end>
+        <button ion-button small no-margin ngClass="-color-{{ user.colour }}" (tap)="markAllRead()">
+          Mark all as read
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card no-padding *ngFor="let notification of notifications" (tap)="goTo($event, notification)">
+    <ion-card-content>
+  
+      <ion-grid no-padding>
+        <ion-row>
+          <p no-margin>
+            <a>{{ notification.trigger.username }}</a>
+
+            <ng-container *ngIf="notification.type === 'comment_like'">
+              has liked your comment on a <strong>post</strong>
+            </ng-container>
+    
+            <ng-container *ngIf="notification.type === 'comment'">
+              <ng-container *ngIf="imMentioned(notification)">
+                mentioned you in a <strong>comment</strong>:
+              </ng-container>
+              
+              <ng-container *ngUnless="imMentioned(notification)">
+                said in a <strong>comment</strong>:
+              </ng-container>
+              
+              "{{ notification.object_with_usernames.body }}"
+
+              <ng-container *ngIf="myPost(notification)">
+                on your post
+              </ng-container>
+            </ng-container>
+    
+            <ng-container *ngIf="notification.type === 'follower'">
+              has started following you
+            </ng-container>
+    
+            <ng-container *ngIf="notification.type === 'post_like'">
+              has liked your <strong>post</strong>
+            </ng-container>
+    
+            <ng-container *ngIf="notification.type === 'post'">
+              mentioned you in a <strong>post</strong>
+            </ng-container>
+
+            <i size-small> - {{ timeAgoInWords(notification.created_at) }}</i>
+          </p>
+        </ion-row>
+      </ion-grid>
+  
+    </ion-card-content>
+  </ion-card>
+</ion-content>

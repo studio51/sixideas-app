@@ -1,0 +1,16 @@
+page-notifications {
+  ion-card {
+    box-shadow: none !important;
+    border: 1px solid color(blue);
+    
+    &-content {
+      padding: 13px !important;
+    }
+  }
+
+  .-color {
+    @each $color in $sixideas-palette {
+      &-#{ $color } { background-color: rgba(color($color), 1); }
+    }
+  }
+}

@@ -8,14 +8,18 @@ export class CommentProvider {
   constructor(public http: SixIdeasHTTPService) { }
 
   public load(postID: string) {
-    return this.http.get(`posts/${ postID }/comments`)
+    return this.http.get(`posts/${ postID }/comments`);
+  }
+
+  public get(commentID: string) {
+    return this.http.get(`comments/${ commentID }`);
   }
 
   public create(postID: string, comment: Comment) {
-    return this.http.post(`posts/${ postID }/comments`, comment)
+    return this.http.post(`posts/${ postID }/comments`, comment);
   }
 
   public update(commentID: string, comment: Comment) {
-    return this.http.patch(`comments/${ commentID }`, comment)
+    return this.http.patch(`comments/${ commentID }`, comment);
   }
 }
