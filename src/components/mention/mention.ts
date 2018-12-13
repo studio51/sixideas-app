@@ -36,19 +36,16 @@ export class MentionComponent {
     if (node.nodeName != 'ABBR') return;
     
     const type: string = node.getAttribute('type');
-    const options: any = {}
+    const value: string = node.getAttribute('value');
 
     if (type === 'mention') {
-      options['username'] = node.getAttribute('value');
-
-      await this.modalCtrl
-        .create('ProfilePage', options)
-        .present();
-
+      const modal: any = await this.modalCtrl.create('ProfilePage', {
+        username: value
+      });
+      
+      await modal.present();
     } else if (type === 'tag') {
-      options['tag'] = node.getAttribute('value');
-
-      this.events.publish('post:tagged', options);
+      this.events.publish('post:tagged', value);
 
       if (this.viewCtrl.isOverlay) {
         this.viewCtrl.dismiss();

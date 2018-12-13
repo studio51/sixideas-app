@@ -49,9 +49,7 @@ export class ProfilePage {
     this.currentUser = await this.sessionProvider.user();
 
     if (username) {
-      params['params'] = {
-        username: username
-      }
+      params['username'] =  username
     }
 
     if (this.params.get('id') || username) {
