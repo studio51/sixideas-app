@@ -47,12 +47,13 @@ export class CommunityPage {
   ) {
 
     if (navParams.get('tag')) {
-      this.setTag(navParams.get('tag'))
+      this.setTag(navParams.get('tag'));
     }
 
-    this.subscribeToTabChangedEvents();
+    // this.subscribeToTabChangedEvents();
     // this.subscribeToPostChangedEvents();
     this.subscribeToPostTaggedEvents();
+    this.subscribeToFeedChangedEvents();
   }
 
   async ionViewDidEnter() {
@@ -66,9 +67,9 @@ export class CommunityPage {
 
   private getTaggedPosts(tag: string) {
     if (this.feed != 'community') {
-      this.feed = 'community'
+      this.feed = 'community';
     }
-    
+
     this.setTag(tag);
     this.getPosts();
   }
@@ -83,12 +84,12 @@ export class CommunityPage {
     this.getPosts('', false);
   }
 
-  public feedChanged(event: any) {
-    this.showLoadingIndicator = true;
+  // public feedChanged(event: any) {
+  //   this.showLoadingIndicator = true;
     
-    this.setTag(null);
-    this.getPosts(event.value)
-  }
+  //   this.setTag(null);
+  //   this.getPosts(event.value);
+  // }
 
   private async getPosts(feed?: string, showLoadingIndicator: boolean = true) {
     this.showLoadingIndicator = showLoadingIndicator;
@@ -97,7 +98,12 @@ export class CommunityPage {
           params['include_author'] = true
     
     if (this.tag) { params['q'] = this.tag }
-    if (feed && feed != 'community') { params['feed'] = feed }
+    if (feed && feed != 'community') {
+      this.feed = feed;
+      params['feed'] = this.feed;
+    } else {
+      this.feed = 'feed';
+    }
 
     this.posts = await this.postProvider.load('', params);
     this.showLoadingIndicator = false;
@@ -120,20 +126,20 @@ export class CommunityPage {
     })
   }
 
-  private subscribeToTabChangedEvents() {
-    this.events.subscribe('post:changed', (data: any) => {
-      if (data) {
-        switch(data.want) {
-          case 'tagged':
-            this.tag = data['tag'];
-            break;
-          case 'likes':
-            this.feed = 'likes';
-            break;
-        }
-      }
-    })
-  }
+  // private subscribeToTabChangedEvents() {
+  //   this.events.subscribe('post:changed', (data: any) => {
+  //     if (data) {
+  //       switch(data.want) {
+  //         case 'tagged':
+  //           this.tag = data['tag'];
+  //           break;
+  //         case 'likes':
+  //           this.feed = 'likes';
+  //           break;
+  //       }
+  //     }
+  //   })
+  // }
 
   // private subscribeToPostChangedEvents() {
   //   this.events.subscribe('post:changed', (counter: number) => {
@@ -144,6 +150,12 @@ export class CommunityPage {
   private subscribeToPostTaggedEvents() {
     this.events.subscribe('post:tagged', (tag: string) => {
       this.getTaggedPosts(tag);
+    });
+  }
+  
+  private subscribeToFeedChangedEvents() {
+    this.events.subscribe('feed:changed', (feed: string) => {
+      this.getPosts(feed);
     })
   }
 

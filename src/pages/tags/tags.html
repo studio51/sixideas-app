@@ -1,12 +1,12 @@
 <ion-content>
   <ion-toolbar>
-    <ion-buttons start>
+    <ion-searchbar #searchBar [(ngModel)]="tag" [formControl]="searchControl" (ionInput)="search($event)" (ionCancel)="dismissView()"></ion-searchbar>
+
+    <ion-buttons end>
       <button ion-button icon color="danger" (tap)="dismissView()">
         <i class="fal fa-times-circle" color="red"></i>
       </button>
     </ion-buttons>
-
-    <ion-searchbar #searchBar [(ngModel)]="tag" [formControl]="searchControl" (ionInput)="search($event)" (ionCancel)="dismissView()"></ion-searchbar>
   </ion-toolbar>
 
   <ion-list>

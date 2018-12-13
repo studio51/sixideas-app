@@ -46,9 +46,6 @@ export class TagsPage {
   public search(event: any) {
     this.tags = this.qTags;
 
-    console.log('asd');
-    console.log(event);
-
     let value: string = '';
 
     if (event.target && event.target.value) {

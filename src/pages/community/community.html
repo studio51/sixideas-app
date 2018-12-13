@@ -4,7 +4,7 @@
       <ion-row align-items-center>
         <ion-col col-auto>
           <ion-label>
-            <button ion-button small icon block outline color="white" (tap)="app.openSideMenu()">
+            <button class="main-button" ion-button small icon block outline color="white" (tap)="app.openSideMenu()">
               <ion-icon name="menu"></ion-icon>
             </button>
           </ion-label>
@@ -23,7 +23,7 @@
     <ion-refresher-content pullingText="Pull to load new Posts" refreshingText="Loading new Posts.."></ion-refresher-content>
   </ion-refresher>
   
-  <ion-card post post-container *ngIf="user && !tag" (click)="newPost()" no-margin-bottom>
+  <ion-card post post-container *ngIf="user && (!tag && feed === 'community' || feed === 'feed')" (click)="newPost()" no-margin-bottom>
     <ion-card-header no-padding-top no-padding-bottom>
       <ion-item no-padding>
         <user-avatar item-start [user]="user" size="small"></user-avatar>
@@ -42,6 +42,12 @@
     <ion-row *ngIf="tag" margin-left margin-top>
       <ion-col>
         <h3 no-margin>{{ tag }}</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="feed && feed != 'community' && feed != 'feed'" margin-left margin-top>
+      <ion-col>
+        <h3 no-margin>{{ feed === 'tags' ? 'Trending' : 'Likes' }}</h3>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -15,6 +15,7 @@ import { InAppBrowser, InAppBrowserObject } from '@ionic-native/in-app-browser';
 import { User } from '../models/user';
 
 import { SessionProvider } from '../providers/session';
+import { PostProvider } from '../providers/post';
 
 import { NotificationService } from '../services/notification';
 
@@ -39,6 +40,7 @@ export class SixIdeasApp {
     { index: 1, title: 'Regions', target: `${ SixIdeasConfig.webURL }#region` },
     { index: 2, title: 'Clients', target: `${ SixIdeasConfig.webURL }` },
   ]
+  tag: string = null;
 
   constructor(
     statusBar: StatusBar,
@@ -53,6 +55,7 @@ export class SixIdeasApp {
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
     private sessionProvider: SessionProvider,
+    private postProvider: PostProvider,
     private notificationService: NotificationService
 
   ) {
@@ -64,43 +67,52 @@ export class SixIdeasApp {
           platform.pause.subscribe(() => { this.sessionProvider.away(); })
         }
 
-        statusBar.styleDefault();
+        statusBar.styleLightContent();
         splashScreen.hide();
       }
 
       this.prepareApp();
+
+      this.events.subscribe('user:changed', (user: User) => {
+        this.user = user;
+      });
     })
   }
   
   public async openSideMenu() {
     await this.menuCtrl.open();
   }
+  
+  public async showTags() {
+    const tagsModal = await this.modalCtrl.create('TagsPage', {
+      // tag: this.tag
+    });
+  
+    await tagsModal.present();
+    await tagsModal.onDidDismiss(async (tag: string) => {
+      this.setTag(tag);
+    });
+  }
 
   public changeFeed(feed: string) {
-    this.events.publish('post:tagged', {
-      tag: null,
-      want: feed
-    });
-
+    this.events.publish('feed:changed', feed);
     this.updateView();
   }
 
   public setTag(tag: string) {
-    this.events.publish('post:tagged', {
-      tag: tag,
-      want: 'tagged'
-    });
-
+    this.events.publish('post:tagged', tag);
     this.updateView();
   }
 
-  private async updateView() {
+  private async updateView(index: number = 0) {
     await this.appCtrl
       .getRootNavs()[0]
       .getActiveChildNavs()[0]
-      .select(0);
+      .select(index);
 
-    await this.menuCtrl.close();
+    if (this.menuCtrl) {
+      await this.menuCtrl.close();
+    }
   }
 
   private async prepareApp() {
@@ -115,11 +127,8 @@ export class SixIdeasApp {
         this.currentTimestamp = (timestamp ? timestamp : new Date());
       });
 
-      // this.registerNotifications();
-
-      Observable.timer(5000).subscribe(() => {
-        // this.checkForNewPosts();
-      })
+      this.registerNotifications();
+      Observable.timer(5000).subscribe(() => { this.checkForNewPosts() });
 
       return true;
     }
@@ -157,12 +166,12 @@ export class SixIdeasApp {
     }
   }
 
-  // private async checkForNewPosts() {
-  //   if (this.currentTimestamp) {
-  //     const response = await this.postProvider.check(this.currentTimestamp)
-  //     this.events.publish('post:changed', response.count)
-  //   }
-  // }
+  private async checkForNewPosts() {
+    if (this.currentTimestamp) {
+      const response = await this.postProvider.check(this.currentTimestamp);
+      this.events.publish('post:changed', response.count);
+    }
+  }
 
   private async registerNotifications() {
     const notification: any = await this.notificationService.notify();
@@ -188,7 +197,7 @@ export class SixIdeasApp {
   }
 
   public async openIAB(url: string) {
-    await this.iab.create(url);
+    await this.iab.create(url, '_system');
   }
 }
 
