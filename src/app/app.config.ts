@@ -1,6 +1,6 @@
 enum endpoints {
   production  = 'https://1801-six-ideas.mdw.re',
-  development = 'http://192.168.1.2:3000'
+  development = 'http://192.168.1.9:3000'
 }
 
 const environment: string = 'development'; 
