@@ -33,7 +33,7 @@ export class PreviewComponent implements OnInit {
   }
 
   public async openIAB(url: string) {
-    await this.iab.create(url);
+    await this.iab.create(url, '_system');
   }
 
   private async check() {

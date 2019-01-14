@@ -1,4 +1,11 @@
 preview {
+  img[preview-image] {
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100%;
+    height: 100%;
+  }
+
   ion-card[preview] ion-card-content {
     box-shadow: none;
     border: 1px solid rgba(0, 0, 0, 0.125) !important;

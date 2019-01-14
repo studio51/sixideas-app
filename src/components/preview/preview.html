@@ -2,8 +2,8 @@
   <ion-card-content>
     <ion-grid no-padding>
       <ion-row>
-        <ion-col col-3 margin-right-2>
-          <img preview-image width="100%" [src]="preview.image" />
+        <ion-col col-3 margin-right-2 *ngIf="preview.image">
+          <img preview-image [src]="preview.image" />
         </ion-col>
 
         <ion-col text-left>
