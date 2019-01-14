@@ -82,7 +82,7 @@ export class ProfilePage {
   }
 
   public viewLikes(userID: string) {
-    this.goToTab('tab:changed', {
+    this.goToTab('feed:changed', {
       userID: userID,
       want: 'likes'
     });
@@ -96,7 +96,7 @@ export class ProfilePage {
   }
 
   private goToTab(key: string, data: Object, index: number = 0) {
-    this.events.publish('tab:changed', data);
+    this.events.publish(key, data);
 
     if (this.viewCtrl.isOverlay) {
       this.dismissView();

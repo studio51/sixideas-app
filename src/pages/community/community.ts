@@ -32,8 +32,8 @@ export class CommunityPage {
     subTitle: 'Select a Tag to show the posts for'
   }
 
+  reloadOnEnter: boolean = true;
   newPostsCounter: number = 0;
-
   currentUser: boolean = true;
 
   constructor(
@@ -57,17 +57,19 @@ export class CommunityPage {
   }
 
   async ionViewDidEnter() {
-    const user = await this.sessionProvider.user()
-    
-    this.user = user;
-    this.tags = user.interests;
+    if (this.reloadOnEnter) {
+      const user = await this.sessionProvider.user()
+      
+      this.user = user;
+      this.tags = user.interests;
 
-    this.getPosts();
+      this.getPosts();
+    }
   }
 
-  private getTaggedPosts(tag: string) {
+  private getTaggedPosts(tag: string, feed?: string) {
     if (this.feed != 'community') {
-      this.feed = 'community';
+      this.feed = feed || 'community';
     }
 
     this.setTag(tag);
@@ -81,7 +83,8 @@ export class CommunityPage {
       this.showLoadingIndicator = true;
     }
 
-    this.getPosts('', false);
+    this.getPosts('', '', false);
+    this.reloadOnEnter = true;
   }
 
   // public feedChanged(event: any) {
@@ -91,11 +94,11 @@ export class CommunityPage {
   //   this.getPosts(event.value);
   // }
 
-  private async getPosts(feed?: string, showLoadingIndicator: boolean = true) {
+  private async getPosts(feed?: string, userID?: any, showLoadingIndicator: boolean = true) {
     this.showLoadingIndicator = showLoadingIndicator;
 
     const params = {}
-          params['include_author'] = true
+          params['include_author'] = true;
     
     if (this.tag) { params['q'] = this.tag }
     if (feed && feed != 'community') {
@@ -105,7 +108,9 @@ export class CommunityPage {
       this.feed = 'feed';
     }
 
-    this.posts = await this.postProvider.load('', params);
+    const user: any = userID ? userID : '';
+
+    this.posts = await this.postProvider.load(user, params);  
     this.showLoadingIndicator = false;
 
     if (this.refresher) {
@@ -148,15 +153,27 @@ export class CommunityPage {
   // }
   
   private subscribeToPostTaggedEvents() {
-    this.events.subscribe('post:tagged', (tag: string) => {
-      this.getTaggedPosts(tag);
+    this.events.subscribe('post:tagged', (tag: any) => {
+      this.reloadOnEnter = false;
+
+      if (typeof feed == 'object') {
+        this.getTaggedPosts(tag['want'], tag['tag']);
+      } else {
+        this.getTaggedPosts(tag);
+      }
     });
   }
   
   private subscribeToFeedChangedEvents() {
-    this.events.subscribe('feed:changed', (feed: string) => {
-      this.getPosts(feed);
-    })
+    this.events.subscribe('feed:changed', (feed: any) => {
+      this.reloadOnEnter = false;
+
+      if (typeof feed == 'object') {
+        this.getPosts(feed['want'], feed['userID']);
+      } else {
+        this.getPosts(feed);
+      }
+    });
   }
 
   private setTag(tag: string) { this.tag = tag }
