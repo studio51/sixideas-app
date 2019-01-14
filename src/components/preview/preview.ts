@@ -68,6 +68,10 @@ export class PreviewComponent implements OnInit {
   }
 
   private sanitizeURL(url: string): SafeResourceUrl {
-    return this.domSanitizer.bypassSecurityTrustResourceUrl(url.replace('watch?v=', 'embed/'));
+    url = url
+      .replace('watch?v=', 'embed/')
+      .replace('youtu.be/', 'youtube.com/embed/');
+
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }
