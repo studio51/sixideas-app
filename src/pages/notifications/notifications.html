@@ -19,10 +19,20 @@
   </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingText="Pull to load new Notifications" refreshingText="Loading new Notifications.."></ion-refresher-content>
+  </ion-refresher>
+
   <p *ngIf="notifications && notifications.length === 0" text-center size-medium>You have no Notifications!</p>
   
-  <ion-grid no-padding *ngIf="notifications && notifications.length > 0">
-    <ion-row padding-right padding-top>
+  <ion-grid no-padding>
+    <ion-row justify-content-center margin-top *ngIf="showLoadingIndicator">
+      <ion-col col-auto>
+        <ion-spinner></ion-spinner>
+      </ion-col>
+    </ion-row>
+
+    <ion-row padding-right padding-top *ngIf="notifications && notifications.length > 0">
       <ion-col justify-content-end>
         <button ion-button small no-margin ngClass="-color-{{ user.colour }}" (tap)="markAllRead()">
           Mark all as read

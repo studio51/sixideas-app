@@ -20,6 +20,8 @@ export class NotificationsPage {
   user: User;
   notifications: Notification[];
 
+  showLoadingIndicator: boolean = false;
+
   constructor(
     public viewCtrl: ViewController, 
     private modalCtrl: ModalController,
@@ -30,6 +32,17 @@ export class NotificationsPage {
 
   async ionViewDidEnter() {
     this.user = await this.sessionProvider.user();
+    this.get();
+  }
+
+  public refresh(refresher?: any) {
+    this.showLoadingIndicator = true;
+    this.get();
+    this.showLoadingIndicator = false;
+    refresher.complete();
+  }
+
+  private async get() {
     this.notifications = await this.notificationProvider.load();
   }
 
