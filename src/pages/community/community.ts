@@ -156,7 +156,7 @@ export class CommunityPage {
     this.events.subscribe('post:tagged', (tag: any) => {
       this.reloadOnEnter = false;
 
-      if (typeof feed == 'object') {
+      if (typeof(tag) == 'object') {
         this.getTaggedPosts(tag['want'], tag['tag']);
       } else {
         this.getTaggedPosts(tag);
@@ -168,7 +168,7 @@ export class CommunityPage {
     this.events.subscribe('feed:changed', (feed: any) => {
       this.reloadOnEnter = false;
 
-      if (typeof feed == 'object') {
+      if (typeof(feed) == 'object') {
         this.getPosts(feed['want'], feed['userID']);
       } else {
         this.getPosts(feed);
