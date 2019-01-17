@@ -1,4 +1,7 @@
-<ion-content>
+<ion-header *ngIf="iPhoneX">
+</ion-header>
+
+<ion-content [ngClass]="iPhoneX ? 'iphonex' : ''">
   <ion-toolbar>
     <ion-searchbar #searchBar [(ngModel)]="tag" [formControl]="searchControl" (ionInput)="search($event)" (ionCancel)="dismissView()"></ion-searchbar>
 

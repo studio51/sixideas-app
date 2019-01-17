@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { StatusBar } from '@ionic-native/status-bar';
+import { Device } from '@ionic-native/device';
 
 import { IonicPage, ViewController } from 'ionic-angular';
 
@@ -20,13 +21,20 @@ export class TagsPage {
 
   tags: any[];
   qTags: any[] = [];
+  
+  iPhoneX: boolean = false;
 
   constructor(
     private statusBar: StatusBar,
+    private device: Device,
     public viewCtrl: ViewController,
     public tagProvider: TagProvider
   
   ) {
+
+    if (device.model == 'iPhone10,3' || device.model == 'iPhone10,6') {
+      this.iPhoneX = true;
+    }
 
     statusBar.styleDefault();
   }
