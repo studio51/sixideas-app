@@ -1,9 +1,9 @@
-user-avatar {
+user-avatar, [user-avatar] {
   .container {
     position: relative;
     align-items: center;
     justify-content: center;
-    border-radius: 100%;
+    border-radius: 250px;
     display: flex;
 
     @extend .-size-medium;
@@ -16,8 +16,9 @@ user-avatar {
     }
 
     p.initials {
+      line-height: 1;
       color: #fff;
-      font-size: 30px;
+      font-size: 20px;
       font-family: Helvetica, Arial, sans-serif;
     }
 
@@ -32,15 +33,15 @@ user-avatar {
 
     &.-size {
       $small: 35px;
-      $medium: 70px;
-      $big: 90px;
+      $medium: 50px;
+      $big: 70px;
 
       &-small {
-        height: $small;
-        width: $small;
+        height: $small !important;
+        width: $small !important;
 
         img.avatar { border-width: 2px; }
-        p.initials { font-size: 10px; }
+        p.initials { font-size: 15px; }
       }
 
       &-medium {
