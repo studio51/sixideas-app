@@ -3,57 +3,45 @@
 $sixideas-palette: (white, blue, green, yellow, orange, red, grey);
 $sixideas-posts: (white, blue, green, yellow, red);
 
-$config: (
-	ui: (
-		spacing: 13px
-	),
+$spacing: 13px;
 
-  palette: (
-		white: (
-			base: #fff,
-			post: #fff
-		),
-    blue: (
-			base: #2067C3,
-			post: #007bff
-    ),
-    green: (
-      base: #009989,
-			post: #28a745
-    ),
-    yellow: (
-      base: #FCCD10,
-			post: #ffc107
-    ),
-    orange: (
-			base: #F85931
-    ),
-    red: (
-      base: #CE1836,
-			post: #dc3545
-    ),
-    grey: (
-			base: #6F6F6F,
-			light: lighten(#6F6F6F, 50%),
-			lighter: lighten(#6F6F6F, 75%)
+$config: (
+	white: (
+		base: #fff,
+		post: #fff
+	),
+	blue: (
+		base: #2067C3,
+		post: #007bff
+	),
+	green: (
+		base: #009989,
+		post: #28a745
+	),
+	yellow: (
+		base: #FCCD10,
+		post: #ffc107
+	),
+	orange: (
+		base: #F85931
+	),
+	red: (
+		base: #CE1836,
+		post: #dc3545
+	),
+	grey: (
+		base: #6F6F6F,
+		light: lighten(#6F6F6F, 50%),
+		lighter: lighten(#6F6F6F, 75%)
     )
-  )
 );
 
-@function config($map, $keys...) {
-  @each $key in $keys {
-    $map: map-get($map, $key);
-  }
-
-  @return $map;
-}
-
 @function color($key, $from: 'base') {
-  @return config($config, palette, #{ $key }, $from);
+  @return map-get(map-get($config, $key), $from);
 }
 
 @function ui($key) {
-  @return config($config, ui, #{ $key });
+  @return $spacing;
 }
 
 @import "../theme/helpers/grid";
@@ -84,11 +72,11 @@ p[size-tiny],
 i[size-tiny] { font-size: .4em; }
 
 button[round] {
-	padding-left: ui(spacing);
-	padding-right: ui(spacing);
+	padding-left: $spacing;
+	padding-right: $spacing;
 
 	&[icon] {
-		padding-right: ui(spacing) / 2 !important;	
+		padding-right: $spacing / 2 !important;	
 	}
 }
 
@@ -106,7 +94,7 @@ p[badge] {
 ng-component.app-root {
 
 	.toolbar {
-		padding: 0 ui(spacing) ui(spacing);
+		padding: 0 $spacing $spacing;
 
 		.label-ios { margin: 0; }
 
@@ -117,7 +105,7 @@ ng-component.app-root {
 		}
 	
 		&-content {
-			.button-ios { padding: ui(spacing); }
+			.button-ios { padding: $spacing; }
 
 	  	.searchbar-ios { min-height: auto; }
 			.searchbar-search-icon { fill: #fff !important; }
@@ -209,7 +197,7 @@ ng-component.app-root {
 		}
 
 		.scroll-content {
-			padding: (ui(spacing) * 6) 0 !important;
+			padding: ($spacing * 6) 0 !important;
 		}
 
 		&.show-menu {
@@ -229,7 +217,7 @@ ng-component.app-root {
 		button:not(.button) {
 			display: flex;
 			flex: 1;
-			padding: (ui(spacing) / 1.5) (ui(spacing) * 1.5);
+			padding: ($spacing / 1.5) ($spacing * 1.5);
 			font-size: 1.3em;
 			font-weight: 400;
 			color: #fff;
@@ -244,14 +232,14 @@ ng-component.app-root {
 			}
 
 			ion-icon, .fal {
-				margin-right: calc(#{ ui(spacing) } / 2);
+				margin-right: calc(#{ $spacing } / 2);
 			}
 		}
 
 		.divider {
 			font-size: .8em;
 			font-weight: 600;
-			padding: ui(spacing);
+			padding: $spacing;
 		}
 	}
 
