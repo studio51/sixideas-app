@@ -1,22 +1,19 @@
 <ion-menu *ngIf="user" [content]="content" class="-color-{{ user?.colour || 'grey' }}">
   <ion-content>
     <div class="column">
+
       <div class="column-cell -auto" margin-left margin-bottom (tap)="updateView(2)">
-        <ion-grid class="user" no-padding>
+        <ion-grid user-avatar no-padding>
           <ion-row align-items-center>
             <ion-col col-auto>
-              <img *ngIf="user.avatar_url" class="avatar" [src]="user.avatar_url" />
-              <p *ngIf="!user.avatar_url" no-margin class="initials">{{ user.initials }}</p>
+              <div class="container -size-medium" ngClass="-color-{{ user.colour || 'grey' }}">
+                <img *ngIf="user.avatar_url" class="avatar" [src]="user.avatar_url" />
+                <p *ngIf="!user.avatar_url" class="initials">{{ user.initials }}</p>
+              </div>
             </ion-col>
 
-            <ion-col margin-left-2>
+            <ion-col margin-left>
               <h4 class="username" no-margin>{{ user.username }}</h4>
-            </ion-col>
-
-            <ion-col col-auto margin-right-2>
-              <button ion-button small round icon-only color="danger" menuClose (tap)="logout()">
-                <ion-icon name="log-out"></ion-icon>
-              </button>
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -39,11 +36,18 @@
         </div>
       </div>
 
-      <div class="column-cell -auto">
+      <div class="column-cell -auto" margin-bottom>
         <div class="divider">Consultancy</div>
     
         <button menuClose *ngFor="let page of staticPages" (tap)="openIAB(page.target)">
           {{ page.title }}
+        </button>
+      </div>
+
+      <div class="column-cell -auto -align-middle" margin-top>
+        <button ngClass="-color-{{ user?.colour }}" ion-button big round icon-only color="danger" menuClose appSignOut (tap)="logout()">
+          Sign Out
+          <ion-icon name="log-out"></ion-icon>
         </button>
       </div>
     </div>

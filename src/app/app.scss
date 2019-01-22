@@ -63,6 +63,31 @@ $config: (
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+.-align-middle { align-items: center; }
+
+/* IONIC RESET */
+
+.card-content-ios { padding: ui(spacing); }
+
+/* IONIC RESET */
+
+/* */
+
+[appSignOut] {
+	padding: ui(spacing) * 1.5 !important;
+	margin: 0;
+	font-size: 1.3em;
+
+	ion-icon { padding-right: 0 !important; }
+
+	@each $color in $sixideas-palette {
+		&.-color-#{ $color } { background-color: darken(color($color), 7%) !important; }
+	}
+}
+
+
+/* */
+
 [full] { width: 100% !important; }
 
 p[size-small],
@@ -145,34 +170,13 @@ ng-component.app-root {
 			}
 		}
 
-		.user {
-			img.avatar,
-			p.initials {
-				width: 40px;
-				height: 40px;
-				border-radius: 100%;
-			}
-
-			img.avatar {
-				height: 100%;
-				max-width: auto; /* Overwrite Ionic's defaults */
-				vertical-align: middle;
-			}
-	
-			p.initials {
-				font-size: 15px;
-				font-weight: bold;
-				font-family: Helvetica, Arial, sans-serif;
-				background-color: #fff;
-				color: #000;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
+		[user-avatar] {
+			.container { background-color: #fff !important; }
+			p.initials { color: #000; }
 
 			.username {
 				color: #fff;
-				font-size: 15px;
+				font-size: 1.8em;
 			}
 		}
 	

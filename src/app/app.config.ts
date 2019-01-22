@@ -3,7 +3,7 @@ enum endpoints {
   development = 'http://192.168.1.9:3000'
 }
 
-const environment: string = 'development'; 
+const environment: string = 'production';
 
 export const webURL: string = `${ endpoints[environment] }`;
 export const url: string = `${ webURL }/api/v1/`;
