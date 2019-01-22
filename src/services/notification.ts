@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
-import { Observable } from 'rxjs';
 
 @Injectable()
 export class NotificationService {
@@ -14,45 +13,48 @@ export class NotificationService {
   
   ) { }
 
-  init() {
+  private async init() {
     const options: PushOptions = {
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      },
       android: {
         senderID: '990914187678'
+      },
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
       }
     }
 
-    if (this.platform.is('cordova')) {
-      this.pushObject = this.push.init(options)
-    }
+    this.pushObject = await this.push.init(options)
   }
 
-  public register() {
-    this.init();
+  public async check() {
+    const permission: any = await this.push.hasPermission();
 
-    if (this.platform.is('cordova')) {
-      return this.pushObject.on('registration')
+    if (permission.isEnabled) {
+      console.log('We have permission to send Notifications');
     } else {
-      return Observable.of('')
+      console.log("We don't have permission to send Notifications");
     }
+
+    return permission.isEnabled;
   }
 
-  public notify(): Observable<any> {
-    this.init();
-
-    if (this.platform.is('cordova')) {
-      return this.pushObject.on('notification')
-    } else {
-      return Observable.of('')
-    }
+  public async register(): Promise<any> {
+    await this.init();
+    return new Promise((resolve, reject) => this.pushObject.on('registration').subscribe(resolve, reject));
   }
 
-  public error() {
-    this.init();
+  public async notify(): Promise<any> {
+    await this.init();
+    return new Promise((resolve, reject) => this.pushObject.on('notification').subscribe(resolve, reject));
+  }
 
-    if (this.platform.is('cordova')) {
-      return this.pushObject.on('error')
-    } else {
-      return Observable.of('')
-    }
+  public async error(): Promise<any> {
+    await this.init();
+    return new Promise((resolve, reject) => this.pushObject.on('error').subscribe(resolve, reject));
   }
 }

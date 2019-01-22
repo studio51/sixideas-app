@@ -21,7 +21,9 @@ export class SessionProvider {
       device: { }
     };
     
-    if (this.platform.is('cordova')) {
+    const source: string = await this.platform.ready();
+    
+    if (source === 'cordova') {
       const token: any = await this.notificationService.register();
 
       device['device'] = {
@@ -32,7 +34,7 @@ export class SessionProvider {
         type: token.registrationType
       }
     }
-    
+
     return this.http.post('sessions/authenticate', Object.assign(credentials, device));
   }
 
