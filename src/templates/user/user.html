@@ -10,16 +10,16 @@
         <ion-col margin-left>
 
           <ion-grid no-padding>
-            <ion-row>
+            <ion-row [ngClass]="user.bio ? '' : '-align-middle' ">
               <ion-col no-padding (tap)="view(); false">
                 <h2 no-margin>{{ user.name }}</h2>
 
                 <ion-grid no-padding>
                   <ion-row align-items-center>
                     <ion-col col-auto no-padding>
-                      <span>@{{ user.username }}</span>      
+                      <span>@{{ user.username }}</span>
                     </ion-col>
-            
+
                     <ion-col col-auto *ngUnless="currentUser || !follower " margin-left-2>
                       <p size-tiny no-margin badge>Follows you</p>
                     </ion-col>
@@ -35,7 +35,7 @@
               </ion-col>
             </ion-row>
           </ion-grid>
-          
+
           <ion-row *ngIf="user.bio" margin-top (tap)="view(); false">
             <p class="user-bio" text-left no-margin>{{ user.bio }}</p>
           </ion-row>
