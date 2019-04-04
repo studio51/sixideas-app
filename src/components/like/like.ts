@@ -54,21 +54,15 @@ export class LikeComponent implements OnInit {
   private async like() {
     this.updateCounter();
 
-    const response = await this.likeProvider.like(this.params)
-    this.handleServerResponse(response)
-    // }, (error: any) => {
-      // console.log(error)
-    // })
+    const response = await this.likeProvider.like(this.params);
+    this.handleServerResponse(response);
   }
   
-  private unlike() {
+  private async unlike() {
     this.updateCounter(-1);
     
-    const response = this.likeProvider.unlike(this.params)
-    this.handleServerResponse(response)
-    // }, (error: any) => {
-      // console.log(error)
-    // })
+    const response = await this.likeProvider.unlike(this.params);
+    this.handleServerResponse(response);
   }
 
   private setParameters() {
