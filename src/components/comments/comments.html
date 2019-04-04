@@ -14,7 +14,7 @@
       <ion-col margin-left-2>
         <ion-card comment-container>
           <ion-card-content comment-content>
-            <like class="comment" [likeable]="comment" [user]="author"></like>
+            <like class="comment" [likeable]="comment" [author]="author" [user]="user"></like>
             <mention [body]="comment.body" editable=true></mention>
           </ion-card-content>
         </ion-card>
