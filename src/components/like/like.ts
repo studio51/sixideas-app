@@ -16,6 +16,7 @@ import { LikeProvider } from '../../providers/like';
 
 export class LikeComponent implements OnInit {
   @Input() likeable: Post | Comment;
+  @Input() author: User;
   @Input() user: User;
 
   @Input() class: string;
