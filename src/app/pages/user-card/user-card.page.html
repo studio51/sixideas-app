@@ -1,0 +1,49 @@
+<ion-content *ngIf="user">
+  <ion-refresher slot="fixed" (ionRefresh)="dismiss($event)">
+    <ion-refresher-content pullingIcon="close" pullingText="" refreshingSpinner="" refreshingText=""></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card no-margin>
+    <ion-card-header no-padding [ngStyle]="{ 'background-color': user.colour }">
+      <ion-img *ngIf="user.profile_banner_url" [src]="user.profile_banner_url"></ion-img>
+    </ion-card-header>
+
+    <ion-grid no-padding user-stats>
+      <ion-row no-padding>
+        <ion-col text-align-end>
+          <h1 no-margin padding-right>{{ user.following_ids.length }}</h1>
+          <small margin-top-2>Following</small>
+        </ion-col>
+
+        <ion-col size="auto" no-padding>
+          <app-user-avatar [user]="user" size="huge" hasOwnListener="true"></app-user-avatar>
+        </ion-col>
+
+        <ion-col>
+          <h1 no-margin padding-left>{{ user.follower_ids.length }}</h1>
+          <small margin-top-2>Followers</small>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-card-content padding-x2>
+      <h1 no-margin>{{ user.name }}</h1>
+
+      <ion-text color="medium">
+        <h2 no-margin>@{{ user.username }}</h2>
+      </ion-text>
+
+      <p padding-top-x2 no-margin *ngIf="user.bio">{{ user.bio }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid no-padding margin-top-x2>
+    <ion-row justify-content-center no-padding>
+      <ion-col size="auto" no-padding>
+        <ion-button no-margin shape="round" size="default" (click)="view()">
+          <ion-icon slot="icon-only" name="finger-print"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
