@@ -1,0 +1,29 @@
+<ion-grid no-padding>
+  <ion-row no-padding align-items-top>
+    <ion-col no-padding size="auto" margin-right margin-top>
+      <app-user-avatar [user]="comment.user" size="tiny"></app-user-avatar>
+    </ion-col>
+
+    <ion-col align-items-center comment>
+      <ion-grid no-padding>
+        <ion-row no-padding align-items-center>
+          <ion-col flex no-padding>
+            <ion-text flex color="medium">
+              <small no-margin comment-timestamp>
+                <em>{{ timeAgoInWords(comment.created_at) }}</em>
+              </small>
+            </ion-text>
+          </ion-col>
+
+          <ion-col no-padding size="auto">
+            <app-like [likeable]="comment" [user]="user" class="Comment" size="small" showCounter="true" margin-left></app-like>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding margin-top-2>
+          <app-mention [body]="comment.body"></app-mention>
+        </ion-row>
+      </ion-grid>
+    </ion-col>
+  </ion-row>
+</ion-grid>

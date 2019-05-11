@@ -1,0 +1,9 @@
+ion-grid {
+  ion-col[comment] {
+    background-color: var(--ion-color-gray-step-100);
+    border-radius: 3px;
+
+    app-mention { flex: 1; }
+    app-like { display: flex; }
+  }
+}
