@@ -1,0 +1,132 @@
+ion-card[post-featured] {
+  display: flex;
+  flex-direction: column;
+  margin: 0 16px 16px;
+
+  &.success { background-color: var(--ion-color-success); }
+  &.info { background-color: var(--ion-color-secondary); }
+  &.warning { background-color: var(--ion-color-warning); }
+  &.danger { background-color: var(--ion-color-danger); }
+
+  app-mention {
+    --mention-content-padding: 0;
+    --mention-font-size: 1em;
+
+    font-weight: 500;
+    line-height: 1;
+  }
+}
+
+ion-card[post-default] {
+  border-radius: 6px;
+  background-color: #fff;
+  margin: 0 16px 16px;
+  overflow: visible;
+
+  ion-card-header {
+    display: flex;
+    padding: 8px;
+
+    app-user-avatar { flex: 1; }
+
+    [post-date] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      background-color: rgba(var(--ion-color-primary-rgb), .2);
+      padding: 8px 12px;
+      color: rgba(var(--ion-color-primary-rgb), .7);
+      border-radius: 3px;
+
+      span {
+        line-height: 1;
+
+        &:first-child {
+          font-size: 1.25em;
+          font-weight: bold;
+        }
+
+        &:last-child {
+          font-size: .85em;
+          font-weight: regular;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  ion-card-content {
+    overflow: visible;
+
+    ion-img {
+      width: calc(100vw - 2px);
+      margin-left: -15px;
+    }
+
+    app-mention {
+      --mention-content-padding: 16px;
+    }
+
+    [post-body] {
+      background-color: var(--ion-color-gray-step-50);
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-radius: 3px;
+    }
+
+    [post-actions] {
+      margin-bottom: -48px;
+
+      ion-chip {
+        // background-color: #fff;
+        box-shadow: 0 0 0 3px #fff;
+        padding: 6px 12px !important;
+        height: auto !important;
+
+        ion-icon { font-size: 16px; }
+        ion-label { font-size: 12px; }
+      }
+    }
+  }
+
+  [ion-card-footer] {
+    display: flex;
+    flex-direction: column;
+
+    form {
+      background-color: var(--ion-color-gray-step-100);
+
+      ion-button { }
+    }
+
+    p, small {
+      display: block;
+      text-align: center;
+    }
+
+    app-comment {
+      display: block;
+      margin-bottom: 8px;
+
+      &:last-child { margin-bottom: 0; }
+    }
+  }
+
+  // &-title {
+  //   margin: 16px 16px 0;
+  // }
+}
+
+input[ion-input] {
+  padding: 0;
+  border: none;
+  margin: 0;
+  height: 100%;
+  background-color: transparent;
+
+  &::-webkit-input-placeholder {
+    color: var(--ion-color-gray-step-550);
+    font-style: italic;
+  }
+}

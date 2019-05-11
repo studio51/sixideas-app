@@ -1,0 +1,143 @@
+<ion-card post-default *ngIf="post.type === 'default'">
+  <ion-card-header align-items-center>
+    <app-user-avatar [user]="author" size="medium" showUsername="true"></app-user-avatar>
+    <app-like [likeable]="post" [user]="user" size="medium" (decided)="onLikeableDecision($event)" margin-right></app-like>
+
+    <p post-date margin-left>
+      <span>{{ day(post.created_at) }}</span>
+      <span>{{ month(post.created_at) }}</span>
+    </p>
+  </ion-card-header>
+
+  <ion-card-content no-padding>
+    <ion-img *ngIf="post.image_url" [src]="post.image_url"></ion-img>
+
+    <div post-body margin margin-bottom-x2>
+      <!-- Body -->
+      <ion-card-title *ngIf="post.title">
+        <app-mention [body]="post.title"></app-mention>
+      </ion-card-title>
+
+      <app-mention [body]="post.body.truncate(100)"></app-mention>
+
+      <!-- Meta -->
+      <ion-grid post-actions no-padding>
+        <ion-row no-padding align-items-center>
+          <ion-col no-padding size="auto">
+            <ion-chip no-margin margin-left-x2 outline="true" color="secondary">
+              <ion-icon name="chatbubbles"></ion-icon>
+              <ion-label>
+                <strong>{{ post.comments_count }}</strong>
+              </ion-label>
+            </ion-chip>
+          </ion-col>
+
+          <ion-col no-padding size="auto">
+            <ion-chip no-margin margin-left-x2 outline="true" color="tertiary">
+              <ion-icon name="heart-half"></ion-icon>
+              <ion-label>
+                <strong>{{ likes }}</strong>
+              </ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-card-content>
+
+  <div ion-card-footer>
+
+    <!-- Comment Form -->
+    <form [formGroup]="commentForm" *ngIf="commentForm" padding>
+      <ion-grid no-padding>
+        <ion-row align-items-center no-padding>
+          <ion-col size="auto" no-padding margin-right>
+            <app-user-avatar [user]="user" size="small"></app-user-avatar>
+          </ion-col>
+
+          <ion-col no-padding align-self-stretch>
+            <input ion-input formControlName="body" autocorrect="true" [appTribute]="tributeOptions" placeholder="Write a comment" />
+          </ion-col>
+
+          <ion-col size="auto" no-padding>
+            <ion-button no-margin color="primary" size="small" fill="outline" [disabled]="!commentForm.valid" (click)="submitCommentForm()">
+              <ion-spinner slot="icon-only" *ngIf="processingComment"></ion-spinner>
+              <ion-icon slot="icon-only" name="send" *ngUnless="processingComment"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+
+    <!-- Comments -->
+    <ion-text color="medium" *ngIf="post.comments_count === 0">
+      <small padding-y-x2 padding-x no-margin>This post is missing your voice!<br />Why not be the first to join this discussion?</small>
+    </ion-text>
+
+    <div post-comments padding *ngIf="comments.length > 0">
+      <app-comment *ngFor="let comment of comments" [comment]="comment" [user]="user"></app-comment>
+    </div>
+
+    <ion-text color="primary">
+      <p no-margin padding padding-bottom-x2 *ngIf="post.comments_count > 3" (tap)="viewPost()">
+        View {{ post.comments_count - 3 }} more comment{{ post.comments_count > 2 ? 's' : '' }}
+      </p>
+    </ion-text>
+  </div>
+</ion-card>
+
+<ion-card padding-x3 post-featured *ngUnless="post.type === 'default'" [ngClass]="post.type">
+  <ion-card-header no-padding>
+    <ion-chip no-margin outline="true" color="light">
+      <ion-icon color="light" name="chatbubbles"></ion-icon>
+      <ion-label color="light">
+        <strong>{{ post.comments_count }}</strong>
+      </ion-label>
+    </ion-chip>
+
+    <ion-chip no-margin margin-left outline="true" color="light">
+      <ion-icon color="light" name="heart-half"></ion-icon>
+      <ion-label color="light">
+        <strong>{{ likes }}</strong>
+      </ion-label>
+    </ion-chip>
+  </ion-card-header>
+
+  <ion-card-content no-padding margin-y-x3>
+    <ion-text color="light">
+      <app-mention [body]="post.body.truncate(100)"></app-mention>
+    </ion-text>
+  </ion-card-content>
+
+  <div ion-card-footer>
+    <ion-grid no-padding>
+      <ion-row no-padding align-items-center>
+        <ion-col no-padding>
+          <app-user-avatar [user]="author" size="small" color="light" showUsername="true" [subHeader]="timeAgoInWords(post.created_at)"></app-user-avatar>
+        </ion-col>
+
+        <ion-col no-padding size="auto">
+          <app-like [likeable]="post" [user]="user" size="large" (decided)="onLikeableDecision($event)" color="light"></app-like>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-card>
+
+<!--
+
+  <ng-container *ngIf="user?._id?.$oid === author?._id?.$oid">
+    <button ion-button clear small (tap)="edit()">Edit</button>
+  </ng-container>
+
+  <ion-card-content post-content [ngClass]="post.type">
+    <ng-container *ngIf="post.type === 'default'">
+      <img *ngIf="post.image_url" [src]="post.image_url" (tap)="photoViewer.show(post.image_url)" />
+
+      <mention *ngIf="post.title" [body]="post.title" class="post-title"></mention>
+    </ng-container>
+
+    <mention [body]="post.body" [class]="post.type"></mention>
+    <preview [body]="post.body"></preview>
+  </ion-card-content>
+</ion-card> -->
