@@ -1,0 +1,9 @@
+<ion-content padding-top-x2>
+  <app-post [post]="post" [author]="post?.user" [user]="user" [comments]="comments"></app-post>
+
+  <ion-infinite-scroll (ionInfinite)="getComments($event)">
+    <small>
+      <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Getting more posts.."></ion-infinite-scroll-content>
+    </small>
+  </ion-infinite-scroll>
+</ion-content>
