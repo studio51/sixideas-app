@@ -1,0 +1,11 @@
+<div flex align-items-center (click)="decide()">
+  <ion-text color="medium">
+    <small *ngIf="showCounter && counter > 0" margin-right>
+      <strong>{{ counter }}</strong>
+      like{{ counter === 1 ? '' : 's' }}
+    </small>
+  </ion-text>
+
+  <ion-icon *ngUnless="waitingForFeedback" name="heart{{ liked ? '' : '-empty' }}" [size]="size" [color]="color"></ion-icon>
+  <ion-spinner *ngIf="waitingForFeedback" size="small" [color]="color" name="dots"></ion-spinner>
+</div>
