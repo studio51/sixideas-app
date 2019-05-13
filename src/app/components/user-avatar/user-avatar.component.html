@@ -1,0 +1,24 @@
+<ion-grid no-padding (click)="view($event)">
+  <ion-row no-padding align-items-center>
+    <ion-col no-padding size="auto">
+      <ion-avatar *ngIf="user" class="-size-{{ size }} -color-{{ user.colour }}">
+        <span class="-appereance -appereance-{{ appereance }}"></span>
+
+        <img *ngIf="user.avatar_url" [src]="user.avatar_url">
+        <p *ngIf="!user.avatar_url">{{ user.initials }}</p>
+      </ion-avatar>
+    </ion-col>
+
+    <ion-col line-height-reset user-username no-padding *ngIf="showUsername" margin-left class="-size-{{ size }}">
+      <ion-text [color]="color">
+        <h6 no-margin>{{ user.username }}</h6>
+      </ion-text>
+
+      <ion-text flex margin-top-2 [color]="color" *ngIf="subHeader">
+        <small>
+          <em>{{ subHeader }}</em>
+        </small>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-grid>
