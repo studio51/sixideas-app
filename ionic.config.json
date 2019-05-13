@@ -1,5 +1,7 @@
 {
   "name": "sixideas-community",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
