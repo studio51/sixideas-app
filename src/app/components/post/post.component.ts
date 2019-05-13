@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ModalController, Events } from '@ionic/angular';
 
+import { ModalController } from '@ionic/angular';
 // import { PhotoViewer } from '@ionic-native/photo-viewer';
 
-import { UserPage } from '../../pages/user/user.page';
+import { PostPage } from 'src/app/pages/post/post.page';
+import { PostFormPage } from 'src/app/pages/post-form/post-form.page';
 
 import { Post } from '../../interfaces/post';
 import { User } from '../../interfaces/user';
@@ -38,9 +39,10 @@ export class PostComponent implements OnInit {
   @Input() author: User;
   @Input() user: User;
 
+  @Input() comments: Comment[] = [];
+
   public likes: number = 0;
 
-  public comments: Comment[] = [];
   public commentForm: FormGroup;
 
   tributeOptions: any = {}
@@ -54,23 +56,46 @@ export class PostComponent implements OnInit {
 
   async ngOnInit() {
     this.generateCommentForm();
-    this.getComments();
 
     this.likes = (this.post.likes ? this.post.likes.length : 0);
+
+    if (this.comments.length === 0) {
+      this.comments = await this.commentProvider.load(this.post._id.$oid);
+    }
   }
 
-  public async showUser(id: string) {
+  public async view() {
     const modal: any = await this.modalCtrl.create({
-      component: UserPage,
+      component: PostPage,
       componentProps: {
-        id: id
+        id: this.post._id.$oid,
+        post: this.post,
+        user: this.user
       }
     });
 
     return await modal.present();
   }
 
-  public async viewPost() {
+  public async edit() {
+    const modal: any = await this.modalCtrl.create({
+      component: PostFormPage,
+      componentProps: {
+        id: this.post._id.$oid,
+        post: this.post,
+        user: this.user
+      }
+    });
+
+    modal.onDidDismiss((changes: Post) => {
+      console.log(changes);
+    });
+    // const { changes } = await 
+    // if (changes) {
+    //   Object.assign(this.post, changes);
+    // }
+
+    return await modal.present();
   }
 
   public async generateCommentForm(comment?: any) {
@@ -96,24 +121,8 @@ export class PostComponent implements OnInit {
     }
   }
 
-  public async edit() {
-    // const modal: any = await this.modalCtrl.create('PostFormPage', {
-    //   id: this.post._id.$oid,
-    //   post: this.post
-    // });
-
-    // await modal.present();
-    // await modal.onDidDismiss((post: any /*Post*/) => {
-    //   Object.assign(this.post, post);
-    // });
-  }
-
   public onLikeableDecision(likesCount) {
     this.likes = likesCount;
-  }
-
-  private async getComments() {
-    this.comments = await this.commentProvider.load(this.post._id.$oid);
   }
 
   public timeAgoInWords(date: string): string {

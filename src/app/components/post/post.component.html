@@ -1,4 +1,4 @@
-<ion-card post-default *ngIf="post.type === 'default'">
+<ion-card post-default *ngIf="post && post.type === 'default'">
   <ion-card-header align-items-center>
     <app-user-avatar [user]="author" size="medium" showUsername="true"></app-user-avatar>
     <app-like [likeable]="post" [user]="user" size="medium" (decided)="onLikeableDecision($event)" margin-right></app-like>
@@ -24,7 +24,7 @@
       <ion-grid post-actions no-padding>
         <ion-row no-padding align-items-center>
           <ion-col no-padding size="auto">
-            <ion-chip no-margin margin-left-x2 outline="true" color="secondary">
+            <ion-chip no-margin margin-left-x2 outline="true" color="secondary" (click)="view()">
               <ion-icon name="chatbubbles"></ion-icon>
               <ion-label>
                 <strong>{{ post.comments_count }}</strong>
@@ -38,6 +38,14 @@
               <ion-label>
                 <strong>{{ likes }}</strong>
               </ion-label>
+            </ion-chip>
+          </ion-col>
+
+          <ion-col></ion-col>
+
+          <ion-col no-padding size="auto" *ngIf="user._id.$oid === post.user_id.$oid" (click)="edit()">
+            <ion-chip icon-only no-margin outline="true" color="success">
+              <ion-icon name="create"></ion-icon>
             </ion-chip>
           </ion-col>
         </ion-row>
@@ -79,15 +87,15 @@
     </div>
 
     <ion-text color="primary">
-      <p no-margin padding padding-bottom-x2 *ngIf="post.comments_count > 3" (tap)="viewPost()">
+      <p no-margin padding padding-bottom-x2 *ngIf="post.comments_count > 3" (click)="view()">
         View {{ post.comments_count - 3 }} more comment{{ post.comments_count > 2 ? 's' : '' }}
       </p>
     </ion-text>
   </div>
 </ion-card>
 
-<ion-card padding-x3 post-featured *ngUnless="post.type === 'default'" [ngClass]="post.type">
-  <ion-card-header no-padding>
+<ion-card padding-x3 post-featured *ngUnless="post && post.type === 'default'" [ngClass]="post.type">
+  <ion-card-header flex no-padding>
     <ion-chip no-margin outline="true" color="light">
       <ion-icon color="light" name="chatbubbles"></ion-icon>
       <ion-label color="light">
@@ -100,6 +108,12 @@
       <ion-label color="light">
         <strong>{{ likes }}</strong>
       </ion-label>
+    </ion-chip>
+
+    <div style="flex: 1;"></div>
+
+    <ion-chip no-margin outline="true" color="light" *ngIf="user._id.$oid === post.user_id.$oid" (click)="edit()">
+      <ion-icon icon-only color="light" name="create"></ion-icon>
     </ion-chip>
   </ion-card-header>
 
@@ -124,20 +138,4 @@
   </div>
 </ion-card>
 
-<!--
-
-  <ng-container *ngIf="user?._id?.$oid === author?._id?.$oid">
-    <button ion-button clear small (tap)="edit()">Edit</button>
-  </ng-container>
-
-  <ion-card-content post-content [ngClass]="post.type">
-    <ng-container *ngIf="post.type === 'default'">
-      <img *ngIf="post.image_url" [src]="post.image_url" (tap)="photoViewer.show(post.image_url)" />
-
-      <mention *ngIf="post.title" [body]="post.title" class="post-title"></mention>
-    </ng-container>
-
-    <mention [body]="post.body" [class]="post.type"></mention>
-    <preview [body]="post.body"></preview>
-  </ion-card-content>
-</ion-card> -->
+<!-- <preview [body]="post.body"></preview> -->

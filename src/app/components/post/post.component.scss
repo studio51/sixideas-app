@@ -15,6 +15,15 @@ ion-card[post-featured] {
     font-weight: 500;
     line-height: 1;
   }
+
+  &[icon-only] {
+    padding: 8px !important;
+
+    ion-icon {
+      font-size: 13px;
+      margin: 0;
+    }
+  }
 }
 
 ion-card[post-default] {
@@ -86,6 +95,15 @@ ion-card[post-default] {
 
         ion-icon { font-size: 16px; }
         ion-label { font-size: 12px; }
+
+        &[icon-only] {
+          padding: 8px !important;
+
+          ion-icon {
+            font-size: 13px;
+            margin: 0;
+          }
+        }
       }
     }
   }
@@ -113,9 +131,7 @@ ion-card[post-default] {
     }
   }
 
-  // &-title {
-  //   margin: 16px 16px 0;
-  // }
+  &-title { margin-bottom: 0px; }
 }
 
 input[ion-input] {
