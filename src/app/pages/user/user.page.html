@@ -1,0 +1,112 @@
+<ion-content *ngIf="user">
+  <ion-refresher slot="fixed" (ionRefresh)="dismiss($event)">
+    <ion-refresher-content pullingIcon="close" pullingText="" refreshingSpinner="" refreshingText=""></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card no-margin user-vcard>
+    <ion-card-header flex align-items-end justify-content-end no-padding ngClass="-color-{{ user.colour }} {{ processingImage && caller === 'profile_banner' ? 'processing' : '' }}" [ngStyle]="{ 'background-image': 'url(' + user.profile_banner_url + ')' }"  (click)="showProfileOptions('profile_banner')">
+      <ion-button *ngIf="owner" margin-x2 color="light" size="small">
+        <ion-icon name="settings"></ion-icon>
+        <small>Edit</small>
+      </ion-button>
+
+      <ion-spinner *ngIf="processingImage && caller === 'profile_banner'" color="light"></ion-spinner>
+    </ion-card-header>
+
+    <ion-card-content padding text-align-center flex column align-items-center>
+      <app-user-avatar *ngIf="user" [user]="user" size="huge" hasOwnListener="true" [ngClass]="processingImage && caller === 'avatar' ? 'processing' : ''" (click)="showProfileOptions('avatar')">
+        <ion-button *ngIf="owner" no-padding no-margin color="light" size="small">
+          <ion-icon name="settings" slot="icon-only"></ion-icon>
+        </ion-button>
+
+        <ion-spinner *ngIf="processingImage && caller === 'avatar'"></ion-spinner>
+      </app-user-avatar>
+
+      <ion-text color="dark" margin-top>
+        <h1 no-margin>{{ user.name }}</h1>
+      </ion-text>
+
+      <ion-text color="medium">
+        <small>@{{ user.username }}</small>
+      </ion-text>
+
+      <ion-text flex margin-y>
+        <p no-margin>{{ user.bio || owner ? 'Add a short bio to tell people more about yourself.' : '' }}</p>
+      </ion-text>
+
+      <ion-button *ngIf="owner && !user.bio" no-margin color="light" size="small" expand="block">
+        Add Bio
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card no-padding>
+    <ion-card-content no-padding>
+      <ion-grid no-padding>
+        <ion-row padding>
+          <ion-col text-align-center no-padding>
+            <h1>{{ user.likes_count || 0 }}</h1>
+            <h6>Likes</h6>
+          </ion-col>
+
+          <ion-col text-align-center no-padding>
+            <h1>{{ user.posts_count || 0 }}</h1>
+            <h6>Posts</h6>
+          </ion-col>
+
+          <ion-col text-align-center no-padding>
+            <h1>{{ user.following_count || 0 }}</h1>
+            <h6>Following</h6>
+          </ion-col>
+
+          <ion-col text-align-center no-padding>
+            <h1>{{ user.followers_count || 0 }}</h1>
+            <h6>Followers</h6>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-grid no-padding margin-x-x2>
+    <ion-row no-padding align-items-center>
+      <ion-col no-padding>
+        <h3 no-margin>Interests</h3>
+
+        <ion-text color="medium">
+          <small>{{ user.tags_count || 0 }} interests</small>
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button no-margin fill="clear" size="small">View All</ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row no-padding margin-top-x2>
+      <ion-col no-padding size="auto" *ngFor="let tag of tags">
+        <ion-chip color="medium" (click)="viewPosts(tag)">
+          <ion-label>{{ tag.display_text }}</ion-label>
+        </ion-chip>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid no-padding margin-x2>
+    <ion-row no-padding align-items-center>
+      <ion-col no-padding>
+        <h3 no-margin>Posts</h3>
+
+        <ion-text color="medium">
+          <small>{{ user.posts_count || 0 }} posts</small>
+        </ion-text>
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button no-margin fill="clear" size="small">View All</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <app-post *ngFor="let post of posts" [post]="post" [author]="user" [user]="currentUser"></app-post>
+</ion-content>
