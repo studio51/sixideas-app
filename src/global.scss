@@ -152,6 +152,11 @@ h1, h2, h3, h4, h5, h6, p, small, i {
 
   /* SixIdeas */
 
+  --app-post-shadow: none;
+  --app-post-margin: 0 16px 16px;
+  --app-post-header-padding: var(--padding);
+  --app-post-content-img-margin: -15px;
+
   --mention-content-padding: 0;
   --mention-content-margin: 0;
   --mention-font-size: 16px;
@@ -200,6 +205,14 @@ app-user-card.ion-page {
 .sc-ion-modal-ios-h { --background: transparent; }
 
 [flex] { display: flex; }
+[flex][column] { flex-direction: column; }
+
+ion-tab-bar {
+  --ion-tab-bar-background: transparent;
+
+  background-size: cover;
+  background-position: center center;
+}
 
 .tribute-container {
   bottom: 0 !important;
