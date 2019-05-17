@@ -1,0 +1,97 @@
+<ion-content *ngIf="user">
+  <ion-card margin-x2>
+    <ion-card-header padding-x2 ngClass="-color-{{ user.colour }}">
+      <ion-img *ngIf="user.profile_banner_url" [src]="user.profile_banner_url"></ion-img>
+
+      <ion-grid no-padding>
+        <ion-row no-padding justify-content-center>
+          <ion-col user-image-button no-padding (click)="showImageOptions('avatar')">
+            <ion-icon [color]="user.colour" name="contact"></ion-icon>
+            <ion-text [color]="user.colour">Picture</ion-text>
+          </ion-col>
+
+          <ion-col size="auto" no-padding>
+            <app-user-avatar [user]="user" size="huge">
+              <ion-spinner *ngIf="processingImage && caller === 'avatar'"></ion-spinner>
+            </app-user-avatar>
+          </ion-col>
+
+          <ion-col user-image-button no-padding (click)="showImageOptions('banner')">
+            <ion-icon [color]="user.colour" name="photos"></ion-icon>
+            <ion-text [color]="user.colour">Banner</ion-text>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding justify-content-center text-center margin-y-x2>
+          <ion-col no-padding size="auto">
+            <ion-text color="light">
+              <h3 no-margin>{{ user.forename }} {{ user.surname }}</h3>
+              <small>Lets edit your profile</small>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding justify-content-between>
+          <ion-col size="auto" color-menu *ngFor="let color of colors | keyvalue" no-padding>
+            <!-- ngClass="{{ form.controls.type.value === color ? 'selected' : '' }}" -->
+            <span ngClass="-color-{{ color.key }}" (click)="changeType(color.value)"></span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <ion-card-content padding-x2>
+      <form [formGroup]="form" *ngIf="form">
+        <div margin-bottom>
+          <ion-label no-margin position="floating">First Name</ion-label>
+          <ion-input formControlName="forename" placeholder=""></ion-input>
+        </div>
+
+        <div margin-bottom>
+          <ion-label no-margin position="floating">Surname</ion-label>
+          <ion-input formControlName="surname" placeholder=""></ion-input>
+        </div>
+
+        <div margin-bottom>
+          <ion-label no-margin position="floating">Username</ion-label>
+          <ion-input formControlName="username" placeholder="Username"></ion-input>
+        </div>
+
+        <div margin-bottom>
+          <ion-label no-margin position="floating">Email Address</ion-label>
+          <ion-input type="email" formControlName="email" placeholder=""></ion-input>
+        </div>
+
+        <div margin-bottom>
+          <ion-label no-margin position="floating">Interests</ion-label>
+          <ion-select formControlName="interests" multiple="true">
+            <ion-select-option *ngFor="let interest of interests" [value]="interest">{{ interest }}</ion-select-option>
+          </ion-select>
+        </div>
+
+        <div textarea>
+          <ion-label no-margin position="floating">Bio</ion-label>
+          <ion-textarea formControlName="bio" placeholder=""></ion-textarea>
+        </div>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding align-items-center>
+      <ion-col no-padding>
+        <ion-button no-padding no-margin margin-left-x2 size="small" fill="clear" (click)="dismiss()">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button margin-x2 size="small" (click)="submit()">
+          Submit
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
