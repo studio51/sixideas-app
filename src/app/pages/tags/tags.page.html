@@ -1,0 +1,36 @@
+<ion-header no-padding>
+  <ion-toolbar no-padding>
+    <ion-searchbar animated="true" placeholder="Search Tags" showCancelButton="true" (ionInput)="search($event)"></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid padding-left-x2 padding-top-x2 padding-bottom>
+    <ion-row margin-bottom align-items-center *ngFor="let tag of tags">
+      <ion-col no-padding>
+        <ion-grid no-padding>
+          <ion-row align-items-center padding (click)="filter(tag)">
+
+            <ion-col no-padding>
+              <small no-margin>{{ tag.display_text }}</small>
+            </ion-col>
+
+            <ion-col flex size="auto" no-padding>
+              <ion-badge>
+                {{ tag.post_ids.length }}
+              </ion-badge>
+            </ion-col>
+
+          </ion-row>
+        </ion-grid>
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button fill="clear" size="small" (click)="decide(tag)">
+          <ion-spinner *ngIf="processing && (currentTag === tag)" size="small" name="dots"></ion-spinner>
+          <ion-icon *ngIf="!processing || (processing && (currentTag != tag))" [color]="tag.favorite ? 'warning' : 'success'" slot="icon-only" [name]="tag.favorite ? 'star' : 'star-outline'"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
