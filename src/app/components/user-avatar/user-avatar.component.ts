@@ -4,6 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { UserCardPage } from 'src/app/pages/user-card/user-card.page';
 
 import { AppereanceService } from 'src/app/services/appearance.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 // import { MessageService } from './shared/messages/message.service';
 
@@ -35,18 +36,19 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
 
   @Output() listener = new EventEmitter<number>();
 
-  @Input() appereance: string = UserState[2];
+  @Input() appearance: string = UserState[2];
 
   constructor(
     public modalCtrl: ModalController,
-    private appereanceService: AppereanceService
+    public appearanceService: AppereanceService,
+    public sanitizer: DomSanitizer
 
   ) { }
 
   ngOnInit() {
-    this.appereanceService.change.subscribe((user: any) => {
+    this.appearanceService.change.subscribe((user: any) => {
       if (this.user._id.$oid === user['uuid']) {
-        this.appereance = UserState[user['state']];
+        this.appearance = UserState[user['state']];
       }
     });
   }
@@ -67,6 +69,10 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // this.appereanceService.change.unsubscribe();
+    // this.appearanceService.change.unsubscribe();
+  }
+
+  public sanitize(image: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(image);
   }
 }

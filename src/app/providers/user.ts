@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 
+import { User } from '../interfaces/user';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,12 +20,20 @@ export class UserProvider {
   }
 
   public current() {
-    return this.get('5bc8bd7796e80d3b97f0e179')
+    return this.get('5cdbeaaecbc67a69d64b19d6')
   }
 
-  // public update(id: string, data: User | { }) {
-  //   return this.http.patch(`users/${ id }`, data)
-  // }
+  public update(id: string, user: User) {
+    return this.http.patch(`users/${ id }`, { user: user })
+  }
+
+  public likes(id: string) {
+    return this.http.get(`users/${ id }/likes`)
+  }
+
+  public tags(id: string) {
+    return this.http.get(`users/${ id }/tags`)
+  }
 
   public follow(id: string) {
     return this.http.get(`users/${ id }/follow`)

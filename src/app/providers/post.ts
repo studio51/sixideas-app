@@ -27,12 +27,20 @@ export class PostProvider {
   //   return this.http.get(`posts/preview`, { params: { url: url }});
   // }
 
-  public create(post: Post) {
-    return this.http.post('posts', post)
+  public updateOrCreate(post: Post) {
+    if (post._id) {
+      return this.update(post._id.$oid, post);
+    } else {
+      return this.create(post);
+    }
   }
 
-  public update(id: string, data: Post | { }) {
-    return this.http.patch(`posts/${ id }`, data)
+  private create(post: Post) {
+    return this.http.post('posts', { post: post })
+  }
+
+  private update(id: string, post: Post) {
+    return this.http.patch(`posts/${ id }`, { post: post })
   }
 
   // public check(timestamp: Date) {
