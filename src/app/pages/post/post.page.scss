@@ -1,3 +1,6 @@
 app-post {
-  margin-top: 32px;
+  --app-post-shadow: none;
+  --app-post-margin: 0;
+  --app-post-header-padding: calc(var(--padding) * 2);
+  --app-post-content-img-margin: 1px;
 }

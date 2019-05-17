@@ -12,8 +12,9 @@ import { PostProvider } from 'src/app/providers/post';
 @Component({
   selector: 'app-post-page',
   templateUrl: './post.page.html',
-  styleUrls: ['./post.page.scss'],
+  styleUrls: ['./post.page.scss']
 })
+
 export class PostPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
@@ -47,24 +48,26 @@ export class PostPage implements OnInit {
 
     const response = await this.commentProvider.load(this.id, params);
 
-    if (response) {
-      if (this.page === 1) {
-        this.comments = response;
-      } else {
-        response.forEach((post: Post) => this.comments.push(post));
-      }
-
-      if (event) {
-        event.target.complete();
-
-        // Disable the Infinite scroll event listeners
-        //
-        if ((event.type === 'ionInfinite') && (response.length === 0)) {
-          this.infiniteScroll.disabled = true;
-        }
-      }
+    if (this.page === 1) {
+      this.comments = response;
     } else {
-      // TODO
+      response.forEach((post: Post) => this.comments.push(post));
     }
+
+    this.disableInfiniteScroll(response, event);
+  }
+
+  private disableInfiniteScroll(response: Post, event: any) {
+    if (event) {
+
+      event.target.complete();
+
+      // Disable the Infinite scroll event listeners
+      //
+      if ((event.type === 'ionInfinite') && (response.length === 0)) {
+        this.infiniteScroll.disabled = true;
+      }
+    }
+    return;
   }
 }
