@@ -1,0 +1,21 @@
+<ion-tabs [ngStyle]="{ 'background-color': user?.colour }">
+  <ion-tab-bar slot="top">
+    <ion-tab-button tab="feed">
+      <ion-icon name="paper"></ion-icon>
+      <ion-label>Feed</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="community">
+      <ion-icon name="contacts"></ion-icon>
+      <ion-label>Community</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button>
+    </ion-tab-button>
+
+    <ion-tab-button user-tab>
+      <ion-spinner *ngUnless="user" name="dots"></ion-spinner>
+      <app-user-avatar *ngIf="user" [user]="user" hasOwnListener="true" (listener)="showUserActionSheet()"></app-user-avatar>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
