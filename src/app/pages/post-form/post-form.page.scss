@@ -1,0 +1,60 @@
+$colors: (default, primary, secondary, tertiary, success, warning, danger, dark, medium);
+
+ion-content {
+  --padding-top: 32px;
+
+  app-user-avatar { z-index: 100; }
+
+  ion-card {
+    margin-top: -45px;
+    padding-top: 45px;
+  }
+
+  ion-button {
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-top: 0;
+    --padding-bottom: 0;
+
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.7em !important;
+  }
+}
+
+span {
+  display: block;
+  border-radius: 250px;
+  border: 1px solid transparent;
+  width: 7vw;
+  height: 7vw;
+}
+
+ion-card, span {
+  @each $color in $colors {
+    &.-color-#{ $color } {
+      background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
+      border-color: var(--ion-color-#{ $color }-shade);
+    }
+  }
+}
+
+textarea {
+  width: 100%;
+  border-radius: 3px;
+  border: none;
+  background-color: #efefef;
+  padding: 16px;
+}
+
+ion-card:not(.-color-default) {
+  border: none;
+
+  textarea {
+    background-color: transparent;
+    padding: 0;
+    color: #fff;
+  }
+}
+
+ion-footer { background-color: #fff; }

@@ -1,0 +1,60 @@
+<ion-content>
+
+  <ion-grid no-padding margin-y-x3 margin-x-x2>
+    <ion-row no-padding align-items-center justify-content-between>
+      <ion-col size="auto" color-menu *ngFor="let color of colors | keyvalue" no-padding>
+        <!-- ngClass="{{ form.controls.type.value === color ? 'selected' : '' }}" -->
+        <span ngClass="-color-{{ color.key }}" (click)="changeType(color.value)"></span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid no-padding margin-top-x3>
+    <ion-row no-padding align-items-start>
+      <ion-col no-padding>
+
+      </ion-col>
+
+      <ion-col no-padding flex justify-content-center>
+        <app-user-avatar [user]="user" size="big" hasOwnListener="true"></app-user-avatar>
+      </ion-col>
+
+      <ion-col no-padding padding-right-x2 flex justify-content-end>
+        <ion-button color="primary" [disabled]="form.controls.type.value != 'default'" shape="round" no-margin (click)="showImageOptions()">
+          <ion-icon name="camera" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-card ngClass="-color-{{ form.controls.type.value }}">
+    <ion-card-content>
+      <form [formGroup]="form" *ngIf="form">
+        <img *ngIf="post.image_url && form.controls.type.value === 'default'" [src]="post.image_url" />
+
+        <input *ngIf="form.controls.type.value === 'default'" type="text" ion-input formControlName="title" autocorrect="true" [appTribute]="tributeOptions" placeholder="Title ( optional )" />
+        <textarea ion-input rows="5" formControlName="body" autocorrect="true" [appTribute]="tributeOptions" placeholder="What's new?"></textarea>
+      </form>
+    </ion-card-content>
+  </ion-card>
+  <!-- <preview *ngIf="form" [body]="form.controls.body.value"></preview> -->
+</ion-content>
+
+<ion-footer>
+  <ion-grid no-padding>
+    <ion-row no-padding align-items-center>
+      <ion-col no-padding>
+        <ion-button no-padding no-margin margin-left-x2 size="small" fill="clear" (click)="dismiss()">
+          <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button margin-x2 size="small" (click)="submit()">
+          Submit
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>
+ 
