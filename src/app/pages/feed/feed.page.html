@@ -1,0 +1,80 @@
+<ion-content>
+  <ion-card user-card>
+    <ion-card-header>
+      <ion-grid no-padding>
+        <ion-row align-items-center no-padding>
+          <ion-col size="auto" no-padding margin-right>
+            <app-user-avatar [user]="user" size="small" hasOwnListener="true"></app-user-avatar>
+          </ion-col>
+
+          <ion-col no-padding (click)="newPostForm()">
+            <p no-margin>What's happening today?</p>
+          </ion-col>
+
+          <ion-col no-padding size="auto">
+            <ion-button no-margin no-padding size="small" shape="round" fill="outline" color="primary" (click)="showTagsPage()">
+              <ion-icon slot="icon-only" name="funnel"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-grid no-padding>
+        <ion-row user-tags no-padding align-items-start nowrap>
+          <ion-col no-padding size="auto" *ngFor="let tag of tags" (click)="filter(tag)">
+            <ion-chip [color]="tag._id.$oid === selectedTag?._id?.$oid ? 'primary' : 'medium'">
+              <ion-label>{{ tag.display_text }}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="" pullingText="Pull to reload" refreshingSpinner="dots" refreshingText="Getting posts.."></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- <ion-card color="tertiary" margin-x2 new-posts-card>
+    <ion-card-content padding>
+      <small flex>There are&nbsp;<strong>3</strong>&nbsp;new posts. Pull down to refresh</small>
+    </ion-card-content>
+  </ion-card> -->
+
+  <div align-items-center flex column text-align-center>
+    <ng-container *ngIf="filtering">
+      <ion-spinner name="dots"></ion-spinner>
+      <ion-text color="medium">
+        <small>Loading posts for {{ selectedTag.display_text }}</small>
+      </ion-text>
+    </ng-container>
+
+    <ng-container *ngIf="posts.length === 0">
+      <ion-spinner name="dots"></ion-spinner>
+      <ion-text color="medium">
+        <small>
+          There are no posts {{ selectedTag ? 'for ' + selectedTag.display_text : '' }} here
+        </small>
+      </ion-text>
+    </ng-container>
+  </div>
+
+  <app-post *ngFor="let post of posts" [post]="post" [author]="post?.user" [user]="user"></app-post>
+
+  <ng-container *ngIf="infiniteScroll.disabled">
+    <ion-text color="medium" text-align-center>
+      <small no-margin padding padding-bottom-x2>
+        You've reached the end of the line. <br />
+        There are no more posts here..
+      </small>
+    </ion-text>
+  </ng-container>
+
+  <ion-infinite-scroll (ionInfinite)="get($event)">
+    <small>
+      <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Getting more posts.."></ion-infinite-scroll-content>
+    </small>
+  </ion-infinite-scroll>
+</ion-content>
