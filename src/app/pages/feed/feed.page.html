@@ -23,6 +23,12 @@
     <ion-card-content>
       <ion-grid no-padding>
         <ion-row user-tags no-padding align-items-start nowrap>
+          <ion-col *ngIf="selectedTag" size="auto" no-padding (click)="filter(null)">
+            <ion-chip color="warning">
+              <ion-icon name="close"></ion-icon>
+            </ion-chip>
+          </ion-col>
+
           <ion-col no-padding size="auto" *ngFor="let tag of tags" (click)="filter(tag)">
             <ion-chip [color]="tag._id.$oid === selectedTag?._id?.$oid ? 'primary' : 'medium'">
               <ion-label>{{ tag.display_text }}</ion-label>
