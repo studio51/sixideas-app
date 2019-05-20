@@ -46,7 +46,12 @@ export class NotificationsPage implements OnInit {
   public async get() {
     this.notifications = await this.notificationsProvider.load();
   }
-  
+
+  public async markAllAsRead() {
+    await this.notificationsProvider.read();
+    this.get();
+  }
+
   public timeAgoInWords(date: string): string {
     // @ts-ignore
     return new Date(date).relative();

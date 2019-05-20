@@ -27,6 +27,15 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'notifications',
+        children: [
+          {
+            path: '',
+            loadChildren: '../notifications/notifications.module#NotificationsPageModule'
+          }
+        ]
+      },
+      {
         path: '',
         redirectTo: '/tabs/feed',
         pathMatch: 'full'

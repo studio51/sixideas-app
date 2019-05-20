@@ -1,16 +1,18 @@
 <ion-tabs [ngStyle]="{ 'background-color': user?.colour }">
-  <ion-tab-bar slot="top">
+  <ion-tab-bar slot="bottom">
     <ion-tab-button tab="feed">
-      <ion-icon name="paper"></ion-icon>
-      <ion-label>Feed</ion-label>
+      <ion-icon name="albums"></ion-icon>
+      <!-- <ion-label>Feed</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="community">
       <ion-icon name="contacts"></ion-icon>
-      <ion-label>Community</ion-label>
+      <!-- <ion-label>Community</ion-label> -->
     </ion-tab-button>
 
-    <ion-tab-button>
+    <ion-tab-button tab="notifications">
+      <ion-icon name="notifications-outline"></ion-icon>
+      <!-- <ion-label>Notifications</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button user-tab>

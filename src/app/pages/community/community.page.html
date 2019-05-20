@@ -1,15 +1,12 @@
+<ion-header app-header></ion-header>
+
 <ion-content>
-  <ion-searchbar padding-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
-
-  <ion-text color="medium" flex justify-content-center text-align-center *ngIf="filtering && users.length === 0">
-    <small>No users found matching your criteria.</small>
-  </ion-text>
-
+  
   <ng-container *ngUnless="filtering">
-    <ion-grid no-padding margin-x-x2>
+    <ion-grid no-padding margin-x2>
       <ion-row no-padding align-items-center>
         <ion-col no-padding>
-          <h3 no-margin>Followers</h3>
+          <h4 no-margin line-height-7>Followers</h4>
 
           <ion-text color="medium">
             <small>{{ followers.length || 0 }} followers</small>
@@ -35,7 +32,7 @@
     <ion-grid no-padding margin-x2>
       <ion-row no-padding align-items-center>
         <ion-col no-padding>
-          <h3 no-margin>Following</h3>
+          <h4 no-margin line-height-7>Following</h4>
 
           <ion-text color="medium">
             <small>{{ following.length || 0 }} following</small>
@@ -58,7 +55,7 @@
       </ion-row>
     </ion-grid>
 
-    <ion-grid no-padding margin-x-x2 margin-bottom-x2>
+    <!-- <ion-grid no-padding margin-x-x2 margin-bottom-x2>
       <ion-row no-padding align-items-center>
         <ion-col no-padding>
           <h3 no-margin>Users</h3>
@@ -68,8 +65,16 @@
           </ion-text>
         </ion-col>
       </ion-row>
-    </ion-grid>
+    </ion-grid> -->
   </ng-container>
+
+  <ion-toolbar sticky sticky-top>
+    <ion-searchbar padding-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-text color="medium" flex justify-content-center text-align-center *ngIf="filtering && users.length === 0">
+    <small>No users found matching your criteria.</small>
+  </ion-text>
 
   <ion-card no-margin *ngFor="let user of users">
     <ion-card-content padding-x2>

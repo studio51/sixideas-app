@@ -3,7 +3,7 @@ import { IonInfiniteScroll, ToastController, ModalController } from '@ionic/angu
 
 import { UserProvider } from 'src/app/providers/user';
 
-import { User } from 'src/app/interfaces/user';
+import { User, UserResponse } from 'src/app/interfaces/user';
 import { UserCardPage } from 'src/app/pages/user-card/user-card.page';
 
 import * as Sugar from 'sugar/string';
@@ -11,11 +11,6 @@ import * as Sugar from 'sugar/string';
 Sugar.String.extend({
   methods: ['truncate']
 });
-
-interface UserResponse {
-  users: User[],
-  total_users: number
-}
 
 @Component({
   selector: 'app-community',
@@ -103,7 +98,6 @@ export class CommunityPage implements OnInit {
     }
 
     if (query) { params['q'] = query } else {
-
       this.followers = await this.userProvider.followers(this.user._id.$oid);
       this.following = await this.userProvider.following(this.user._id.$oid);
     }

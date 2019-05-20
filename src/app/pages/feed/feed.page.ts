@@ -28,8 +28,8 @@ export class FeedPage implements OnInit {
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   user: User;
-  tags: Tag[];
 
+  tags: Tag[] = [];
   posts: Post[] = [];
 
   filtering: boolean = false;
@@ -67,7 +67,9 @@ export class FeedPage implements OnInit {
           params['include_author'] = true;
           params['page'] = this.page += 1;
 
-    if (this.selectedTag) { params['tag'] = this.selectedTag }
+    if (this.selectedTag) {
+      params['tag'] = this.selectedTag.text;
+    }
 
     const response = await this.postProvider.load(null, params);
 

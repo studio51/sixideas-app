@@ -1,3 +1,5 @@
+<ion-header app-header></ion-header>
+
 <ion-content>
   <ion-card user-card>
     <ion-card-header>
@@ -22,7 +24,7 @@
 
     <ion-card-content>
       <ion-grid no-padding>
-        <ion-row user-tags no-padding align-items-start nowrap>
+        <ion-row no-padding vertical-scroll>
           <ion-col *ngIf="selectedTag" size="auto" no-padding (click)="filter(null)">
             <ion-chip color="warning">
               <ion-icon name="close"></ion-icon>
@@ -70,8 +72,8 @@
   <app-post *ngFor="let post of posts" [post]="post" [author]="post?.user" [user]="user"></app-post>
 
   <ng-container *ngIf="infiniteScroll.disabled">
-    <ion-text color="medium" text-align-center>
-      <small no-margin padding padding-bottom-x2>
+    <ion-text color="medium" flex justify-content-center>
+      <small no-margin padding padding-bottom-x2 text-align-center>
         You've reached the end of the line. <br />
         There are no more posts here..
       </small>

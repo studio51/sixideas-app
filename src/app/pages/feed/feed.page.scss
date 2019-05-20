@@ -16,13 +16,5 @@ ion-card[user-card] {
   ion-card-content {
     border-top: 1px solid var(--ion-color-gray-step-150);
     padding: 0;
-
-    [user-tags] {
-      overflow-x: auto;
-
-      &::-webkit-scrollbar { width: 0 !important; }
-
-      ion-chip { margin: 0 0 0 8px; }
-    }
   }
 }

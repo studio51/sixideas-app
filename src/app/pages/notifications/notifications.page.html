@@ -1,14 +1,10 @@
-<ion-header>
-  <ion-toolbar no-padding padding-x2>
+<ion-header app-header></ion-header>
+
+<ion-content>
+  <ion-toolbar no-padding padding-y-x2 padding-left-x2 padding-x>
     <ion-grid no-padding>
       <ion-row no-padding align-items-center>
-        <ion-col size="auto">
-          <ion-button no-margin no-padding fill="clear" size="small" [color]="user.colour">
-            <ion-icon name="back" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-col>
-
-        <ion-col align-item-start no-padding>
+        <ion-col no-padding>
           <h2 no-margin line-height-7>Notifications</h2>
 
           <ion-text color="medium" line-height-7>
@@ -16,24 +12,22 @@
           </ion-text>
         </ion-col>
 
-        <ion-col no-padding size="auto" *ngIf="notifications.length > 0" (tap)="markAllRead()">
-          <ion-button no-margin no-padding fill="clear" size="small" [color]="user.colour">
-            Mark all as read
+        <ion-col no-padding size="auto" *ngIf="notifications.length > 0" (tap)="markAllAsRead()">
+          <ion-button no-margin no-padding fill="clear" [color]="user.colour">
+            <ion-icon name="done-all" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-toolbar>
-</ion-header>
 
-<ion-content>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="" pullingText="" refreshingSpinner="dots" refreshingText=""></ion-refresher-content>
+  </ion-refresher>
+
   <ion-text color="medium" flex justify-content-center text-align-center *ngIf="notifications.length === 0">
     <small>You have no Notifications</small>
   </ion-text>
-
-  <ion-refresher (ionRefresh)="refresh($event)">
-    <ion-refresher-content pullingIcon="" pullingText="Pull to reload" refreshingSpinner="dots" refreshingText="Getting notifications.."></ion-refresher-content>
-  </ion-refresher>
 
   <ion-card padding-bottom-x2 no-margin no-padding *ngFor="let notification of notifications" (tap)="goTo($event, notification)">
     <ion-card-content no-padding padding-x-x2>
