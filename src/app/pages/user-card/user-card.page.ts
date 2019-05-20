@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavParams, ModalController } from '@ionic/angular';
+import { Component, OnInit, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
 
 import { UserProvider } from 'src/app/providers/user';
 import { User } from 'src/app/interfaces/user';
@@ -14,15 +14,16 @@ import { UserPage } from '../user/user.page';
 export class UserCardPage implements OnInit {
   user: User;
 
+  @Input() id: string;
+
   constructor(
     public userProvider: UserProvider,
-    public navParams: NavParams,
     public modalCtrl: ModalController
 
   ) { }
 
   async ngOnInit() {
-    this.user = await this.userProvider.get(this.navParams.get('id'))
+    this.user = await this.userProvider.get(this.id);
   }
 
   public async view() {

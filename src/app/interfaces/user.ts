@@ -49,6 +49,11 @@ export interface User {
   followers: User[];
 }
 
+export interface UserResponse {
+  users: User[],
+  total_users: number
+}
+
 export class User {
   constructor(fields: any) {
     for (const f in fields) {

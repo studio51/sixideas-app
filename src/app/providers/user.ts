@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 
-import { User } from '../interfaces/user';
+import { User, UserResponse } from '../interfaces/user';
 import { Post } from '../interfaces/post';
 import { Tag } from '../interfaces/tag';
 
@@ -11,7 +11,7 @@ import { Tag } from '../interfaces/tag';
 export class UserProvider {
   constructor(public http: HTTPService) { }
 
-  public async load(params?: Object) {
+  public async load(params?: Object): Promise<UserResponse> {
     const response: any = await this.http.get('users', {
       observe: 'response',
       params: params
@@ -23,8 +23,8 @@ export class UserProvider {
     }
   }
 
-  public get(id: string, params?: Object) {
-    return this.http.get(`users/${ id ? id : '' }`, { params: params })
+  public get(id: string): Promise<User> {
+    return this.http.get(`users/${ id }`);
   }
 
   // Resources

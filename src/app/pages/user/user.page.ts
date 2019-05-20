@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { NavParams, ModalController, ActionSheetController } from '@ionic/angular';
 
@@ -19,7 +19,9 @@ import { Post } from 'src/app/interfaces/post';
 })
 
 export class UserPage implements OnInit {
-  user: User;
+  @Input() id: string;
+  @Input() user: User;
+
   currentUser: User;
 
   tags: Tag[];
@@ -40,23 +42,16 @@ export class UserPage implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.userProvider.current();
+    
     this.get();
   }
 
   public async get() {
-    const params: Object = {}
-    // const username: string = this.params.get('username');
-
-    // if (username) {
-    //   params['username'] =  username
-    // }
-    this.user = await this.userProvider.current();
-
-    // if (this.params.get('id') || username) {
-      // this.user = await this.userProvider.get(this.params.get('id'), params);
-    // } else {
-      // this.user = this.currentUser;
-    // }
+    if (!this.user && this.id) {
+      this.user = await this.userProvider.get(this.id);
+    } else {
+      this.user = this.currentUser;
+    }
 
     this.tags = await this.userProvider.tags(this.user._id.$oid);
     this.posts = await this.postProvider.load(this.user._id.$oid);
