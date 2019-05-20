@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar no-padding padding-x2>
+    <ion-grid no-padding>
+      <ion-row no-padding align-items-center>
+        <ion-col size="auto">
+          <ion-button no-margin no-padding fill="clear" size="small" [color]="user.colour">
+            <ion-icon name="back" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
+
+        <ion-col align-item-start no-padding>
+          <h2 no-margin line-height-7>Notifications</h2>
+
+          <ion-text color="medium" line-height-7>
+            <small>{{ notifications.length || 0 }} notifications</small>
+          </ion-text>
+        </ion-col>
+
+        <ion-col no-padding size="auto" *ngIf="notifications.length > 0" (tap)="markAllRead()">
+          <ion-button no-margin no-padding fill="clear" size="small" [color]="user.colour">
+            Mark all as read
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-text color="medium" flex justify-content-center text-align-center *ngIf="notifications.length === 0">
+    <small>You have no Notifications</small>
+  </ion-text>
+
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content pullingIcon="" pullingText="Pull to reload" refreshingSpinner="dots" refreshingText="Getting notifications.."></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-card padding-bottom-x2 no-margin no-padding *ngFor="let notification of notifications" (tap)="goTo($event, notification)">
+    <ion-card-content no-padding padding-x-x2>
+      <app-user-avatar [user]="notification.trigger" size="medium" showUsername="true" subHeader="">
+        <ion-text title no-margin weight-300>
+          <ng-container *ngIf="notification.type === 'post_like'">liked your post</ng-container>
+          <ng-container *ngIf="notification.type === 'comment_like'">liked your comment</ng-container>
+          <ng-container *ngIf="notification.type === 'follower'">is now following you</ng-container>
+          <ng-container *ngIf="notification.type === 'comment'">mentioned you in a comment</ng-container>
+          <ng-container *ngIf="notification.type === 'post'">mentioned you in a post</ng-container>
+        </ion-text>
+
+        <div date>{{ timeAgoInWords(notification.created_at) }}</div>
+      </app-user-avatar>
+
+      <!-- <ng-container *ngUnless="imMentioned(notification)">
+        said in a <strong>comment</strong>:
+      </ng-container> -->
+      <!-- "{{ notification.object_with_usernames.body }}" -->
+      <!-- <ng-container *ngIf="myPost(notification)">
+        on your post
+      </ng-container> -->
+
+    </ion-card-content>
+  </ion-card>
+</ion-content>

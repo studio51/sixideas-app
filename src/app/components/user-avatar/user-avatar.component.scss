@@ -103,11 +103,6 @@ ion-avatar {
 }
 
 [user-username] {
-  h6 { font-weight: 700; }
-
-  &.-size-small {
-    h6 { font-size: medium; }
-  }
-
+  h6 { font-weight: 500; }
   h6, small { line-height: 1; }
 }

@@ -28,7 +28,7 @@ enum UserState { 'away', 'online', 'offline' }
 export class UserAvatarComponent implements OnInit, OnDestroy {
   @Input() user: any;
   @Input() size: string; // AvatarSize = AvatarSize.T;
-  @Input() color: string = 'medium';
+  @Input() color: string = 'dark';
 
   @Input() subHeader: any = null;
   @Input() showUsername: boolean = false;
