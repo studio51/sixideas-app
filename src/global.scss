@@ -94,7 +94,7 @@ h1, h2, h3, h4, h5, h6, p, small, i {
   &[no-margin] { margin: 0; }
 }
 
-[text-align-center] { text-align: center; }
+[text-align-center] { text-align: center !important; }
 [text-align-end] { text-align: right; }
 [text-align-start] { text-align: left; }
 
@@ -250,4 +250,14 @@ ion-action-sheet.user-action-sheet {
       }
     }
   }
+}
+
+[vertical-scroll] {
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+
+  &::-webkit-scrollbar { width: 0 !important; }
+
+  // ion-chip { margin: 0 0 0 8px; }
 }

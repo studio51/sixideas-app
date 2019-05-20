@@ -1,0 +1,135 @@
+<ion-content>
+  <ion-searchbar padding-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
+
+  <ion-text color="medium" flex justify-content-center text-align-center *ngIf="filtering && users.length === 0">
+    <small>No users found matching your criteria.</small>
+  </ion-text>
+
+  <ng-container *ngUnless="filtering">
+    <ion-grid no-padding margin-x-x2>
+      <ion-row no-padding align-items-center>
+        <ion-col no-padding>
+          <h3 no-margin>Followers</h3>
+
+          <ion-text color="medium">
+            <small>{{ followers.length || 0 }} followers</small>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row no-padding justify-content-start margin-top-x2 vertical-scroll>
+        <ion-col size="auto" *ngFor="let user of followers" no-padding margin-right>
+          <app-user-avatar [user]="user" size="medium"></app-user-avatar>
+        </ion-col>
+      </ion-row>
+
+      <ion-row no-padding *ngIf="followers.length === 0">
+        <ion-col no-padding text-align-center>
+          <ion-text color="medium">
+            <small>You have no followers</small>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid no-padding margin-x2>
+      <ion-row no-padding align-items-center>
+        <ion-col no-padding>
+          <h3 no-margin>Following</h3>
+
+          <ion-text color="medium">
+            <small>{{ following.length || 0 }} following</small>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row no-padding justify-content-start margin-top-x2 vertical-scroll>
+        <ion-col size="auto" *ngFor="let user of following" no-padding margin-right>
+          <app-user-avatar [user]="user" size="medium"></app-user-avatar>
+        </ion-col>
+      </ion-row>
+
+      <ion-row no-padding *ngIf="following.length === 0">
+        <ion-col no-padding text-align-center>
+          <ion-text color="medium">
+            <small>You don't seem to be following anyone, yet</small>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid no-padding margin-x-x2 margin-bottom-x2>
+      <ion-row no-padding align-items-center>
+        <ion-col no-padding>
+          <h3 no-margin>Users</h3>
+
+          <ion-text color="medium">
+            <small>{{ users.length || 0 }} / {{ total_users || 0 }} users</small>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ng-container>
+
+  <ion-card no-margin *ngFor="let user of users">
+    <ion-card-content padding-x2>
+      <ion-grid no-padding>
+        <ion-row no-padding align-items-top>
+          <ion-col no-padding (click)="show(user)">
+            <ion-row no-padding>
+              <ion-col no-padding size="auto">
+                <app-user-avatar [user]="user" size="medium" hasOwnListener="true"></app-user-avatar>
+              </ion-col>
+
+              <ion-col no-padding margin-left margin-right>
+                <ion-row no-padding>
+                  <h2 no-margin>{{ user.name }}</h2>
+                </ion-row>
+
+                <ion-row no-padding align-items-baseline>
+                  <ion-col no-padding size="auto" margin-right>
+                    <small>@{{ user.username }}</small>
+                  </ion-col>
+
+                  <ion-col no-padding size="auto" *ngIf="theyFollow(user)">
+                    <ion-badge color="medium">
+                      <small>Follows you</small>
+                    </ion-badge>
+                  </ion-col>
+                </ion-row>
+              </ion-col>
+            </ion-row>
+          </ion-col>
+
+          <ion-col no-padding size="auto" *ngUnless="currentUser._id.$oid === user._id.$oid">
+            <ion-button size="small" shape="round" [fill]="iFollow(user) ? 'solid' : 'outline'" (click)="decide(user)" no-margin no-padding>
+              <ion-icon slot="icon-only" [name]="iFollow(user) ? 'remove' : 'add'"></ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+
+        <ion-row no-padding margin-top *ngIf="user.bio">
+          <ion-col no-padding>
+            <p no-margin>{{ user.bio.truncate(50) }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ng-container *ngIf="infiniteScroll.disabled">
+    <ion-text color="medium" flex justify-content-center>
+      <small no-margin padding padding-bottom-x2 text-align-center>
+        You've reached the end of the line. <br />
+        There are no more users here..
+      </small>
+    </ion-text>
+  </ng-container>
+
+  <ion-infinite-scroll (ionInfinite)="get(null, $event)">
+    <small>
+      <ion-infinite-scroll-content loadingSpinner="dots" loadingText="Getting more users.."></ion-infinite-scroll-content>
+    </small>
+  </ion-infinite-scroll>
+</ion-content>

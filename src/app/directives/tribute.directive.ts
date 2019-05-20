@@ -92,10 +92,13 @@ export class TributeDirective<T> implements OnInit, OnDestroy {
   }
 
   private async getUsers(query, callback) {
-    const response: any = await this.userProvider.load(query);
+    const params: any = {};
+          params['q'] = query;
 
-    if (response) {
-      callback(response);
+    const response: any = await this.userProvider.load(params);
+
+    if (response.users) {
+      callback(response.users);
     } else {
       callback([]);
     }
