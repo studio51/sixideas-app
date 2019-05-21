@@ -1,12 +1,15 @@
+$colors: (default, primary, secondary, tertiary, success, warning, danger, dark, medium);
+
 ion-card[post-featured] {
   display: flex;
   flex-direction: column;
   margin: 0 16px 16px;
 
-  &.success { background-color: var(--ion-color-success); }
-  &.info { background-color: var(--ion-color-secondary); }
-  &.warning { background-color: var(--ion-color-warning); }
-  &.danger { background-color: var(--ion-color-danger); }
+  @each $color in $colors {
+    &.-color-#{ $color } {
+      background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
+    }
+  }
 
   app-mention {
     --mention-content-padding: 0;
@@ -26,7 +29,7 @@ ion-card[post-featured] {
   }
 }
 
-ion-card[post-default] {
+ion-card[post-light] {
   border-radius: 6px;
   background-color: #fff;
   margin: var(--app-post-margin);

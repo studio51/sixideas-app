@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-import { ModalController } from '@ionic/angular';
+import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
 // import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 import { PostPage } from 'src/app/pages/post/post.page';
@@ -26,7 +26,7 @@ import * as Sugar from 'sugar';
 Sugar.extend({
   namespaces: [String, Date],
   methods: ['truncate', 'relative', 'format']
-})
+});
 
 @Component({
   selector: 'app-post',
@@ -49,7 +49,9 @@ export class PostComponent implements OnInit {
 
   constructor(
     public modalCtrl: ModalController,
-    public commentProvider: CommentProvider
+    public commentProvider: CommentProvider,
+    public actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController
     // public photoViewer: PhotoViewer
 
   ) { }
@@ -77,7 +79,51 @@ export class PostComponent implements OnInit {
     return await modal.present();
   }
 
-  public async edit() {
+  public async showPostOptions() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      translucent: true,
+      cssClass: 'user-action-sheet',
+      buttons: [{
+        text: 'Edit',
+        icon: 'create',
+
+        handler: () => {
+          this.edit();
+        }
+      }, {
+        text: 'Delete',
+        role: 'destructive',
+        icon: 'trash',
+
+        handler: () => {
+          this.showConfirmation();
+        }
+      }]
+    });
+
+    await actionSheet.present();
+  }
+
+  private async showConfirmation() {
+    const alert = await this.alertCtrl.create({
+      header: 'Are you sure?',
+      message: "There's no going back!",
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary'
+      }, {
+        text: 'Yes',
+        handler: () => {
+          this.delete();
+        }
+      }]
+    });
+
+    await alert.present();
+  }
+
+  private async edit() {
     const modal: any = await this.modalCtrl.create({
       component: PostFormPage,
       componentProps: {
@@ -96,6 +142,10 @@ export class PostComponent implements OnInit {
     // }
 
     return await modal.present();
+  }
+
+  private async delete() {
+    // TODO
   }
 
   public async generateCommentForm(comment?: any) {
