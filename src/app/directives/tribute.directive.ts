@@ -1,6 +1,9 @@
 import { Directive, ElementRef, EventEmitter, Input, OnInit, Optional, Output, OnDestroy } from '@angular/core';
 import { FormControl, FormControlDirective, FormControlName, NgModel } from '@angular/forms';
 
+import { Tag } from '../interfaces/tag';
+import { User, UserResponse } from '../interfaces/user';
+
 import { UserProvider } from 'src/app/providers/user';
 import { TagProvider } from 'src/app/providers/tag';
 
@@ -33,46 +36,8 @@ export class TributeDirective<T> implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const mentions = {
-      trigger: "@",
-      noMatchTemplate: null,
-
-      values: (text, callback) => {
-        this.getUsers(text, tags => callback(tags));
-      },
-
-      lookup: function (user) {
-        return  "@" + user.username + " - "+ user.name;
-      },
-
-      selectTemplate: function (item) {
-        return '@' + item.original.username + ' ';
-      },
-
-      fillAttr: 'username'
-    };
-
-    const hashtags = {
-      trigger: "#",
-      noMatchTemplate: null,
-
-      values: (text, callback) => {
-        this.getTags(text, tags => callback(tags));
-      },
-
-      lookup: function (user) {
-        return  "@" + user.username + " - "+ user.name;
-      },
-
-      selectTemplate: function (item) {
-        return '@' + item.original.username + ' ';
-      },
-
-      fillAttr: 'username'
-    };
-
     this.options = {
-      collection: [mentions, hashtags]
+      collection: [this.mentions, this.tags]
     }
 
     this.tribute = new Tribute(this.options);
@@ -91,11 +56,35 @@ export class TributeDirective<T> implements OnInit, OnDestroy {
     });
   }
 
-  private async getUsers(query, callback) {
+  private get tags(): any {
+    return {
+      trigger:  '#',
+      fillAttr: 'display_text',
+
+      values: (text: string, callback: Function) => this.getTags(text, tags => callback(tags)),
+      lookup: (tag: Tag) => tag.display_text,
+      selectTemplate: (item: any) => item.original.display_text
+    }
+  }
+
+  private get mentions(): any {
+    return {
+      trigger:  '@',
+      fillAttr: 'username',
+
+      values: (text: string, callback: Function) => this.getUsers(text, tags => callback(tags)),
+      lookup: (user: User) => `@ ${ user.username } - ${ user.name }`,
+      selectTemplate: (item: any) => `@ ${ item.original.username } `,
+    };
+  }
+
+  private async getUsers(query: string, callback: Function) {
     const params: any = {};
+          params['page'] = 1;
+          params['limit'] = 5;
           params['q'] = query;
 
-    const response: any = await this.userProvider.load(params);
+    const response: UserResponse = await this.userProvider.load(params);
 
     if (response.users) {
       callback(response.users);
@@ -104,8 +93,13 @@ export class TributeDirective<T> implements OnInit, OnDestroy {
     }
   }
 
-  private async getTags(query, callback) {
-    const response: any = await this.tagProvider.load(query);
+  private async getTags(query: string, callback: Function) {
+    const params: any = {};
+          params['page'] = 1;
+          params['limit'] = 5;
+          params['q'] = query;
+
+    const response: any = await this.tagProvider.load(params);
 
     if (response) {
       callback(response);
