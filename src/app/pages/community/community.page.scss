@@ -1,34 +1,4 @@
-ion-content {
-  padding-top: 32px !important;
-}
-
 ion-card {
-  // margin: 0 16px 1px;
-  // box-shadow: none;
-  // border-radius: 0;
-  // // border-radius: 3px;
-  // background-color: #fff;
-
-  // &-content {
-  //   ion-col[user-details] { padding-top: 8px; }
-  //   ion-row[user-username] { line-height: 1; }
-
-  //   ion-badge {
-  //     --padding-top: 3px;
-  //     --padding-end: 3px;
-  //     --padding-bottom: 3px;
-  //     --padding-start: 3px;
-
-  //     display: flex;
-  //     border-radius: 3px;
-  //     font-size: xx-small;
-  //     text-transform: uppercase;
-  //   }
-
-  //   ion-button {
-  //     --border-radius: 250px;
-  //     --padding-start: 3px;
-  //     --padding-end: 3px;
-  //   }
-  // }
+  box-shadow: none;
+  border-radius: 0;
 }

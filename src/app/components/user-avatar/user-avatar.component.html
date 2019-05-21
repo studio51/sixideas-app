@@ -10,19 +10,16 @@
 
     <ion-col line-height-reset user-username no-padding *ngIf="showUsername" margin-left class="-size-{{ size }}">
       <ion-text [color]="color">
-        <h6 no-margin>
+        <h6 no-margin weight-500 line-height-12>
           {{ user.username }}
 
           <ng-content select="[title]"></ng-content>
         </h6>
       </ion-text>
 
-      <!-- <ion-text flex margin-top-2 [color]="color" *ngIf="subHeader"> -->
       <ion-text flex margin-top-2 color="medium">
-        <small>
-          <em>
-            <ng-content select="[date]"></ng-content>
-          </em>
+        <small line-height-1>
+          <ng-content select="[date]"></ng-content>
         </small>
       </ion-text>
     </ion-col>

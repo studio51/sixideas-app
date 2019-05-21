@@ -1,12 +1,11 @@
 <ion-header app-header></ion-header>
 
 <ion-content>
-  
   <ng-container *ngUnless="filtering">
-    <ion-grid no-padding margin-x2>
+    <ion-grid no-padding margin-x-x2 margin-top-x2>
       <ion-row no-padding align-items-center>
         <ion-col no-padding>
-          <h4 no-margin line-height-7>Followers</h4>
+          <h2 no-margin line-height-7 weight-600>Followers</h2>
 
           <ion-text color="medium">
             <small>{{ followers.length || 0 }} followers</small>
@@ -29,10 +28,10 @@
       </ion-row>
     </ion-grid>
 
-    <ion-grid no-padding margin-x2>
+    <ion-grid no-padding margin-x-x2 margin-top-x2>
       <ion-row no-padding align-items-center>
         <ion-col no-padding>
-          <h4 no-margin line-height-7>Following</h4>
+          <h2 no-margin line-height-7 weight-600>Following</h2>
 
           <ion-text color="medium">
             <small>{{ following.length || 0 }} following</small>
@@ -54,72 +53,43 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-
-    <!-- <ion-grid no-padding margin-x-x2 margin-bottom-x2>
-      <ion-row no-padding align-items-center>
-        <ion-col no-padding>
-          <h3 no-margin>Users</h3>
-
-          <ion-text color="medium">
-            <small>{{ users.length || 0 }} / {{ total_users || 0 }} users</small>
-          </ion-text>
-        </ion-col>
-      </ion-row>
-    </ion-grid> -->
   </ng-container>
 
-  <ion-toolbar sticky sticky-top>
-    <ion-searchbar padding-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
+  <ion-toolbar no-padding sticky sticky-top margin-y>
+    <ion-searchbar padding-x-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
   </ion-toolbar>
 
   <ion-text color="medium" flex justify-content-center text-align-center *ngIf="filtering && users.length === 0">
     <small>No users found matching your criteria.</small>
   </ion-text>
 
-  <ion-card no-margin *ngFor="let user of users">
-    <ion-card-content padding-x2>
+  <ion-card no-margin no-padding *ngFor="let user of users">
+    <ion-card-content no-padding padding-bottom-x2 padding-x-x2>
       <ion-grid no-padding>
-        <ion-row no-padding align-items-top>
-          <ion-col no-padding (click)="show(user)">
-            <ion-row no-padding>
-              <ion-col no-padding size="auto">
-                <app-user-avatar [user]="user" size="medium" hasOwnListener="true"></app-user-avatar>
-              </ion-col>
+        <ion-row no-padding align-items-center>
+          <ion-col no-padding>
+            <app-user-avatar [user]="user" size="medium" showUsername="true">
+              <em date>
+                @{{ user.username }}
 
-              <ion-col no-padding margin-left margin-right>
-                <ion-row no-padding>
-                  <h2 no-margin>{{ user.name }}</h2>
-                </ion-row>
+                <ion-badge color="medium" *ngIf="theyFollow(user)">
+                  <small>Follows you</small>
+                </ion-badge>
+              </em>
 
-                <ion-row no-padding align-items-baseline>
-                  <ion-col no-padding size="auto" margin-right>
-                    <small>@{{ user.username }}</small>
-                  </ion-col>
-
-                  <ion-col no-padding size="auto" *ngIf="theyFollow(user)">
-                    <ion-badge color="medium">
-                      <small>Follows you</small>
-                    </ion-badge>
-                  </ion-col>
-                </ion-row>
-              </ion-col>
-            </ion-row>
+              <ion-text body color="medium" *ngIf="user.bio">
+                <p no-margin>{{ user.bio.truncate(50) }}</p>
+              </ion-text>
+            </app-user-avatar>
           </ion-col>
 
           <ion-col no-padding size="auto" *ngUnless="currentUser._id.$oid === user._id.$oid">
-            <ion-button size="small" shape="round" [fill]="iFollow(user) ? 'solid' : 'outline'" (click)="decide(user)" no-margin no-padding>
-              <ion-icon slot="icon-only" [name]="iFollow(user) ? 'remove' : 'add'"></ion-icon>
+            <ion-button no-padding no-margin fill="clear" [color]="iFollow(user) ? 'warning' : currentUser.colour" (click)="decide(user)">
+              <ion-icon slot="icon-only" [name]="iFollow(user) ? 'remove-circle' : 'add-circle-outline'"></ion-icon>
             </ion-button>
           </ion-col>
         </ion-row>
-
-        <ion-row no-padding margin-top *ngIf="user.bio">
-          <ion-col no-padding>
-            <p no-margin>{{ user.bio.truncate(50) }}</p>
-          </ion-col>
-        </ion-row>
       </ion-grid>
-
     </ion-card-content>
   </ion-card>
 
