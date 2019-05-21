@@ -1,0 +1,16 @@
+ion-tab-bar {
+  contain: none;
+
+  ion-icon { margin: 0; }
+  ion-tab-button {
+    padding: 12px;
+
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  ion-tab-button:last-child {
+    padding: 0 15px 0 0;
+    margin-top: -41px;
+  }
+}

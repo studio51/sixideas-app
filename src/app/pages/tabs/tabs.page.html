@@ -2,22 +2,19 @@
   <ion-tab-bar slot="bottom">
     <ion-tab-button tab="feed">
       <ion-icon name="albums"></ion-icon>
-      <!-- <ion-label>Feed</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="community">
       <ion-icon name="contacts"></ion-icon>
-      <!-- <ion-label>Community</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button tab="notifications">
       <ion-icon name="notifications-outline"></ion-icon>
-      <!-- <ion-label>Notifications</ion-label> -->
     </ion-tab-button>
 
     <ion-tab-button user-tab>
       <ion-spinner *ngUnless="user" name="dots"></ion-spinner>
-      <app-user-avatar *ngIf="user" [user]="user" hasOwnListener="true" (listener)="showUserActionSheet()"></app-user-avatar>
+      <app-user-avatar *ngIf="user" [user]="user" size="medium" hasOwnListener="true" (listener)="showUserActionSheet()"></app-user-avatar>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

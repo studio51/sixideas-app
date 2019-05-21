@@ -7,7 +7,6 @@ import { User } from 'src/app/interfaces/user';
 
 import { UserPage } from '../user/user.page';
 import { UserEditPage } from '../user-edit/user-edit.page';
-import { NotificationsPage } from '../notifications/notifications.page';
 
 @Component({
   selector: 'app-tabs',
@@ -51,13 +50,6 @@ export class TabsPage {
           this.goTo(UserEditPage);
         }
       }, {
-        text: 'Notifications',
-        icon: 'done-all',
-
-        handler: () => {
-          this.goTo(NotificationsPage);
-        }
-      }, {
         text: 'Sign Out',
         role: 'destructive',
         icon: 'log-out',
@@ -67,13 +59,6 @@ export class TabsPage {
         }
       }]
     });
-
-    // {
-    //   text: 'Cancel',
-    //   icon: 'close',
-    //   role: 'cancel',
-    //   handler: () => { }
-    // }
 
     await actionSheet.present();
   }
