@@ -18,17 +18,22 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HTTPInterceptor } from './services/http.interceptor';
+import { CachingInterceptor } from './services/caching.interceptor';
+import { RequestCacheService } from './services/request-cache.service';
 
 import { ComponentsModule } from './components/components.module';
 
 import { UserPageModule } from './pages/user/user.module';
 import { UserCardPageModule } from './pages/user-card/user-card.module';
 import { UserEditPageModule } from './pages/user-edit/user-edit.module';
+import { NotificationsPageModule } from './pages/notifications/notifications.module';
 import { PostPageModule } from './pages/post/post.module';
 import { PostFormPageModule } from './pages/post-form/post-form.module';
 import { TagsPageModule } from './pages/tags/tags.module';
 
 import { ActionCableService } from 'angular2-actioncable';
+
+import { AuthenticationGuardService } from './guards/authentication';
 
 @NgModule({
   declarations: [
@@ -47,6 +52,7 @@ import { ActionCableService } from 'angular2-actioncable';
     UserPageModule,
     UserCardPageModule,
     UserEditPageModule,
+    NotificationsPageModule,
     PostPageModule,
     PostFormPageModule,
     TagsPageModule
@@ -60,18 +66,26 @@ import { ActionCableService } from 'angular2-actioncable';
     WebView,
     File,
     FileTransfer,
+    RequestCacheService,
 
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
 
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: HTTPInterceptor,
+    //   multi: true
+    // },
+
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: HTTPInterceptor,
+      useClass: CachingInterceptor,
       multi: true
     },
 
+    AuthenticationGuardService,
     ActionCableService
   ],
 
