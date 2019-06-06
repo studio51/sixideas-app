@@ -8,6 +8,7 @@ import { User } from 'src/app/interfaces/user';
 import { Post } from 'src/app/interfaces/post';
 
 import { PostProvider } from 'src/app/providers/post';
+import { PreviewResponse } from 'src/app/interfaces/preview.response';
 
 interface PostResponse {
   status: string,
@@ -15,7 +16,6 @@ interface PostResponse {
 }
 
 enum Color {
-  default   = 'default',
   primary   = 'primary',
   secondary = 'secondary',
   tertiary  = 'tertiary',
@@ -23,7 +23,8 @@ enum Color {
   warning   = 'warning',
   danger    = 'danger',
   dark      = 'dark',
-  medium    = 'medium'
+  medium    = 'medium',
+  light     = 'light'
 }
 
 @Component({
@@ -39,6 +40,7 @@ export class PostFormPage implements OnInit {
   form: FormGroup;
 
   public colors: any = Color;
+  public previews: any[] = [];
 
   // color: Color = Color.default;
 
@@ -57,7 +59,7 @@ export class PostFormPage implements OnInit {
     const post: Post = new Post({
       title: '',
       body: '',
-      type: Color.default
+      type: Color.light
     });
 
     if (this.params.get('id')) {
@@ -77,31 +79,7 @@ export class PostFormPage implements OnInit {
     })
   }
 
-  public async showImageOptions() {
-    const actionSheet: any = await this.actionSheetCtrl.create({
-      header: 'Choose Image Source',
-      buttons: [
-        {
-          text: 'Camera',
-          icon: 'camera',
-          handler: () => { this.captureImage('CAMERA') }
-        },
-        {
-          text: 'Library',
-          icon: 'camera',
-          handler: () => { this.captureImage('LIBRARY') }
-        },
-        {
-          text: 'Cancel',
-          role: 'destructive'
-        }
-      ]
-    });
-
-    await actionSheet.present();
-  }
-
-  private async captureImage(source: string) {
+  public async captureImage(source: string) {
     const options: CameraOptions = {
                  quality: 100,
         saveToPhotoAlbum: (source == 'CAMERA'),
@@ -119,6 +97,26 @@ export class PostFormPage implements OnInit {
     // this.imageChange['image'] = image;
     // this.post.image_url = normalizeURL(image);
     // this.form.controls.image_id.setValue(this.imageChange['image_id']);
+  }
+
+  public showPreview(previews: PreviewResponse[]) {
+    this.previews = Object.values(previews);
+    // this.previews = [
+    //   {
+    //     description: "Venture building company that specialise in web and mobile app design & development 🤘 We’re available for new projects: design@appnroll.com",
+    //     image: "https://cdn.dribbble.com/users/2003613/screenshots/6384623/appnroll_rwd_dongiving_4x.png",
+    //     previewed: true,
+    //     title: "App'n'roll",
+    //     url: "https://dribbble.com/appnroll"
+    //   },
+    //   {
+    //     description: "URL previews are a way of organizing the URLs in the textarea in such a way that the URL is visible in a more organized way to the user instead of a just plain link. The plain URL makes no sense most of the time because of the advent of",
+    //     image: "http://blog.kiprosh.com/content/images/knowbuddy/249/original/URL_preview.png",
+    //     previewed: true,
+    //     title: "Using URL previews in your web apps using JavaScript",
+    //     url: "https://blog.kiprosh.com/using-url-previews-in-your-web-apps-using-javascript/"
+    //   }
+    // ]
   }
 
   public changeType(color: string) {
