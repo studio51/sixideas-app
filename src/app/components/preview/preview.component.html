@@ -1,0 +1,19 @@
+<ion-card margin-top-x2 no-margin (click)="openIAB(preview.url)">
+  <ion-card-content no-padding flex align-items-start>
+    <ion-img [src]="preview.image" margin-right-x2></ion-img>
+
+    <div preview-meta>
+      <h2 no-margin>
+        <strong>{{ preview.title }}</strong>
+      </h2>
+
+      <p line-height-12 no-margin margin-top-x2>{{ preview.description }}</p>
+    </div>
+  </ion-card-content>
+</ion-card>
+
+<!-- <ng-container *ngIf="preview && preview.iframe">
+  <div class="video-container" margin-top>
+    <iframe width="560" height="315" [src]="sanitizedURL" frameborder="0" allowfullscreen></iframe>
+  </div>
+</ng-container> -->

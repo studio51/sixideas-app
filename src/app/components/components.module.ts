@@ -8,6 +8,7 @@ import { CommentComponent } from './comment/comment.component';
 import { MentionComponent } from './mention/mention.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { LikeComponent } from './like/like.component';
+import { PreviewComponent } from './preview/preview.component';
 
 import { DirectivesModule } from 'src/app/directives/directives.module';
 
@@ -16,7 +17,8 @@ const components: Array<any> = [
   CommentComponent,
   MentionComponent,
   UserAvatarComponent,
-  LikeComponent
+  LikeComponent,
+  PreviewComponent
 ];
 
 @NgModule({
