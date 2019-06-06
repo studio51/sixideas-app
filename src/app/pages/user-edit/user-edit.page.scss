@@ -1,37 +1,76 @@
-$colors: (default, primary, secondary, tertiary, success, warning, danger, dark, medium);
+$colors: (light, primary, secondary, tertiary, success, warning, danger, dark, medium);
 
 ion-content {
-  display: flex;
-  padding-top: 32px;
-}
+  overflow: hidden;
+  border-top-left-radius: 16px !important;
+  border-top-right-radius: 16px !important;
 
-ion-card {
-  margin-top: 85px;
-  overflow: visible;
-}
+  ion-toolbar { --background: transparent; }
 
-app-user-avatar {
-  display: flex;
-  margin-top: -76px;
-}
+  @each $color in $colors {
+    &.-color-#{ $color } {
+      --background: rgba(var(--ion-color-#{ $color }-rgb), 1);
 
-[user-image-button] {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: center;
-  text-align: center;
-  margin-top: -85px;
+      + ion-footer {
+        background-color: rgba(var(--ion-color-#{ $color }-rgb), 1);
+      }
 
-  ion-text {
-    text-transform: uppercase;
-    font-size: xx-small;
+      ion-button {
+        color: #fff;
+
+        @if $color == 'light' { color: #000; }
+      }
+
+      @if $color != 'light' {
+        textarea {
+          font-weight: 700;
+          font-size: 1.5em;
+          color: #fff;
+        }
+      }
+    }
   }
 
-  ion-icon {
-    font-size: 2.5em;
+  app-user-avatar {
+    display: flex;
+    transform: translate(-50%, -50%);
+    margin-left: 50%;
+    z-index: 1000;
+    position: absolute;
   }
 }
+// ion-content {
+//   display: flex;
+//   padding-top: 32px;
+// }
+
+// ion-card {
+//   margin-top: 85px;
+//   overflow: visible;
+// }
+
+// app-user-avatar {
+//   display: flex;
+//   margin-top: -76px;
+// }
+
+// [user-image-button] {
+//   display: flex;
+//   flex-direction: column;
+//   flex-wrap: nowrap;
+//   align-items: center;
+//   text-align: center;
+//   margin-top: -85px;
+
+//   ion-text {
+//     text-transform: uppercase;
+//     font-size: xx-small;
+//   }
+
+//   ion-icon {
+//     font-size: 2.5em;
+//   }
+// }
 
 div {
   background-color: var(--ion-color-gray-step-100);
@@ -45,33 +84,33 @@ div {
   }
 }
 
-ion-card-header, span {
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
+// ion-card-header, span {
+//   border-top-left-radius: 6px;
+//   border-top-right-radius: 6px;
 
-  @each $color in $colors {
-    &.-color-#{ $color } {
-      background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
-      border-color: var(--ion-color-#{ $color }-shade);
-    }
-  }
-}
+//   @each $color in $colors {
+//     &.-color-#{ $color } {
+//       background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
+//       border-color: var(--ion-color-#{ $color }-shade);
+//     }
+//   }
+// }
 
-span {
-  display: block;
-  border-radius: 250px;
-  border: 1px solid transparent;
-  width: 7.5vw;
-  height: 7.5vw;
-}
+// span {
+//   display: block;
+//   border-radius: 250px;
+//   border: 1px solid transparent;
+//   width: 7.5vw;
+//   height: 7.5vw;
+// }
 
-[textarea] {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  margin-top: 16px;
-  margin-left: -15px;
-  margin-right: -15px;
-  margin-bottom: -15px;
-}
+// [textarea] {
+//   border-top-left-radius: 0;
+//   border-top-right-radius: 0;
+//   margin-top: 16px;
+//   margin-left: -15px;
+//   margin-right: -15px;
+//   margin-bottom: -15px;
+// }
 
-ion-footer { background-color: #fff; }
+// ion-footer { background-color: #fff; }
