@@ -116,7 +116,7 @@ export class UserEditPage implements OnInit {
     await actionSheet.present();
   }
 
-  public async captureImage(source: string, caller: string) {
+  public async captureImage(caller: string, source?: string) {
     const options: CameraOptions = {
 
                  quality: 100,

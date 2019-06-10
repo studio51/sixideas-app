@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { Comment } from 'src/app/interfaces/comment';
 import { User } from 'src/app/interfaces/user';
 
 // 3rd party plugins

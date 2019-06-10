@@ -53,7 +53,7 @@ export class UserAvatarComponent implements OnInit, OnDestroy {
     });
   }
 
-  public async view() {
+  public async view(event: any) {
     if (this.hasOwnListener) {
       this.listener.emit();
     } else {

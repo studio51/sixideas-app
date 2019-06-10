@@ -56,7 +56,7 @@
   </ng-container>
 
   <ion-toolbar no-padding sticky sticky-top margin-y>
-    <ion-searchbar padding-x-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh()"></ion-searchbar>
+    <ion-searchbar padding-x-x2 animated="true" placeholder="Search Community" debounce="1500" (ionInput)="search($event)" (ionClear)="refresh($event)"></ion-searchbar>
   </ion-toolbar>
 
   <ion-text color="medium" flex justify-content-center text-align-center *ngIf="filtering && users.length === 0">

@@ -87,7 +87,7 @@ export class CommunityPage implements OnInit {
       .includes(user._id.$oid);
   }
 
-  private async get(query?: string, event?: any) {
+  public async get(query?: string, event?: any) {
     const params = {}
           params['page'] = this.page += 1;
 

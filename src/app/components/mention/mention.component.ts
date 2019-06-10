@@ -13,6 +13,7 @@ import { UserCardPage } from '../../pages/user-card/user-card.page';
 
 export class MentionComponent implements OnInit {
   @Input() body: any;
+  @Input() class: string = '';
 
   $body: string;
 
