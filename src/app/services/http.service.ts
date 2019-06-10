@@ -60,17 +60,6 @@ export class HTTPService {
       .toPromise();
   }
 
-  // put<T>(url: string, data: Object, options?: {}): Observable<T> {
-  //   const newData = this.prepareData(data);
-
-  //   // return Observable.from(this.storage.get('token')).flatMap((token) => {
-  //     // this.setHeader('token', token)
-
-  //     return this.http.put(this.generateUrl(url), newData, this.generateOptions(options))
-  //       .pipe(map(this.responseHandler, this), catchError(this.errorHandler.bind(this)));
-  //     // })
-  // }
-
   public patch<T>(url: string, data: Object, options?: {}): Promise<any> {
     return this.http
       .put<T>(this.generateURL(url), this.prepareData(data), this.generateOptions(options))
@@ -81,14 +70,15 @@ export class HTTPService {
       .toPromise();
     }
 
-  // delete<T>(url: string, options?: {}): Observable<T> {
-  //   // return Observable.from(this.storage.get('token')).flatMap((token) => {
-  //     // this.setHeader('token', token)
-
-  //     return this.http.delete(this.generateUrl(url), this.generateOptions(options))
-  //       .pipe(map(this.responseHandler, this), catchError(this.errorHandler.bind(this)));
-  //     // })
-  // }
+  public delete<T>(url: string, options?: {}): Promise<any> {
+    return this.http
+      .delete<T>(this.generateURL(url), this.generateOptions(options))
+      .pipe(
+        map(this.responseHandler, this),
+        catchError(this.errorHandler.bind(this))
+      )
+      .toPromise();
+  }
 
   protected prepareData(data: any): string {
     return this.requestInterceptors.reduce((acc, interceptor) => interceptor(acc), data);

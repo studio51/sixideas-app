@@ -60,9 +60,4 @@ export class UserProvider {
   public unfollow(id: string) {
     return this.http.get(`users/${ id }/unfollow`)
   }
-
-  // TODO: This should be a store
-  public current(): Promise<User> {
-    return this.get('5cdbeaaecbc67a69d64b19d6')
-  }
 }
