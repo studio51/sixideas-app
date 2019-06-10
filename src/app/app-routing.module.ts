@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { AuthenticationGuardService } from './guards/authentication';
+
 const routes: Routes = [
-  { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule' }
+  { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule', canActivate: [AuthenticationGuardService] },
+  { path: 'authentication', loadChildren: './pages/authentication/authentication.module#AuthenticationPageModule' }
 ];
 
 @NgModule({
@@ -13,3 +16,8 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {}
+
+// const routes: Routes = [
+//   { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule' },
+//   { path: 'authentication', loadChildren: './pages/authentication/authentication.module#AuthenticationPageModule' }
+// ];
