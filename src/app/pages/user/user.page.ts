@@ -42,7 +42,7 @@ export class UserPage implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.userProvider.current();
-    
+
     this.get();
   }
 

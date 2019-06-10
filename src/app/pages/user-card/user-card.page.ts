@@ -30,7 +30,8 @@ export class UserCardPage implements OnInit {
     const modal: any = await this.modalCtrl.create({
       component: UserPage,
       componentProps: {
-        id: this.user._id.$oid
+        id: this.id,
+        user: this.user
       }
     });
 
