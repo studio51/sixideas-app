@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Camera } from '@ionic-native/camera/ngx';
+import { Device } from '@ionic-native/device/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -62,6 +63,7 @@ import { AuthenticationGuardService } from './guards/authentication';
     StatusBar,
     SplashScreen,
     Camera,
+    Device,
     InAppBrowser,
     WebView,
     File,

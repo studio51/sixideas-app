@@ -4,9 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
-import { User } from './interfaces/user';
-
-import { UserProvider } from './providers/user';
+import { SessionProvider, User } from './providers/session';
 import { CableProvider } from 'src/app/providers/cable';
 import { AppereanceService } from './services/appearance.service';
 
@@ -22,7 +20,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider,
     public cableProvider: CableProvider,
     private appereanceService: AppereanceService
 
@@ -34,7 +32,7 @@ export class AppComponent {
   async initializeApp() {
     await this.platform.ready();
 
-    this.user = await this.userProvider.current();
+    this.user = await this.sessionProvider.current();
 
     this.statusBar.styleDefault();
     this.splashScreen.hide();

@@ -3,7 +3,7 @@
     <name>SixIdeas Community</name>
     <description>.</description>
     <author email="." href=".">Studio51 Solutions</author>
-    <content original-src="index.html" src="http://192.168.0.11:8100" />
+    <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -100,16 +100,27 @@
             <string>need photo library access to save pictures there</string>
         </edit-config>
     </platform>
+    <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+        <string>Access to capture Images</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+        <string>Access to use existing Images</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
+        <string>need location access to find things nearby</string>
+    </edit-config>
+    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
+        <string>need photo library access to save pictures there</string>
+    </edit-config>
     <plugin name="cordova-plugin-whitelist" spec="1.3.3" />
     <plugin name="cordova-plugin-statusbar" spec="2.4.2" />
-    <plugin name="cordova-plugin-device" spec="2.0.2" />
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="cordova-sqlite-storage" spec="3.2.0" />
     <plugin name="cordova-plugin-inappbrowser" spec="3.0.0" />
     <plugin name="cordova-plugin-camera" spec="4.0.3" />
-    <plugin name="cordova-plugin-ionic-webview" spec="4.0.1" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
-    <allow-navigation href="http://192.168.0.11:8100" sessionid="0f450121" />
+    <plugin name="cordova-plugin-ionic-webview" spec="4.0.1" />
     <engine name="ios" spec="4.5.5" />
+    <plugin name="cordova-plugin-device" spec="^2.0.2" />
 </widget>
