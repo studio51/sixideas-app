@@ -51,35 +51,13 @@
   </ion-card-content>
 
   <div ion-card-footer>
+    <app-comment-form [post]="post" (commented)="refreshComments($event)"></app-comment-form>
 
-    <!-- Comment Form -->
-    <form [formGroup]="commentForm" *ngIf="commentForm" padding>
-      <ion-grid no-padding>
-        <ion-row align-items-center no-padding>
-          <ion-col size="auto" no-padding margin-right>
-            <app-user-avatar [user]="user" size="small"></app-user-avatar>
-          </ion-col>
-
-          <ion-col no-padding align-self-stretch>
-            <input ion-input formControlName="body" autocorrect="true" [appTribute]="tributeOptions" placeholder="Write a comment" />
-          </ion-col>
-
-          <ion-col size="auto" no-padding>
-            <ion-button no-margin color="primary" size="small" fill="outline" [disabled]="!commentForm.valid" (click)="submitCommentForm()">
-              <ion-spinner slot="icon-only" *ngIf="processingComment"></ion-spinner>
-              <ion-icon slot="icon-only" name="send" *ngUnless="processingComment"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
-
-    <!-- Comments -->
     <ion-text color="medium" *ngIf="post.comments_count === 0">
       <small padding-y-x2 padding-x no-margin>This post is missing your voice!<br />Why not be the first to join this discussion?</small>
     </ion-text>
 
-    <div post-comments padding *ngIf="comments.length > 0">
+    <div padding no-padding-top *ngIf="comments.length > 0">
       <app-comment *ngFor="let comment of comments" [comment]="comment" [user]="user"></app-comment>
     </div>
 

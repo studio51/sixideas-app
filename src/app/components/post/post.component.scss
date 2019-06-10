@@ -111,41 +111,5 @@ ion-card[post-light] {
     }
   }
 
-  [ion-card-footer] {
-    display: flex;
-    flex-direction: column;
-
-    form {
-      background-color: var(--ion-color-gray-step-100);
-
-      ion-button { }
-    }
-
-    p, small {
-      display: block;
-      text-align: center;
-    }
-
-    app-comment {
-      display: block;
-      margin-bottom: 8px;
-
-      &:last-child { margin-bottom: 0; }
-    }
-  }
-
   &-title { margin-bottom: 0px; }
-}
-
-input[ion-input] {
-  padding: 0;
-  border: none;
-  margin: 0;
-  height: 100%;
-  background-color: transparent;
-
-  &::-webkit-input-placeholder {
-    color: var(--ion-color-gray-step-550);
-    font-style: italic;
-  }
 }

@@ -22,6 +22,8 @@ export class PostPage implements OnInit {
   @Input() post: Post;
   @Input() user: User;
 
+  // @Input() commentID: string;
+
   comments: Comment[] = [];
 
   private page: number = 0;
@@ -57,6 +59,15 @@ export class PostPage implements OnInit {
     this.disableInfiniteScroll(response, event);
   }
 
+  public refreshComments(comment: Comment) {
+    // if (this.post.comments_count > 3) {
+    //   this.comments.pop();
+    // }
+
+    this.comments.unshift(comment);
+    this.post.comments_count += 1;
+  }
+
   private disableInfiniteScroll(response: Post, event: any) {
     if (event) {
 
@@ -69,5 +80,24 @@ export class PostPage implements OnInit {
       }
     }
     return;
+  }
+
+  public onLikeableDecision(likesCount) {
+    // this.likes = likesCount;
+  }
+
+  public timeAgoInWords(date: string): string {
+    // @ts-ignore
+    return new Date(date).relative();
+  }
+
+  public day(date: string): string {
+    // @ts-ignore
+    return new Date(date).format('%d');
+  }
+
+  public month(date: string): string {
+    // @ts-ignore
+    return new Date(date).format('%b');
   }
 }

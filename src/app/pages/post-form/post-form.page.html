@@ -1,9 +1,13 @@
 <ion-header app-header></ion-header>
 
 <ion-content ngClass="-color-{{ form.controls.type.value }}">
+  <div post-cover>
+    <img *ngIf="post.image_url && form.controls.type.value === 'light'" [src]="post.image_url" />
+  </div>
+
   <ion-toolbar no-padding padding-x2>
     <ion-button slot="start" no-margin no-padding size="small" fill="clear" (click)="dismiss()">
-      <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      <ion-icon name="close" slot="icon-only"></ion-icon>
     </ion-button>
 
     <ion-button slot="end" [disabled]="!form.valid" no-margin no-padding margin-right-2 fill="clear" size="small" (click)="submit()">
@@ -15,16 +19,10 @@
 
   <form [formGroup]="form" *ngIf="form" margin-x2>
     <input *ngIf="form.controls.type.value === 'light'" type="text" ion-input formControlName="title" autocorrect="true" [appTribute]="tributeOptions" placeholder="Title ( optional )" margin-bottom-x2 />
-    <textarea ion-input rows="5" formControlName="body" autocorrect="true" [appPreview]="{}" [appTribute]="tributeOptions" (onPreviewed)="showPreview($event)" placeholder="What's new?"></textarea>
+    <textarea ion-input rows="5" formControlName="body" autocorrect="true" [appPreview]="{}" [appTribute]="tributeOptions" (onPreviewed)="showURLPreview($event)" placeholder="What's new?"></textarea>
 
     <ion-grid no-padding>
-      <ion-row no-padding>
-        <ion-col no-padding>
-          <img *ngIf="post.image_url && form.controls.type.value === 'light'" [src]="post.image_url" />
-        </ion-col>
-      </ion-row>
-
-      <ion-row no-padding *ngIf="previews.length > 0" post-form-previews>
+      <ion-row no-padding *ngIf="urlPreviews.length > 0" post-form-previews>
         <ion-col size="auto" *ngFor="let preview of previews" no-padding>
           <app-preview [preview]="preview"></app-preview>
         </ion-col>
@@ -34,22 +32,25 @@
 </ion-content>
 
 <ion-footer>
-  <ion-grid margin margin-x2 no-padding *ngUnless="post.image">
+  <ion-grid margin margin-x2 no-padding>
     <ion-row no-padding justify-content-between>
       <ion-col size="auto" color-menu *ngFor="let color of colors | keyvalue" no-padding>
-        <!-- ngClass="{{ form.controls.type.value === color ? 'selected' : '' }}" -->
-        <span ngClass="-color-{{ color.key }}" (click)="changeType(color.value)"></span>
+        <span post-color ngClass="-color-{{ color.key }}" (click)="changeType(color.value)"></span>
       </ion-col>
     </ion-row>
   </ion-grid>
 
   <div ion-footer-actions flex justify-content-center>
-    <ion-button color="primary" [disabled]="form.controls.type.value != 'light'" color="secondary" fill="clear" no-margin (click)="captureImage('CAMERA')">
-      <ion-icon name="images" slot="icon-only"></ion-icon>
-    </ion-button>
+    <ng-container *ngUnless="processingUpload">
+      <ion-button color="primary" [disabled]="form.controls.type.value != 'light'" color="secondary" fill="clear" no-margin (click)="captureImage('GALLERY')">
+        <ion-icon name="images" slot="icon-only"></ion-icon>
+      </ion-button>
 
-    <ion-button color="primary" [disabled]="form.controls.type.value != 'light'" color="primary" fill="clear" no-margin (click)="captureImage('GALLERY')">
-      <ion-icon name="camera" slot="icon-only"></ion-icon>
-    </ion-button>
+      <ion-button color="primary" [disabled]="form.controls.type.value != 'light'" color="primary" fill="clear" no-margin (click)="captureImage('CAMERA')">
+        <ion-icon name="camera" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ng-container>
+
+    <ion-spinner *ngIf="processingUpload"></ion-spinner>
   </div>
 </ion-footer>

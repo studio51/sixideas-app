@@ -1,0 +1,20 @@
+<form [formGroup]="form" *ngIf="form" padding>
+  <ion-grid no-padding>
+    <ion-row align-items-center no-padding>
+      <ion-col size="auto" no-padding margin-right>
+        <app-user-avatar [user]="user" size="small"></app-user-avatar>
+      </ion-col>
+
+      <ion-col no-padding align-self-stretch>
+        <input ion-input formControlName="body" autocorrect="true" [appTribute]="tributeOptions" placeholder="Write a comment" />
+      </ion-col>
+
+      <ion-col size="auto" no-padding>
+        <ion-button no-margin color="primary" size="small" fill="outline" [disabled]="!form.valid" (click)="submit()">
+          <ion-spinner slot="icon-only" *ngIf="processingComment"></ion-spinner>
+          <ion-icon slot="icon-only" name="send" *ngUnless="processingComment"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</form>

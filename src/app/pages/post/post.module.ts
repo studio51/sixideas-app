@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { ComponentsModule } from 'src/app/components/components.module';
+import { DirectivesModule } from 'src/app/directives/directives.module';
 
 import { PostPage } from './post.page';
 
@@ -22,6 +23,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     ComponentsModule,
+    DirectivesModule,
     RouterModule.forChild(routes)
   ],
 

@@ -4,6 +4,29 @@ ion-content {
   overflow: hidden;
   border-top-left-radius: 16px !important;
   border-top-right-radius: 16px !important;
+  z-index: 10;
+
+  [post-cover] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 225px;
+
+    img {
+      object-fit: cover;
+      height: 100%;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      left: 0;
+      top: 0;
+      background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%, rgba(var(--ion-color-light-rgb), 1) 100%);
+    }
+  }
 
   ion-toolbar { --background: transparent; }
 
@@ -26,6 +49,8 @@ ion-content {
           font-weight: 700;
           font-size: 1.5em;
           color: #fff;
+
+          &::placeholder { color: #efefef; }
         }
       }
     }
@@ -38,9 +63,41 @@ ion-content {
     z-index: 1000;
     position: absolute;
   }
+
+  form {
+    position: relative;
+    margin-top: 60px;
+  }
+
+  input { text-align: center; }
+  textarea, input {
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    text-align: center;
+  }
 }
 
 ion-footer {
+  [post-color] {
+    display: block;
+    border-radius: 250px;
+    border: 1px solid transparent;
+    width: 8vw;
+    height: 8vw;
+  }
+
+  ion-card, [post-color] {
+    @each $color in $colors {
+      &.-color-#{ $color } {
+        background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
+        border-color: var(--ion-color-#{ $color }-shade);
+      }
+    }
+  }
+
   [ion-footer-actions] {
     background-color: #fff;
     border: 1px solid var(--ion-color-light);
@@ -49,43 +106,3 @@ ion-footer {
     border-top-right-radius: 6px;
   }
 }
-
-span {
-  display: block;
-  border-radius: 250px;
-  border: 1px solid transparent;
-  width: 8vw;
-  height: 8vw;
-}
-
-ion-card, span {
-  @each $color in $colors {
-    &.-color-#{ $color } {
-      background-color: rgba(var(--ion-color-#{ $color }-rgb), .8);
-      border-color: var(--ion-color-#{ $color }-shade);
-    }
-  }
-}
-
-form { margin-top: 60px; }
-input { text-align: center; }
-textarea, input {
-  width: 100%;
-  border-radius: 0;
-  border: none;
-  background-color: transparent;
-  padding: 0;
-  text-align: center;
-}
-
-// ion-card:not(.-color-light) {
-//   border: none;
-
-//   textarea {
-//     background-color: transparent;
-//     padding: 0;
-//     color: #fff;
-//   }
-// }
-
-// ion-footer { background-color: #fff; }

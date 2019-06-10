@@ -3,10 +3,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { NavParams, ActionSheetController, ModalController } from '@ionic/angular';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
 
 import { User } from 'src/app/interfaces/user';
-import { Post } from 'src/app/interfaces/post';
+import { Color, Post } from 'src/app/interfaces/post';
 
+import { UploadProvider, UploadResponse } from 'src/app/providers/upload';
 import { PostProvider } from 'src/app/providers/post';
 import { PreviewResponse } from 'src/app/interfaces/preview.response';
 
@@ -14,19 +16,6 @@ interface PostResponse {
   status: string,
   post: Post
 }
-
-enum Color {
-  primary   = 'primary',
-  secondary = 'secondary',
-  tertiary  = 'tertiary',
-  success   = 'success',
-  warning   = 'warning',
-  danger    = 'danger',
-  dark      = 'dark',
-  medium    = 'medium',
-  light     = 'light'
-}
-
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.page.html',
@@ -40,35 +29,26 @@ export class PostFormPage implements OnInit {
   form: FormGroup;
 
   public colors: any = Color;
-  public previews: any[] = [];
+  public urlPreviews: any[] = [];
 
-  // color: Color = Color.default;
+  public processingUpload: boolean = false;
 
   constructor(
     public camera: Camera,
+    public webview: WebView,
     public params: NavParams,
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
+    public uploadProvider: UploadProvider,
     public postProvider: PostProvider
 
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
-    // this.user = this.params.get('user');
-    const post: Post = new Post({
-      title: '',
-      body: '',
-      type: Color.light
-    });
-
-    if (this.params.get('id')) {
-      Object.assign(post, this.post);
-    } else {
-      this.post = post;
-    }
-
+    this.post = Object.assign(new Post(), this.post);
     this.generateForm();
+
+    console.log(this.colors)
   }
 
   private generateForm() {
@@ -91,32 +71,34 @@ export class PostFormPage implements OnInit {
                mediaType: this.camera.MediaType.PICTURE
     }
 
-    const image: any = await this.camera.getPicture(options);
+    this.processingUpload = true;
+    const image: string = await this.camera.getPicture(options);
 
-    console.log(image);
-    // this.imageChange['image'] = image;
-    // this.post.image_url = normalizeURL(image);
-    // this.form.controls.image_id.setValue(this.imageChange['image_id']);
+    try {
+      if (image) {
+        const upload: any = await this.uploadProvider.upload(image), // FileUploadResult
+              response: UploadResponse = JSON.parse(upload.response);
+
+        console.log('upload', upload);
+        console.log('response', response);
+
+        this.post.image_url = this.webview.convertFileSrc(image);
+
+        console.log(this.webview.convertFileSrc(image));
+
+        if (response.status === 'created') {
+          this.form.controls.image_id.setValue(response.image._id.$oid);
+        }
+      }
+    } catch(e) {
+      console.log('There was a problem')
+    }
+
+    this.processingUpload = false;
   }
 
-  public showPreview(previews: PreviewResponse[]) {
-    this.previews = Object.values(previews);
-    // this.previews = [
-    //   {
-    //     description: "Venture building company that specialise in web and mobile app design & development 🤘 We’re available for new projects: design@appnroll.com",
-    //     image: "https://cdn.dribbble.com/users/2003613/screenshots/6384623/appnroll_rwd_dongiving_4x.png",
-    //     previewed: true,
-    //     title: "App'n'roll",
-    //     url: "https://dribbble.com/appnroll"
-    //   },
-    //   {
-    //     description: "URL previews are a way of organizing the URLs in the textarea in such a way that the URL is visible in a more organized way to the user instead of a just plain link. The plain URL makes no sense most of the time because of the advent of",
-    //     image: "http://blog.kiprosh.com/content/images/knowbuddy/249/original/URL_preview.png",
-    //     previewed: true,
-    //     title: "Using URL previews in your web apps using JavaScript",
-    //     url: "https://blog.kiprosh.com/using-url-previews-in-your-web-apps-using-javascript/"
-    //   }
-    // ]
+  public showURLPreview(previews: PreviewResponse[]) {
+    this.urlPreviews = Object.values(previews);
   }
 
   public changeType(color: string) {

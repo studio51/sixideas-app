@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
 // import { PhotoViewer } from '@ionic-native/photo-viewer';
@@ -10,7 +9,6 @@ import { PostFormPage } from 'src/app/pages/post-form/post-form.page';
 import { Post } from '../../interfaces/post';
 import { User } from '../../interfaces/user';
 import { Comment } from '../../interfaces/comment';
-import { CommentResponse } from '../../interfaces/comment_response';
 
 import { CommentProvider } from 'src/app/providers/comment';
 
@@ -39,31 +37,27 @@ export class PostComponent implements OnInit {
   @Input() author: User;
   @Input() user: User;
 
-  @Input() comments: Comment[] = [];
+  comments: Comment[] = [];
 
   public likes: number = 0;
-
-  public commentForm: FormGroup;
 
   tributeOptions: any = {}
 
   constructor(
     public modalCtrl: ModalController,
-    public commentProvider: CommentProvider,
     public actionSheetCtrl: ActionSheetController,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public commentProvider: CommentProvider
     // public photoViewer: PhotoViewer
 
   ) { }
 
   async ngOnInit() {
-    this.generateCommentForm();
-
     this.likes = (this.post.likes ? this.post.likes.length : 0);
 
-    if (this.comments.length === 0) {
+    // if (this.comments.length === 0) {
       this.comments = await this.commentProvider.load(this.post._id.$oid);
-    }
+    // }
   }
 
   public async view() {
@@ -148,28 +142,15 @@ export class PostComponent implements OnInit {
     // TODO
   }
 
-  public async generateCommentForm(comment?: any) {
-    comment = new Comment({ body: comment ? comment.body : '' });
-
-    this.commentForm = new FormGroup({
-      body: new FormControl(comment.body, Validators.required)
-    });
-  }
-
-  public async submitCommentForm() {
-    const response: CommentResponse = await this.commentProvider.create(this.post._id.$oid, this.commentForm.value);
-
-    if (response.status === 'ok') {
-      if (this.post.comments_count > 3) {
-        this.comments.pop();
-      }
-
-      this.comments.unshift(response.comment);
-      this.post.comments_count += 1;
-    } else {
-      // TODO: Notify
+  public refreshComments(comment: Comment) {
+    if (this.post.comments_count > 3) {
+      this.comments.pop();
     }
+
+    this.comments.unshift(comment);
+    this.post.comments_count += 1;
   }
+
 
   public onLikeableDecision(likesCount) {
     this.likes = likesCount;

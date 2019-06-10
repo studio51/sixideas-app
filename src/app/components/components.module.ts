@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PostComponent } from './post/post.component';
+import { CommentFormComponent } from './comment-form/comment-form.component';
 import { CommentComponent } from './comment/comment.component';
 import { MentionComponent } from './mention/mention.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
@@ -14,6 +15,7 @@ import { DirectivesModule } from 'src/app/directives/directives.module';
 
 const components: Array<any> = [
   PostComponent,
+  CommentFormComponent,
   CommentComponent,
   MentionComponent,
   UserAvatarComponent,
