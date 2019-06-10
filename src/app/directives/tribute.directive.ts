@@ -74,7 +74,7 @@ export class TributeDirective<T> implements OnInit, OnDestroy {
 
       values: (text: string, callback: Function) => this.getUsers(text, tags => callback(tags)),
       lookup: (user: User) => `@ ${ user.username } - ${ user.name }`,
-      selectTemplate: (item: any) => `@ ${ item.original.username } `,
+      selectTemplate: (item: any) => `@${ item.original.username }`,
     };
   }
 
