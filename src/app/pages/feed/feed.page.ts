@@ -7,6 +7,7 @@ import { Tag } from 'src/app/interfaces/tag';
 
 import { PostProvider } from 'src/app/providers/post';
 import { TagProvider } from 'src/app/providers/tag';
+import { SessionProvider } from 'src/app/providers/session';
 import { UserProvider } from 'src/app/providers/user';
 
 import { PostFormPage } from '../post-form/post-form.page';
@@ -41,12 +42,13 @@ export class FeedPage implements OnInit {
     public modalCtrl: ModalController,
     public postProvider: PostProvider,
     public tagProvider: TagProvider,
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider
 
   ) { }
 
   async ngOnInit() {
-    this.user = await this.userProvider.current();
+    this.user = await this.sessionProvider.current();
 
     this.getTags();
     this.get();

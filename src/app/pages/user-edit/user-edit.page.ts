@@ -9,6 +9,7 @@ import { ActionSheetController, ModalController, LoadingController } from '@ioni
 import { User } from 'src/app/interfaces/user';
 import { Post } from 'src/app/interfaces/post';
 
+import { SessionProvider } from 'src/app/providers/session';
 import { UserProvider } from 'src/app/providers/user';
 import { ImageProvider } from 'src/app/providers/image';
 
@@ -47,13 +48,14 @@ export class UserEditPage implements OnInit {
     public actionSheetCtrl: ActionSheetController,
     public modalCtrl: ModalController,
     public loadingCtrl: LoadingController,
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider,
     public imageProvider: ImageProvider
 
   ) { }
 
   async ngOnInit() {
-    this.user = new User(await this.userProvider.current());
+    this.user = new User(await this.sessionProvider.current());
     this.generateForm();
 
     this.form.valueChanges.subscribe((changes: any) => {

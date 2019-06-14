@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 
 import { NavParams, ModalController, ActionSheetController } from '@ionic/angular';
 
+import { SessionProvider } from 'src/app/providers/session';
 import { UserProvider } from 'src/app/providers/user';
 import { PostProvider } from 'src/app/providers/post';
 
@@ -34,6 +35,7 @@ export class UserPage implements OnInit {
     // public params: NavParams,
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider,
     public postProvider: PostProvider,
     public userEditPageProvider: UserEditPage
@@ -41,7 +43,7 @@ export class UserPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.currentUser = await this.userProvider.current();
+    this.currentUser = await this.sessionProvider.current();
 
     this.get();
   }

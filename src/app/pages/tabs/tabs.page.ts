@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ComponentRef } from '@ionic/core';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 
-import { UserProvider } from 'src/app/providers/user';
+import { SessionProvider } from 'src/app/providers/session';
 import { User } from 'src/app/interfaces/user';
 
 import { UserPage } from '../user/user.page';
@@ -18,7 +18,7 @@ export class TabsPage {
   user: User;
 
   constructor(
-    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider,
     public modalCtrl: ModalController,
     public actionSheetController: ActionSheetController
 
@@ -28,7 +28,7 @@ export class TabsPage {
   }
 
   public async getCurrentUser() {
-    this.user = await this.userProvider.current();
+    this.user = await this.sessionProvider.current();
   }
 
   public async showUserActionSheet() {

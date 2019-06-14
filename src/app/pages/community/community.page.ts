@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonInfiniteScroll, ToastController, ModalController } from '@ionic/angular';
 
+import { SessionProvider } from 'src/app/providers/session';
 import { UserProvider } from 'src/app/providers/user';
 
 import { User, UserResponse } from 'src/app/interfaces/user';
@@ -34,6 +35,7 @@ export class CommunityPage implements OnInit {
   private page: number = 0;
 
   constructor(
+    public sessionProvider: SessionProvider,
     public userProvider: UserProvider,
     public toastCtrl: ToastController,
     public modalCtrl: ModalController
@@ -41,7 +43,7 @@ export class CommunityPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.currentUser = await this.userProvider.current();
+    this.currentUser = await this.sessionProvider.current();
     this.get();
   }
 

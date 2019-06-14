@@ -5,7 +5,7 @@ import { AlertController, ModalController } from '@ionic/angular';
 import { Notification } from 'src/app/interfaces/notification';
 import { User } from 'src/app/interfaces/user';
 
-import { UserProvider } from 'src/app/providers/user';
+import { SessionProvider } from 'src/app/providers/session';
 import { NotificationProvider } from 'src/app/providers/notification';
 
 import { PostPage } from '../post/post.page';
@@ -35,7 +35,7 @@ export class NotificationsPage implements OnInit {
   notifications: Notification[] = [];
 
   constructor(
-    public userProvider: UserProvider,
+    public sessionProvider: SessionProvider,
     public notificationsProvider: NotificationProvider,
     public modalCtrl: ModalController,
     public alertCtrl: AlertController
@@ -43,7 +43,7 @@ export class NotificationsPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.user = await this.userProvider.current();
+    this.user = await this.sessionProvider.current();
     this.get();
   }
 
