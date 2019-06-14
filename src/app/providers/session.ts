@@ -25,19 +25,19 @@ export class SessionProvider {
       device: { }
     };
 
-    const source: string = await this.platform.ready();
+    // const source: string = await this.platform.ready();
 
-    if (source === 'cordova') {
-      // const token: any = await this.notificationService.register();
+    // if (source === 'cordova') {
+    //   // const token: any = await this.notificationService.register();
 
-      device['device'] = {
-        platform: this.device.platform,
-        model: this.device.model,
-        uuid: this.device.uuid,
-        // token: token.registrationId,
-        // type: token.registrationType
-      }
-    }
+    //   device['device'] = {
+    //     platform: this.device.platform,
+    //     model: this.device.model,
+    //     uuid: this.device.uuid,
+    //     // token: token.registrationId,
+    //     // type: token.registrationType
+    //   }
+    // }
 
     return this.http.post('sessions/authenticate', Object.assign(credentials, device));
   }

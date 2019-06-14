@@ -1,0 +1,38 @@
+div[column] {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  ion-row:first-child { padding: var(--padding); }
+  form { margin: calc(var(--padding) * 4) 0; }
+}
+
+[alert] {
+  display: flex;
+  align-items: center;
+  margin: 0 var(--margin);
+  padding: var(--padding);
+  background-color: var(--ion-color-danger);
+  flex: 1;
+  border-radius: 6px;
+
+  ion-icon {
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    margin-right: var(--margin);
+  }
+
+  ion-text {
+    color: #fff;
+    font-size: small;
+  }
+}
+
+[ion-input-wrapper] {
+  background-color: var(--ion-color-gray-step-100);
+  border-radius: 6px;
+  padding: var(--padding) calc(var(--padding) * 2);
+  margin: calc(var(--margin) / 2) var(--margin);
+}

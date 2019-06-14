@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ComponentRef } from '@ionic/core';
 import { ModalController, ActionSheetController } from '@ionic/angular';
 
+import { AuthenticationService } from 'src/app/services/authentication.service';
+
 import { SessionProvider } from 'src/app/providers/session';
 import { User } from 'src/app/interfaces/user';
 
@@ -18,6 +20,7 @@ export class TabsPage {
   user: User;
 
   constructor(
+    public authenticationService: AuthenticationService,
     public sessionProvider: SessionProvider,
     public modalCtrl: ModalController,
     public actionSheetController: ActionSheetController
@@ -74,5 +77,7 @@ export class TabsPage {
     return await modal.present();
   }
 
-  private async signOut() { }
+  private signOut() {
+    this.authenticationService.logout();
+  }
 }

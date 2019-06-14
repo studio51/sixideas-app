@@ -1,9 +1,38 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Authentication</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-header app-header></ion-header>
 
 <ion-content>
+  <div column>
+    <ion-row justify-content-center no-padding>
+      <ion-col size="auto" no-padding>
+        <img src="assets/logo.png" height="100px" />
+      </ion-col>
+    </ion-row>
 
+    <form [formGroup]="form">
+      <div alert color="danger" *ngIf="response">
+        <ion-icon src="assets/icon/alert.svg"></ion-icon>
+        <ion-text color="danger">
+          {{ response.message }}
+        </ion-text>
+      </div>
+
+      <div formGroupName="user">
+        <div ion-input-wrapper>
+          <ion-input formControlName="email" placeholder="Email Address"></ion-input>
+        </div>
+
+        <div ion-input-wrapper>
+          <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+        </div>
+      </div>
+    </form>
+
+    <ion-row justify-content-center no-padding>
+      <ion-col size="auto" no-padding>
+        <ion-button no-margin style="outline" shape="round" [color]="response ? 'danger' : ''" [disabled]="!form.valid" (click)="submit()">
+          Login
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </div>
 </ion-content>

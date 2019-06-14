@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -7,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { SessionProvider, User } from './providers/session';
 import { CableProvider } from 'src/app/providers/cable';
 import { AppereanceService } from './services/appearance.service';
+import { AuthenticationService } from './services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -18,11 +20,13 @@ export class AppComponent {
 
   constructor(
     private platform: Platform,
+    private router: Router,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public sessionProvider: SessionProvider,
-    public cableProvider: CableProvider,
-    private appereanceService: AppereanceService
+    private sessionProvider: SessionProvider,
+    private cableProvider: CableProvider,
+    private appereanceService: AppereanceService,
+    public authenticationService: AuthenticationService
 
   ) {
 
@@ -32,13 +36,21 @@ export class AppComponent {
   async initializeApp() {
     await this.platform.ready();
 
-    this.user = await this.sessionProvider.current();
-
     this.statusBar.styleDefault();
     this.splashScreen.hide();
 
-    this.subscribeToAppearances();
-    this.subscribeToNewPosts();
+    this.authenticationService.authState.subscribe(async (state: boolean) => {
+      if (state) {
+        this.router.navigate(['tabs']);
+
+        this.user = await this.sessionProvider.current();
+
+        this.subscribeToAppearances();
+        this.subscribeToNewPosts();
+      } else {
+        this.router.navigate(['authentication']);
+      }
+    });
   }
 
   private async subscribeToAppearances() {

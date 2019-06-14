@@ -34,7 +34,7 @@ import { TagsPageModule } from './pages/tags/tags.module';
 
 import { ActionCableService } from 'angular2-actioncable';
 
-import { AuthenticationGuardService } from './guards/authentication';
+import { AuthenticationService } from './services/authentication.service';
 
 @NgModule({
   declarations: [
@@ -87,7 +87,7 @@ import { AuthenticationGuardService } from './guards/authentication';
       multi: true
     },
 
-    AuthenticationGuardService,
+    AuthenticationService,
     ActionCableService
   ],
 

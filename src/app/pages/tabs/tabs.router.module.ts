@@ -2,13 +2,25 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { TabsPage } from './tabs.page';
-import { AuthenticationGuardService } from 'src/app/guards/authentication';
+import { AuthenticationGuard } from 'src/app/guards/authentication';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: '/tabs/feed',
+    pathMatch: 'full',
+    canActivate: [AuthenticationGuard]
+  },
+  {
     path: 'tabs',
     component: TabsPage,
+    canActivate: [AuthenticationGuard],
     children: [
+      {
+        path: '',
+        redirectTo: '/tabs/feed',
+        pathMatch: 'full'
+      },
       {
         path: 'feed',
         children: [
@@ -35,18 +47,8 @@ const routes: Routes = [
             loadChildren: '../notifications/notifications.module#NotificationsPageModule'
           }
         ]
-      },
-      {
-        path: '',
-        redirectTo: '/tabs/feed',
-        pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/tabs/feed',
-    pathMatch: 'full'
   }
 ];
 
