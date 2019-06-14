@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 
+import { Storage } from '@ionic/storage';
 import { Device } from '@ionic-native/device/ngx';
 
 import { Platform } from '@ionic/angular';
@@ -15,6 +16,7 @@ export class SessionProvider {
   constructor(
     public http: HTTPService,
     public platform: Platform,
+    public storage: Storage,
     public device: Device,
     public userProvider: UserProvider
 
@@ -42,8 +44,8 @@ export class SessionProvider {
     return this.http.post('sessions/authenticate', Object.assign(credentials, device));
   }
 
-  public current(): Promise<User> {
-    return this.userProvider.get('5cdbeaaecbc67a69d64b19d6')
+  public async current(): Promise<User> {
+    return this.userProvider.get(await this.storage.get('sixideas-token'));
   }
 
   public logout() {

@@ -19,7 +19,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { HTTPInterceptor } from './services/http.interceptor';
-import { CachingInterceptor } from './services/caching.interceptor';
 import { RequestCacheService } from './services/request-cache.service';
 
 import { ComponentsModule } from './components/components.module';
@@ -75,15 +74,9 @@ import { AuthenticationService } from './services/authentication.service';
       useClass: IonicRouteStrategy
     },
 
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: HTTPInterceptor,
-    //   multi: true
-    // },
-
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: CachingInterceptor,
+      useClass: HTTPInterceptor,
       multi: true
     },
 
