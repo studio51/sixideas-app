@@ -49,10 +49,10 @@ ion-card {
 
 ion-button {
   display: flex;
-  width: 70px;
-  height: 70px;
+  // width: 70px;
+  // height: 70px;
 
   --border-radius: 250px;
-  --padding-start: 8px;
-  --padding-end: 8px;
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
