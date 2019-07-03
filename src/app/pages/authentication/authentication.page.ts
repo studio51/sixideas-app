@@ -14,7 +14,7 @@ import { AuthenticationService } from 'src/app/services/authentication.service';
 })
 export class AuthenticationPage implements OnInit {
   form: FormGroup;
-  // response: HttpResponse<any> = null;
+  response: HttpResponse<any> = null;
 
   constructor(
     public storage: Storage,
