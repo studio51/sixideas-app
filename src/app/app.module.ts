@@ -12,6 +12,7 @@ import { Camera } from '@ionic-native/camera/ngx';
 import { Device } from '@ionic-native/device/ngx';
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 
@@ -65,6 +66,7 @@ import { AuthenticationService } from './services/authentication.service';
     Device,
     InAppBrowser,
     WebView,
+    PhotoViewer,
     File,
     FileTransfer,
     RequestCacheService,

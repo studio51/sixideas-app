@@ -1,7 +1,7 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { ModalController, ActionSheetController, AlertController } from '@ionic/angular';
-// import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 import { PostPage } from 'src/app/pages/post/post.page';
 import { PostFormPage } from 'src/app/pages/post-form/post-form.page';
@@ -47,8 +47,8 @@ export class PostComponent implements OnInit {
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
     public alertCtrl: AlertController,
-    public commentProvider: CommentProvider
-    // public photoViewer: PhotoViewer
+    public commentProvider: CommentProvider,
+    public photoViewer: PhotoViewer
 
   ) { }
 
@@ -71,6 +71,10 @@ export class PostComponent implements OnInit {
     });
 
     return await modal.present();
+  }
+
+  public async viewImage(post: Post) {
+    this.photoViewer.show(post.image_url, post.title);
   }
 
   public async showPostOptions() {

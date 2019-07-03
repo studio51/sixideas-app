@@ -15,7 +15,7 @@
   </ion-card-header>
 
   <ion-card-content no-padding>
-    <ion-img *ngIf="post.image_url" [src]="post.image_url"></ion-img>
+    <ion-img *ngIf="post.image_url" [src]="post.image_url" (click)="viewImage(post)"></ion-img>
 
     <div post-body margin margin-bottom-x2>
       <!-- Body -->
@@ -54,7 +54,11 @@
     <app-comment-form [post]="post" (commented)="refreshComments($event)"></app-comment-form>
 
     <ion-text color="medium" *ngIf="post.comments_count === 0">
-      <small padding-y-x2 padding-x no-margin>This post is missing your voice!<br />Why not be the first to join this discussion?</small>
+      <small flex text-align-center justify-content-center padding-y-x2 padding-x no-margin>
+        This post is missing your voice!
+        <br />
+        Why not be the first to join this discussion?
+      </small>
     </ion-text>
 
     <div padding no-padding-top *ngIf="comments.length > 0">
@@ -62,7 +66,7 @@
     </div>
 
     <ion-text color="primary">
-      <p no-margin padding padding-bottom-x2 *ngIf="post.comments_count > 3" (click)="view()">
+      <p flex text-align-center justify-content-center no-margin padding padding-bottom-x2 *ngIf="post.comments_count > 3" (click)="view()">
         View {{ post.comments_count - 3 }} more comment{{ post.comments_count > 2 ? 's' : '' }}
       </p>
     </ion-text>
