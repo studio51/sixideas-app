@@ -1,11 +1,15 @@
-<ion-header no-padding>
-  <ion-toolbar no-padding>
-    <ion-searchbar padding-x2 animated="true" placeholder="Search Tags" showCancelButton="true" (ionInput)="search($event)"></ion-searchbar>
-  </ion-toolbar>
-</ion-header>
+<ion-header app-header></ion-header>
 
 <ion-content>
-  <ion-grid padding-left-x2 padding-top-x2 padding-bottom>
+  <ion-refresher slot="fixed" (ionRefresh)="dismiss()">
+    <ion-refresher-content pullingIcon="close" pullingText="" refreshingSpinner="" refreshingText=""></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-toolbar no-padding sticky sticky-top margin-y>
+    <ion-searchbar padding-x-x2 animated="true" placeholder="Search Tags" showCancelButton="true" (ionInput)="search($event)"></ion-searchbar>
+  </ion-toolbar>
+
+  <ion-grid padding-left-x2 padding-top padding-bottom>
     <ion-row margin-bottom align-items-center *ngFor="let tag of tags">
       <ion-col no-padding>
         <ion-grid no-padding>

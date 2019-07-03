@@ -16,6 +16,7 @@ import { UserProvider } from 'src/app/providers/user';
 
 export class TagsPage implements OnInit {
   tags: Tag[];
+  // favouriteTags: Tag[];
   _tags: Tag[];
 
   @Input() user: User;
@@ -40,6 +41,7 @@ export class TagsPage implements OnInit {
       tag['favorite'] = this.contains(this.userTags, tag);
     });
 
+    // this.favouriteTags = tags.filter((tag: Tag) => tag.favorite === true);
     this.tags = this._tags = tags;
   }
 
@@ -91,6 +93,10 @@ export class TagsPage implements OnInit {
   }
 
   public async filter(tag: Tag) {
+    this.dismiss(tag);
+  }
+
+  public async dismiss(tag?: Tag) {
     this.modalCtrl.dismiss(tag);
   }
 }
