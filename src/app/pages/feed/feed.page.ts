@@ -14,6 +14,7 @@ import { PostFormPage } from '../post-form/post-form.page';
 import { TagsPage } from '../tags/tags.page';
 
 import * as Sugar from 'sugar/string';
+import { Router, ActivatedRoute } from '@angular/router';
 
 Sugar.Array.extend({
   methods: ['last']
@@ -34,7 +35,7 @@ export class FeedPage implements OnInit {
   posts: Post[] = [];
 
   filtering: boolean = false;
-  selectedTag: Tag = null;
+  selectedTag: string = null;
 
   private page: number = 0;
 
@@ -43,12 +44,15 @@ export class FeedPage implements OnInit {
     public postProvider: PostProvider,
     public tagProvider: TagProvider,
     public sessionProvider: SessionProvider,
-    public userProvider: UserProvider
+    public userProvider: UserProvider,
+    public router: Router,
+    public activatedRouter: ActivatedRoute
 
   ) { }
 
   async ngOnInit() {
     this.user = await this.sessionProvider.current();
+    this.selectedTag = this.activatedRouter.snapshot.paramMap.get('tag');
 
     this.getTags();
     this.get();
@@ -70,7 +74,7 @@ export class FeedPage implements OnInit {
           params['page'] = this.page += 1;
 
     if (this.selectedTag) {
-      params['tag'] = this.selectedTag.text;
+      params['tag'] = this.selectedTag;
     }
 
     const response = await this.postProvider.load(null, params);
@@ -135,7 +139,7 @@ export class FeedPage implements OnInit {
   public filter(tag: Tag) {
     this.page        = 0;
     this.filtering   = true;
-    this.selectedTag = tag;
+    this.selectedTag = tag.text;
 
     this.get();
   }

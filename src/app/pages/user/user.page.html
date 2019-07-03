@@ -85,7 +85,7 @@
 
     <ion-row no-padding margin-top-x2>
       <ion-col no-padding size="auto" *ngFor="let tag of tags">
-        <ion-chip color="medium" (click)="viewPosts(tag)">
+        <ion-chip color="medium" (click)="viewTaggedPosts(tag)">
           <ion-label>{{ tag.display_text }}</ion-label>
         </ion-chip>
       </ion-col>

@@ -32,7 +32,7 @@
           </ion-col>
 
           <ion-col no-padding size="auto" *ngFor="let tag of tags" (click)="filter(tag)">
-            <ion-chip [color]="tag._id.$oid === selectedTag?._id?.$oid ? 'primary' : 'medium'">
+            <ion-chip [color]="tag.text === selectedTag ? 'primary' : 'medium'">
               <ion-label>{{ tag.display_text }}</ion-label>
             </ion-chip>
           </ion-col>
@@ -55,7 +55,7 @@
     <ng-container *ngIf="filtering">
       <ion-spinner name="dots"></ion-spinner>
       <ion-text color="medium">
-        <small>Loading posts for {{ selectedTag.display_text }}</small>
+        <small>Loading posts for {{ selectedTag }}</small>
       </ion-text>
     </ng-container>
 
@@ -63,7 +63,7 @@
       <ion-spinner name="dots"></ion-spinner>
       <ion-text color="medium">
         <small>
-          There are no posts {{ selectedTag ? 'for ' + selectedTag.display_text : '' }} here
+          There are no posts {{ selectedTag ? 'for ' + selectedTag : '' }} here
         </small>
       </ion-text>
     </ng-container>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
@@ -18,6 +19,7 @@ export class MentionComponent implements OnInit {
   $body: string;
 
   constructor(
+    public router: Router,
     public modalCtrl: ModalController,
     public inAppBrowser: InAppBrowser
 
@@ -49,17 +51,11 @@ export class MentionComponent implements OnInit {
 
       return await modal.present();
     } else if (type === 'tag') {
-      // this.events.publish('post:tagged', value);
+      if (this.modalCtrl) {
+        this.modalCtrl.dismiss();
+      }
 
-      // if (this.viewCtrl.isOverlay) {
-      //   this.viewCtrl.dismiss();
-      // }
-
-      // await this.appCtrl
-      //   .getRootNavs()[0]
-      //   .getActiveChildNavs()[0]
-      //   .select(0);
-
+      this.router.navigate(['/tabs/feed', { tag: value }]);
     } else if (type === 'url') {
       await this.inAppBrowser.create(value, '_system');
     }

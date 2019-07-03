@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { NavParams, ModalController, ActionSheetController } from '@ionic/angular';
+import { NavController, ModalController, ActionSheetController } from '@ionic/angular';
+
+import { Router } from '@angular/router';
 
 import { SessionProvider } from 'src/app/providers/session';
 import { UserProvider } from 'src/app/providers/user';
@@ -32,13 +34,15 @@ export class UserPage implements OnInit {
   processingImage: boolean = false;
 
   constructor(
-    // public params: NavParams,
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
     public sessionProvider: SessionProvider,
     public userProvider: UserProvider,
     public postProvider: PostProvider,
-    public userEditPageProvider: UserEditPage
+    public userEditPageProvider: UserEditPage,
+
+    public navCtrl: NavController,
+    public router: Router
 
   ) { }
 
@@ -123,6 +127,11 @@ export class UserPage implements OnInit {
     }
 
     this.processingImage = false;
+  }
+
+  public viewTaggedPosts(tag: Tag) {
+    this.dismiss();
+    this.router.navigate(['/tabs/feed', { tag: tag.text }]);
   }
 
   public async dismiss(event?: any) {
