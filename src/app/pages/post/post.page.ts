@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 
-import { NavParams, IonInfiniteScroll } from '@ionic/angular';
+import { NavParams, IonInfiniteScroll, ModalController } from '@ionic/angular';
 
 import { Post } from 'src/app/interfaces/post';
 import { User } from 'src/app/interfaces/user';
@@ -30,6 +30,7 @@ export class PostPage implements OnInit {
 
   constructor(
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     public postProvider: PostProvider,
     public commentProvider: CommentProvider
 
@@ -99,5 +100,9 @@ export class PostPage implements OnInit {
   public month(date: string): string {
     // @ts-ignore
     return new Date(date).format('%b');
+  }
+
+  public async dismiss() {
+    return await this.modalCtrl.dismiss();
   }
 }

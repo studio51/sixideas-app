@@ -1,6 +1,10 @@
 <ion-header app-header></ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="dismiss($event)">
+    <ion-refresher-content pullingIcon="close" pullingText="" refreshingSpinner="" refreshingText=""></ion-refresher-content>
+  </ion-refresher>
+  
   <ion-toolbar no-padding>
     <div flex align-items-center padding-x2>
       <app-user-avatar [user]="user" size="medium" showUsername="true"></app-user-avatar>
@@ -32,7 +36,11 @@
   </ion-grid>
 
   <ion-text color="medium" *ngIf="post.comments_count === 0">
-    <small padding-y-x2 padding-x no-margin>This post is missing your voice!<br />Why not be the first to join this discussion?</small>
+    <small flex text-align-center justify-content-center padding-y-x2 padding-x no-margin>
+      This post is missing your voice!
+      <br />
+      Why not be the first to join this discussion?
+    </small>
   </ion-text>
 
   <div padding-x2 no-padding-top *ngIf="comments.length > 0">
