@@ -19,7 +19,7 @@ export class CableProvider {
     const channel: Channel = this.cableService
       .cable('http://192.168.0.11:3000/api/v1/cable?token=5bc8bd7796e80d3b97f0e179')
       .channel('AppearanceChannel', {
-        room : 'appearances'
+        room: 'appearances'
       });
 
     return channel.received();
@@ -29,7 +29,7 @@ export class CableProvider {
     const channel: Channel = this.cableService
       .cable('http://192.168.0.11:3000/api/v1/cable?token=5bc8bd7796e80d3b97f0e179')
       .channel('NewPostsChannel', {
-        room : 'counter'
+        room: 'counter'
       });
 
     return channel.received();

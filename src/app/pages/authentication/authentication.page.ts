@@ -4,7 +4,6 @@ import { HttpResponse } from '@angular/common/http';
 
 import { Storage } from '@ionic/storage';
 
-import { SessionProvider } from 'src/app/providers/session';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
 @Component({
@@ -19,7 +18,6 @@ export class AuthenticationPage implements OnInit {
   constructor(
     public storage: Storage,
     private authenticationService: AuthenticationService
-    // public sessionProvider: SessionProvider
 
   ) { }
 
@@ -32,7 +30,7 @@ export class AuthenticationPage implements OnInit {
     });
   }
 
-  public submit() {
-    this.authenticationService.login(this.form.value);
+  public async submit() {
+   this.response = await this.authenticationService.login(this.form.value);
   }
 }

@@ -37,7 +37,9 @@ export class HTTPService {
   ) { }
 
   public get url(): string {
-    return 'http://192.168.0.11:3000/api/v1/';
+    // return 'http://192.168.0.11:3000/api/v1/';
+    return 'https://sixideas.studio51.solutions';
+    // return 'https://1801-six-ideas.mdw.re/api/v1/';
   }
 
   public get<T>(url: string, options?: {}): Promise<any> {

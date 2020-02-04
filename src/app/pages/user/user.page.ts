@@ -48,7 +48,6 @@ export class UserPage implements OnInit {
 
   async ngOnInit() {
     this.currentUser = await this.sessionProvider.current();
-
     this.get();
   }
 

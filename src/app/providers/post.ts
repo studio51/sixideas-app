@@ -1,22 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HTTPService } from '../services/http.service';
 
+import { Storage } from '@ionic/storage';
+
 import { Post } from '../interfaces/post';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostProvider {
-  constructor(public http: HTTPService) { }
+  constructor(
+    public http: HTTPService,
+    public storage: Storage
+  ) { }
 
-  public load(userID?: string, options: any = {}) {
+  public async load(userID?: string, options: any = {}) {
     const params = [];
-    
+
     if (userID) {
       params['user_id'] = userID
     }
 
-    return this.http.get('posts', { params: Object.assign(params, options) })
+    const response: any = await this.http.get('posts', {
+      observe: 'response',
+      params: Object.assign(params, options)
+    });
+
+    await this.storage.set('posts_count', response.headers.get('Total'))
+
+    return response.body;
   }
 
   public get(id: string, options: any = {}) {

@@ -34,7 +34,21 @@ import { TagsPageModule } from './pages/tags/tags.module';
 
 import { ActionCableService } from 'angular2-actioncable';
 
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { Firebase } from '@ionic-native/firebase/ngx';
+
 import { AuthenticationService } from './services/authentication.service';
+
+const config: any = {
+  apiKey:             "AIzaSyAK4x_V6tw_0NkjU0D6KSZw9xB-aaPijns",
+  authDomain:         "studio51-cogitor-sixideas.firebaseapp.com",
+  databaseURL:        "https://studio51-cogitor-sixideas.firebaseio.com",
+  projectId:          "studio51-cogitor-sixideas",
+  storageBucket:      "",
+  messagingSenderId:  "836345759664",
+  appId:              "1:836345759664:web:e6fb5ef1aa37cbad"
+};
 
 @NgModule({
   declarations: [
@@ -48,6 +62,10 @@ import { AuthenticationService } from './services/authentication.service';
     HttpClientModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
+    
+    AngularFireModule.initializeApp(config),
+    AngularFirestoreModule,
+    
     AppRoutingModule,
     ComponentsModule,
     UserPageModule,
@@ -62,6 +80,7 @@ import { AuthenticationService } from './services/authentication.service';
   providers: [
     StatusBar,
     SplashScreen,
+    Firebase,
     Camera,
     Device,
     InAppBrowser,
